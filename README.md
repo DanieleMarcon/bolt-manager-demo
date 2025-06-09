@@ -2,8 +2,6 @@
 
 Web app manageriale calcistica costruita interamente con Bolt.new.
 
-(✅ Inizializzazione struttura Bolt Manager Demo con licenza chiusa)
-
 ## 🚀 Obiettivo
 Ricreare le logiche fondamentali di un gioco manageriale old school, con UI moderna e UX ottimizzata per il web.
 
@@ -42,6 +40,4 @@ Ricreare le logiche fondamentali di un gioco manageriale old school, con UI mode
 - [ ] UI manageriale ispirata ma moderna
 - [ ] Sistema di salvataggi e caricamento
 
----
 
-✅ *Progetto pensato per modularità, scalabilità e portabilità futura (API, multiplayer, espansioni).*
