@@ -1,14 +1,51 @@
-# Node/Bolt/Basics
+# ===========================
+# ⚙️ BASE PROJECT IGNORE FILE
+# For Bolt.new + Frontend app
+# ===========================
+
+# 📦 Node.js and package-based tools
 node_modules/
+
+# 🔧 Build / Distribution Output (Managed)
 dist/*
 !dist/index.html
 !dist/style.css
 !dist/main.js
+
+# ✅ Keep essential asset folders and placeholder files
 !dist/assets/
+!dist/assets/icons/
 !dist/assets/icons/.gitkeep
+!dist/assets/logos/
 !dist/assets/logos/.gitkeep
+!dist/assets/json/
 !dist/assets/json/.gitkeep
-.env
+
+# 🧪 Testing, Logs, Temp
 *.log
 *.tmp
+*.bak
+*.test.*
+*.spec.*
+
+# 💾 Config & Environment
+.env
+.env.local
+.env.*.local
+
+# 🖥️ OS/Editor System Files
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 🧱 Bolt.new internal source (optional if exported)
+bolt_src/storage/
+bolt_src/**/*.bak
+bolt_src/**/*.tmp
+
+# 🛠️ Future use (TypeScript, if adopted)
+*.tsbuildinfo
+build/
+tsconfig.tsbuildinfo
+
