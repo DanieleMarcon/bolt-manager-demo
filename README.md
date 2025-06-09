@@ -1,4 +1,4 @@
-# ⚽ Bolt Manager 01/02 - Demo
+# ⚽ Bolt Manager 01/02 – Demo
 
 Web app manageriale calcistica realizzata interamente con **Bolt.new**, pensata per offrire un'esperienza moderna, scalabile e totalmente no-code.
 
@@ -21,20 +21,21 @@ Costruita interamente con tecnologie native Bolt:
 - 💾 **Bolt Storage** per salvataggi utente (sessione e permanenti)
 
 ### 📁 Struttura progetto
+
 bolt_src/
-├── flows/ → Logica di gioco (match engine, training, calendario…)
-├── pages/ → Interfacce utente per ogni sezione del gioco
-├── datasets/ → Modelli dati persistenti per entità core
-├── components/ → UI riutilizzabili (PlayerCard, MatchStatsBox…)
-├── storage/ → Variabili e salvataggi Bolt (user/session/global)
+├── flows/ → Logica di gioco (match engine, training…)
+├── pages/ → Interfacce per ogni sezione del gioco
+├── datasets/ → Modelli dati persistenti (team, player…)
+├── components/ → Componenti UI (PlayerCard, MatchStats…)
+├── storage/ → Variabili e salvataggi Bolt
 
 dist/
-├── index.html, main.js, style.css → Export finale della web app
-├── assets/icons/, logos/, json/ → Risorse statiche organizzate
+├── index.html, main.js, style.css → Web app esportata
+├── assets/icons/, logos/, json/ → Risorse statiche
 
 deploy/
-├── README_DEPLOY.md → Istruzioni per deploy su SiteGround o simili
-├── deploy.sh → Script per automazione futura (es. CI/CD)
+├── README_DEPLOY.md → Istruzioni deploy (es. SiteGround)
+├── deploy.sh → Automazione futura (es. CI/CD)
 
 ---
 
@@ -46,16 +47,28 @@ deploy/
 - **Partite**: engine testuale, eventi, sostituzioni, report
 - **Mercato**: offerte, contratti, clausole, scouting
 - **Calendario**: avanzamento giorno/turno, eventi automatici
+- **Salvataggi**: gestione sessioni, backup, quickload
+
+---
+
+## 🎨 UX/UI
+
+- Design system personalizzato
+- CSS nativo `dist/style.css` compatibile con Bolt.new
+- Responsive 100% (mobile, tablet, desktop, Smart TV)
+- Accessibilità completa (focus, tastiera, ARIA, contrasto)
+- 50+ componenti UI riutilizzabili
+- Documentazione in `bolt_src/ui/ui_overview.md`
 
 ---
 
 ## 🔄 Flusso di lavoro
 
-1. Creazione interfacce e flussi in Bolt.new
-2. Salvataggio logica e UI nel repo (`bolt_src/`)
+1. Costruzione Flussi + Pages in Bolt.new
+2. Salvataggio nel repo (`bolt_src/`)
 3. Esportazione HTML/CSS/JS → `dist/`
-4. Deploy manuale (FTP) o automatizzato (CI/CD) su hosting
-5. Versionamento e collaborazione tramite GitHub
+4. Deploy manuale (es. FTP) o CI/CD automatico
+5. Versionamento e backup via GitHub
 
 ---
 
@@ -63,31 +76,25 @@ deploy/
 
 - 🔹 **SiteGround**: upload in `public_html/`
 - 🔹 **GitHub Pages** o **Netlify** per versioni statiche rapide
-- 🔹 `dist/` contiene tutto il necessario per deploy immediato
+- ✅ `dist/` contiene tutto il necessario
 
 ---
 
-## 📅 Roadmap
+## 🧭 Roadmap
 
-- [x] Impostazione repo e struttura
-- [ ] Definizione completa dei dataset
-- [ ] Implementazione flussi principali (partita, allenamento, mercato)
-- [ ] UI moderna e accessibile ispirata all’originale
-- [ ] Sistema di salvataggio e caricamento user-friendly
-- [ ] Esportazione JSON e supporto multi-slot
+🔗 La roadmap completa e aggiornata è disponibile nel file [`roadmap.md`](./roadmap.md)
 
 ---
 
-## 🔧 Requisiti minimi per collaborare
+## 🔧 Requisiti per collaborare
 
 - ✅ Account su [Bolt.new](https://bolt.new)
-- ✅ Nozioni base di Bolt Flows e struttura modularizzata
-- ✅ Git + GitHub per gestione versioni
-- ✅ Editor consigliato: VS Code o simili
+- ✅ Nozioni base di Bolt Flows e Pages
+- ✅ Git + GitHub per versionamento
+- ✅ Editor consigliato: VS Code
 
 ---
 
 ## ✅ Obiettivo finale
 
 Una **demo funzionante** di un manageriale calcistico completo, esportabile, riutilizzabile, facilmente estendibile e compatibile con qualsiasi hosting. Pronto per evolversi in progetto commerciale, educativo o open-source.
-
