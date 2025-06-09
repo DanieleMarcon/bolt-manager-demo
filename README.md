@@ -1,6 +1,6 @@
 # ⚽ Bolt Manager 01/02 - Demo
 
-Web app manageriale calcistica ispirata a *Championship Manager 01/02*, realizzata interamente con **Bolt.new**, pensata per offrire un'esperienza moderna, scalabile e totalmente no-code.
+Web app manageriale calcistica realizzata interamente con **Bolt.new**, pensata per offrire un'esperienza moderna, scalabile e totalmente no-code.
 
 ---
 
