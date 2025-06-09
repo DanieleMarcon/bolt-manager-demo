@@ -1,6 +1,13 @@
 # Node/Bolt/Basics
 node_modules/
-dist/
+dist/*
+!dist/index.html
+!dist/style.css
+!dist/main.js
+!dist/assets/
+!dist/assets/icons/.gitkeep
+!dist/assets/logos/.gitkeep
+!dist/assets/json/.gitkeep
 .env
 *.log
 *.tmp
