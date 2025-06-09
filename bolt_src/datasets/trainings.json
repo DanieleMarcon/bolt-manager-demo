@@ -1,0 +1,140 @@
+{
+  "name": "trainings",
+  "description": "Sessioni di allenamento e programmi di sviluppo",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco della sessione"
+    },
+    {
+      "name": "team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra che effettua l'allenamento"
+    },
+    {
+      "name": "training_date",
+      "type": "Date",
+      "required": true,
+      "description": "Data dell'allenamento"
+    },
+    {
+      "name": "training_type",
+      "type": "Text",
+      "required": true,
+      "description": "Tipo (fitness, technical, tactical, recovery)"
+    },
+    {
+      "name": "intensity",
+      "type": "Text",
+      "required": true,
+      "default": "medium",
+      "description": "Intensità (light, medium, high, very_high)"
+    },
+    {
+      "name": "focus_area",
+      "type": "Text",
+      "required": true,
+      "description": "Area di focus (pace, shooting, passing, defending, etc.)"
+    },
+    {
+      "name": "duration_minutes",
+      "type": "Number",
+      "required": true,
+      "default": 90,
+      "description": "Durata in minuti"
+    },
+    {
+      "name": "participants",
+      "type": "Array",
+      "required": true,
+      "description": "Lista player_id dei partecipanti"
+    },
+    {
+      "name": "individual_programs",
+      "type": "Array",
+      "required": false,
+      "description": "Programmi personalizzati per singoli giocatori"
+    },
+    {
+      "name": "staff_id",
+      "type": "Ref",
+      "ref_dataset": "staff",
+      "required": false,
+      "description": "Membro dello staff responsabile"
+    },
+    {
+      "name": "weather_conditions",
+      "type": "Text",
+      "required": false,
+      "description": "Condizioni meteo durante l'allenamento"
+    },
+    {
+      "name": "facility_quality",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Qualità delle strutture (1-100)"
+    },
+    {
+      "name": "injury_risk",
+      "type": "Number",
+      "required": true,
+      "description": "Rischio infortuni calcolato (0-100)"
+    },
+    {
+      "name": "morale_impact",
+      "type": "Number",
+      "required": false,
+      "description": "Impatto sul morale della squadra (-10 a +10)"
+    },
+    {
+      "name": "fitness_gain",
+      "type": "Number",
+      "required": false,
+      "description": "Guadagno medio di fitness per i partecipanti"
+    },
+    {
+      "name": "skill_improvements",
+      "type": "Array",
+      "required": false,
+      "description": "Miglioramenti specifici delle abilità"
+    },
+    {
+      "name": "injuries_occurred",
+      "type": "Array",
+      "required": false,
+      "description": "Eventuali infortuni verificatisi"
+    },
+    {
+      "name": "status",
+      "type": "Text",
+      "required": true,
+      "default": "scheduled",
+      "description": "Stato (scheduled, completed, cancelled)"
+    },
+    {
+      "name": "notes",
+      "type": "LongText",
+      "required": false,
+      "description": "Note aggiuntive sull'allenamento"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Training_Process, Player_Development, Weekly_Schedule",
+  "population": "Creato dall'utente nella pianificazione settimanale, aggiornato dopo ogni sessione"
+}

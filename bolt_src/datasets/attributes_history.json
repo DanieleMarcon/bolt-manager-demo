@@ -1,0 +1,138 @@
+{
+  "name": "attributes_history",
+  "description": "Storico evolutivo degli attributi dei giocatori",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco del record storico"
+    },
+    {
+      "name": "player_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": true,
+      "description": "Giocatore di riferimento"
+    },
+    {
+      "name": "record_date",
+      "type": "Date",
+      "required": true,
+      "description": "Data della registrazione"
+    },
+    {
+      "name": "overall_rating",
+      "type": "Number",
+      "required": true,
+      "description": "Valutazione complessiva al momento"
+    },
+    {
+      "name": "pace",
+      "type": "Number",
+      "required": true,
+      "description": "Velocità al momento"
+    },
+    {
+      "name": "shooting",
+      "type": "Number",
+      "required": true,
+      "description": "Tiro al momento"
+    },
+    {
+      "name": "passing",
+      "type": "Number",
+      "required": true,
+      "description": "Passaggio al momento"
+    },
+    {
+      "name": "dribbling",
+      "type": "Number",
+      "required": true,
+      "description": "Dribbling al momento"
+    },
+    {
+      "name": "defending",
+      "type": "Number",
+      "required": true,
+      "description": "Difesa al momento"
+    },
+    {
+      "name": "physical",
+      "type": "Number",
+      "required": true,
+      "description": "Fisico al momento"
+    },
+    {
+      "name": "fitness",
+      "type": "Number",
+      "required": true,
+      "description": "Forma fisica al momento"
+    },
+    {
+      "name": "morale",
+      "type": "Number",
+      "required": true,
+      "description": "Morale al momento"
+    },
+    {
+      "name": "market_value",
+      "type": "Number",
+      "required": true,
+      "description": "Valore di mercato al momento"
+    },
+    {
+      "name": "change_reason",
+      "type": "Text",
+      "required": true,
+      "description": "Motivo del cambiamento (training, match, injury, age, etc.)"
+    },
+    {
+      "name": "training_id",
+      "type": "Ref",
+      "ref_dataset": "trainings",
+      "required": false,
+      "description": "Allenamento che ha causato il cambiamento"
+    },
+    {
+      "name": "match_id",
+      "type": "Ref",
+      "ref_dataset": "matches",
+      "required": false,
+      "description": "Partita che ha causato il cambiamento"
+    },
+    {
+      "name": "attribute_changes",
+      "type": "Array",
+      "required": true,
+      "description": "Dettaglio dei cambiamenti per ogni attributo"
+    },
+    {
+      "name": "season",
+      "type": "Number",
+      "required": true,
+      "description": "Stagione di riferimento"
+    },
+    {
+      "name": "player_age_at_time",
+      "type": "Number",
+      "required": true,
+      "description": "Età del giocatore al momento della registrazione"
+    },
+    {
+      "name": "is_significant_change",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se il cambiamento è significativo (>= 2 punti)"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione del record"
+    }
+  ],
+  "usage": "Utilizzato in Flow Player_Development, Statistics_Analysis, Progress_Tracking",
+  "population": "Creato automaticamente dopo allenamenti, partite e eventi che modificano gli attributi"
+}

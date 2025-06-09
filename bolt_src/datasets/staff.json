@@ -1,0 +1,181 @@
+{
+  "name": "staff",
+  "description": "Staff tecnico e dirigenziale delle squadre",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco del membro dello staff"
+    },
+    {
+      "name": "team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra di appartenenza"
+    },
+    {
+      "name": "first_name",
+      "type": "Text",
+      "required": true,
+      "description": "Nome"
+    },
+    {
+      "name": "last_name",
+      "type": "Text",
+      "required": true,
+      "description": "Cognome"
+    },
+    {
+      "name": "age",
+      "type": "Number",
+      "required": true,
+      "description": "Età"
+    },
+    {
+      "name": "role",
+      "type": "Text",
+      "required": true,
+      "description": "Ruolo (head_coach, assistant_coach, fitness_coach, scout, physio, etc.)"
+    },
+    {
+      "name": "experience_years",
+      "type": "Number",
+      "required": true,
+      "description": "Anni di esperienza nel ruolo"
+    },
+    {
+      "name": "coaching_ability",
+      "type": "Number",
+      "required": false,
+      "description": "Abilità di allenamento (1-100, per allenatori)"
+    },
+    {
+      "name": "tactical_knowledge",
+      "type": "Number",
+      "required": false,
+      "description": "Conoscenza tattica (1-100, per allenatori)"
+    },
+    {
+      "name": "motivational_skills",
+      "type": "Number",
+      "required": false,
+      "description": "Capacità motivazionali (1-100)"
+    },
+    {
+      "name": "fitness_expertise",
+      "type": "Number",
+      "required": false,
+      "description": "Competenza fitness (1-100, per preparatori)"
+    },
+    {
+      "name": "scouting_ability",
+      "type": "Number",
+      "required": false,
+      "description": "Abilità di scouting (1-100, per scout)"
+    },
+    {
+      "name": "medical_expertise",
+      "type": "Number",
+      "required": false,
+      "description": "Competenza medica (1-100, per staff medico)"
+    },
+    {
+      "name": "specialization",
+      "type": "Text",
+      "required": false,
+      "description": "Specializzazione specifica (youth, defense, attack, etc.)"
+    },
+    {
+      "name": "preferred_formation",
+      "type": "Text",
+      "required": false,
+      "description": "Modulo preferito (per allenatori)"
+    },
+    {
+      "name": "preferred_style",
+      "type": "Text",
+      "required": false,
+      "description": "Stile di gioco preferito (per allenatori)"
+    },
+    {
+      "name": "salary",
+      "type": "Number",
+      "required": true,
+      "description": "Stipendio settimanale"
+    },
+    {
+      "name": "contract_expires",
+      "type": "Date",
+      "required": true,
+      "description": "Scadenza contratto"
+    },
+    {
+      "name": "reputation",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Reputazione nel settore (1-100)"
+    },
+    {
+      "name": "morale",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Morale attuale (1-100)"
+    },
+    {
+      "name": "loyalty",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Lealtà verso la squadra (1-100)"
+    },
+    {
+      "name": "is_head_of_department",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se è responsabile del suo dipartimento"
+    },
+    {
+      "name": "languages",
+      "type": "Array",
+      "required": false,
+      "description": "Lingue parlate"
+    },
+    {
+      "name": "achievements",
+      "type": "Array",
+      "required": false,
+      "description": "Riconoscimenti e successi ottenuti"
+    },
+    {
+      "name": "injury_proneness_reduction",
+      "type": "Number",
+      "required": false,
+      "description": "Riduzione rischio infortuni fornita (%)"
+    },
+    {
+      "name": "training_efficiency_bonus",
+      "type": "Number",
+      "required": false,
+      "description": "Bonus efficienza allenamenti fornito (%)"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di assunzione"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Training_Process, Staff_Management, Team_Performance",
+  "population": "Generato all'inizializzazione, aggiornato tramite mercato staff e valutazioni periodiche"
+}

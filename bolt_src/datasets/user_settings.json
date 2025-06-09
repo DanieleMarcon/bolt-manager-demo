@@ -1,0 +1,207 @@
+{
+  "name": "user_settings",
+  "description": "Impostazioni e preferenze personalizzate dell'utente",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco delle impostazioni"
+    },
+    {
+      "name": "user_id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo utente (può essere session-based)"
+    },
+    {
+      "name": "language",
+      "type": "Text",
+      "required": true,
+      "default": "it",
+      "description": "Lingua dell'interfaccia (it, en, es, fr, de)"
+    },
+    {
+      "name": "theme",
+      "type": "Text",
+      "required": true,
+      "default": "light",
+      "description": "Tema dell'interfaccia (light, dark, auto)"
+    },
+    {
+      "name": "currency",
+      "type": "Text",
+      "required": true,
+      "default": "EUR",
+      "description": "Valuta preferita (EUR, USD, GBP, etc.)"
+    },
+    {
+      "name": "date_format",
+      "type": "Text",
+      "required": true,
+      "default": "DD/MM/YYYY",
+      "description": "Formato data preferito"
+    },
+    {
+      "name": "time_format",
+      "type": "Text",
+      "required": true,
+      "default": "24h",
+      "description": "Formato ora (12h, 24h)"
+    },
+    {
+      "name": "auto_save_enabled",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "Salvataggio automatico attivo"
+    },
+    {
+      "name": "auto_save_frequency",
+      "type": "Number",
+      "required": true,
+      "default": 5,
+      "description": "Frequenza salvataggio automatico (minuti)"
+    },
+    {
+      "name": "match_speed",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Velocità simulazione partite (slow, normal, fast)"
+    },
+    {
+      "name": "match_detail_level",
+      "type": "Text",
+      "required": true,
+      "default": "medium",
+      "description": "Livello dettaglio partite (low, medium, high)"
+    },
+    {
+      "name": "notifications_enabled",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "Notifiche attive"
+    },
+    {
+      "name": "notification_types",
+      "type": "Array",
+      "required": true,
+      "description": "Tipi di notifiche attive"
+    },
+    {
+      "name": "sound_enabled",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "Effetti sonori attivi"
+    },
+    {
+      "name": "sound_volume",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Volume effetti sonori (0-100)"
+    },
+    {
+      "name": "music_enabled",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "Musica di sottofondo attiva"
+    },
+    {
+      "name": "music_volume",
+      "type": "Number",
+      "required": true,
+      "default": 30,
+      "description": "Volume musica (0-100)"
+    },
+    {
+      "name": "tutorial_completed",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "Tutorial completato"
+    },
+    {
+      "name": "tutorial_steps_completed",
+      "type": "Array",
+      "required": false,
+      "description": "Passi del tutorial completati"
+    },
+    {
+      "name": "ui_density",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Densità interfaccia (compact, normal, spacious)"
+    },
+    {
+      "name": "show_tooltips",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "Mostra suggerimenti"
+    },
+    {
+      "name": "show_animations",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "Mostra animazioni"
+    },
+    {
+      "name": "performance_mode",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "Modalità prestazioni (riduce effetti grafici)"
+    },
+    {
+      "name": "default_view_preferences",
+      "type": "Array",
+      "required": false,
+      "description": "Preferenze di visualizzazione per ogni sezione"
+    },
+    {
+      "name": "keyboard_shortcuts",
+      "type": "Array",
+      "required": false,
+      "description": "Scorciatoie da tastiera personalizzate"
+    },
+    {
+      "name": "privacy_settings",
+      "type": "Array",
+      "required": true,
+      "description": "Impostazioni privacy e condivisione dati"
+    },
+    {
+      "name": "backup_preferences",
+      "type": "Array",
+      "required": true,
+      "description": "Preferenze backup e sincronizzazione"
+    },
+    {
+      "name": "accessibility_options",
+      "type": "Array",
+      "required": false,
+      "description": "Opzioni di accessibilità"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in tutte le interfacce utente, Flow Settings_Manager, UI_Customization",
+  "population": "Creato al primo avvio, aggiornato tramite pannello impostazioni utente"
+}

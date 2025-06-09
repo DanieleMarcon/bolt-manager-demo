@@ -1,0 +1,205 @@
+{
+  "name": "players",
+  "description": "Giocatori con attributi, statistiche e stato",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco del giocatore"
+    },
+    {
+      "name": "team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Riferimento alla squadra di appartenenza"
+    },
+    {
+      "name": "first_name",
+      "type": "Text",
+      "required": true,
+      "description": "Nome del giocatore"
+    },
+    {
+      "name": "last_name",
+      "type": "Text",
+      "required": true,
+      "description": "Cognome del giocatore"
+    },
+    {
+      "name": "age",
+      "type": "Number",
+      "required": true,
+      "description": "Età del giocatore"
+    },
+    {
+      "name": "position",
+      "type": "Text",
+      "required": true,
+      "description": "Ruolo principale (GK, DEF, MID, ATT)"
+    },
+    {
+      "name": "secondary_position",
+      "type": "Text",
+      "required": false,
+      "description": "Ruolo secondario opzionale"
+    },
+    {
+      "name": "overall_rating",
+      "type": "Number",
+      "required": true,
+      "description": "Valutazione complessiva (1-100)"
+    },
+    {
+      "name": "potential",
+      "type": "Number",
+      "required": true,
+      "description": "Potenziale massimo raggiungibile (1-100)"
+    },
+    {
+      "name": "pace",
+      "type": "Number",
+      "required": true,
+      "description": "Velocità (1-100)"
+    },
+    {
+      "name": "shooting",
+      "type": "Number",
+      "required": true,
+      "description": "Tiro (1-100)"
+    },
+    {
+      "name": "passing",
+      "type": "Number",
+      "required": true,
+      "description": "Passaggio (1-100)"
+    },
+    {
+      "name": "dribbling",
+      "type": "Number",
+      "required": true,
+      "description": "Dribbling (1-100)"
+    },
+    {
+      "name": "defending",
+      "type": "Number",
+      "required": true,
+      "description": "Difesa (1-100)"
+    },
+    {
+      "name": "physical",
+      "type": "Number",
+      "required": true,
+      "description": "Fisico (1-100)"
+    },
+    {
+      "name": "stamina",
+      "type": "Number",
+      "required": true,
+      "default": 100,
+      "description": "Resistenza attuale (0-100)"
+    },
+    {
+      "name": "fitness",
+      "type": "Number",
+      "required": true,
+      "default": 100,
+      "description": "Forma fisica (0-100)"
+    },
+    {
+      "name": "morale",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Morale individuale (0-100)"
+    },
+    {
+      "name": "injury_status",
+      "type": "Text",
+      "required": false,
+      "description": "Stato infortunio (healthy, minor, major)"
+    },
+    {
+      "name": "injury_days",
+      "type": "Number",
+      "required": false,
+      "default": 0,
+      "description": "Giorni rimanenti di infortunio"
+    },
+    {
+      "name": "market_value",
+      "type": "Number",
+      "required": true,
+      "description": "Valore di mercato attuale"
+    },
+    {
+      "name": "salary",
+      "type": "Number",
+      "required": true,
+      "description": "Stipendio settimanale"
+    },
+    {
+      "name": "contract_expires",
+      "type": "Date",
+      "required": true,
+      "description": "Scadenza contratto"
+    },
+    {
+      "name": "goals_scored",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Gol segnati in stagione"
+    },
+    {
+      "name": "assists",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Assist forniti in stagione"
+    },
+    {
+      "name": "yellow_cards",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Cartellini gialli ricevuti"
+    },
+    {
+      "name": "red_cards",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Cartellini rossi ricevuti"
+    },
+    {
+      "name": "matches_played",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Partite giocate in stagione"
+    },
+    {
+      "name": "is_captain",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se è capitano della squadra"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione del record"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Match_Simulate, Training_Process, Transfer_Market, Team_Selection",
+  "population": "Generato all'inizializzazione, aggiornato dopo partite, allenamenti e operazioni di mercato"
+}

@@ -1,0 +1,142 @@
+{
+  "name": "game_events",
+  "description": "Eventi di gioco cronologici e notifiche",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco dell'evento"
+    },
+    {
+      "name": "event_type",
+      "type": "Text",
+      "required": true,
+      "description": "Tipo evento (match, transfer, injury, training, news)"
+    },
+    {
+      "name": "event_category",
+      "type": "Text",
+      "required": true,
+      "description": "Categoria (info, warning, success, error)"
+    },
+    {
+      "name": "title",
+      "type": "Text",
+      "required": true,
+      "description": "Titolo dell'evento"
+    },
+    {
+      "name": "description",
+      "type": "LongText",
+      "required": true,
+      "description": "Descrizione dettagliata"
+    },
+    {
+      "name": "related_entity_type",
+      "type": "Text",
+      "required": false,
+      "description": "Tipo entità correlata (player, team, match, etc.)"
+    },
+    {
+      "name": "related_entity_id",
+      "type": "Text",
+      "required": false,
+      "description": "ID dell'entità correlata"
+    },
+    {
+      "name": "team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": false,
+      "description": "Squadra coinvolta (se applicabile)"
+    },
+    {
+      "name": "player_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": false,
+      "description": "Giocatore coinvolto (se applicabile)"
+    },
+    {
+      "name": "match_id",
+      "type": "Ref",
+      "ref_dataset": "matches",
+      "required": false,
+      "description": "Partita correlata (se applicabile)"
+    },
+    {
+      "name": "priority",
+      "type": "Number",
+      "required": true,
+      "default": 1,
+      "description": "Priorità dell'evento (1=bassa, 5=alta)"
+    },
+    {
+      "name": "is_read",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se l'utente ha letto l'evento"
+    },
+    {
+      "name": "is_user_relevant",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se riguarda direttamente l'utente"
+    },
+    {
+      "name": "auto_generated",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "True se generato automaticamente dal sistema"
+    },
+    {
+      "name": "expires_at",
+      "type": "Date",
+      "required": false,
+      "description": "Data di scadenza dell'evento (se temporaneo)"
+    },
+    {
+      "name": "action_required",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se richiede azione dall'utente"
+    },
+    {
+      "name": "action_type",
+      "type": "Text",
+      "required": false,
+      "description": "Tipo di azione richiesta"
+    },
+    {
+      "name": "action_data",
+      "type": "LongText",
+      "required": false,
+      "description": "Dati aggiuntivi per l'azione in formato JSON"
+    },
+    {
+      "name": "event_date",
+      "type": "Date",
+      "required": true,
+      "description": "Data e ora dell'evento"
+    },
+    {
+      "name": "game_date",
+      "type": "Date",
+      "required": true,
+      "description": "Data di gioco quando è avvenuto l'evento"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione del record"
+    }
+  ],
+  "usage": "Utilizzato in Flow Event_Generator, Notification_System, Game_Timeline",
+  "population": "Generato automaticamente da tutti i Flow del gioco, consultato nelle interfacce utente"
+}

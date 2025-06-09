@@ -1,0 +1,198 @@
+{
+  "name": "match_reports",
+  "description": "Report dettagliati delle partite con statistiche complete",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco del report"
+    },
+    {
+      "name": "match_id",
+      "type": "Ref",
+      "ref_dataset": "matches",
+      "required": true,
+      "description": "Partita di riferimento"
+    },
+    {
+      "name": "match_events",
+      "type": "Array",
+      "required": true,
+      "description": "Eventi cronologici della partita (gol, cartellini, sostituzioni)"
+    },
+    {
+      "name": "home_possession",
+      "type": "Number",
+      "required": true,
+      "description": "Possesso palla squadra di casa (%)"
+    },
+    {
+      "name": "away_possession",
+      "type": "Number",
+      "required": true,
+      "description": "Possesso palla squadra ospite (%)"
+    },
+    {
+      "name": "home_shots",
+      "type": "Number",
+      "required": true,
+      "description": "Tiri totali squadra di casa"
+    },
+    {
+      "name": "away_shots",
+      "type": "Number",
+      "required": true,
+      "description": "Tiri totali squadra ospite"
+    },
+    {
+      "name": "home_shots_on_target",
+      "type": "Number",
+      "required": true,
+      "description": "Tiri in porta squadra di casa"
+    },
+    {
+      "name": "away_shots_on_target",
+      "type": "Number",
+      "required": true,
+      "description": "Tiri in porta squadra ospite"
+    },
+    {
+      "name": "home_corners",
+      "type": "Number",
+      "required": true,
+      "description": "Calci d'angolo squadra di casa"
+    },
+    {
+      "name": "away_corners",
+      "type": "Number",
+      "required": true,
+      "description": "Calci d'angolo squadra ospite"
+    },
+    {
+      "name": "home_fouls",
+      "type": "Number",
+      "required": true,
+      "description": "Falli commessi squadra di casa"
+    },
+    {
+      "name": "away_fouls",
+      "type": "Number",
+      "required": true,
+      "description": "Falli commessi squadra ospite"
+    },
+    {
+      "name": "home_yellow_cards",
+      "type": "Number",
+      "required": true,
+      "description": "Cartellini gialli squadra di casa"
+    },
+    {
+      "name": "away_yellow_cards",
+      "type": "Number",
+      "required": true,
+      "description": "Cartellini gialli squadra ospite"
+    },
+    {
+      "name": "home_red_cards",
+      "type": "Number",
+      "required": true,
+      "description": "Cartellini rossi squadra di casa"
+    },
+    {
+      "name": "away_red_cards",
+      "type": "Number",
+      "required": true,
+      "description": "Cartellini rossi squadra ospite"
+    },
+    {
+      "name": "home_passes",
+      "type": "Number",
+      "required": true,
+      "description": "Passaggi totali squadra di casa"
+    },
+    {
+      "name": "away_passes",
+      "type": "Number",
+      "required": true,
+      "description": "Passaggi totali squadra ospite"
+    },
+    {
+      "name": "home_pass_accuracy",
+      "type": "Number",
+      "required": true,
+      "description": "Precisione passaggi squadra di casa (%)"
+    },
+    {
+      "name": "away_pass_accuracy",
+      "type": "Number",
+      "required": true,
+      "description": "Precisione passaggi squadra ospite (%)"
+    },
+    {
+      "name": "player_ratings",
+      "type": "Array",
+      "required": true,
+      "description": "Valutazioni individuali dei giocatori (1-10)"
+    },
+    {
+      "name": "man_of_the_match",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": false,
+      "description": "Migliore in campo"
+    },
+    {
+      "name": "key_moments",
+      "type": "Array",
+      "required": true,
+      "description": "Momenti salienti della partita"
+    },
+    {
+      "name": "tactical_analysis",
+      "type": "LongText",
+      "required": false,
+      "description": "Analisi tattica della partita"
+    },
+    {
+      "name": "weather_impact",
+      "type": "Text",
+      "required": false,
+      "description": "Impatto delle condizioni meteo"
+    },
+    {
+      "name": "referee_performance",
+      "type": "Number",
+      "required": false,
+      "description": "Valutazione prestazione arbitro (1-10)"
+    },
+    {
+      "name": "attendance_impact",
+      "type": "Text",
+      "required": false,
+      "description": "Impatto del pubblico sulla partita"
+    },
+    {
+      "name": "injury_time_home",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Recupero primo tempo"
+    },
+    {
+      "name": "injury_time_away",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Recupero secondo tempo"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione del report"
+    }
+  ],
+  "usage": "Utilizzato in Flow Match_Simulate, Match_Analysis, Statistics_Display",
+  "population": "Generato automaticamente al termine di ogni partita simulata"
+}

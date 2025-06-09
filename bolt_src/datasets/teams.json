@@ -1,0 +1,126 @@
+{
+  "name": "teams",
+  "description": "Squadre del campionato con informazioni complete",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco della squadra"
+    },
+    {
+      "name": "name",
+      "type": "Text",
+      "required": true,
+      "description": "Nome completo della squadra"
+    },
+    {
+      "name": "short_name",
+      "type": "Text",
+      "required": true,
+      "description": "Nome abbreviato (max 3 caratteri)"
+    },
+    {
+      "name": "city",
+      "type": "Text",
+      "required": true,
+      "description": "Città di appartenenza"
+    },
+    {
+      "name": "league_position",
+      "type": "Number",
+      "required": false,
+      "description": "Posizione attuale in classifica"
+    },
+    {
+      "name": "points",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Punti totali in campionato"
+    },
+    {
+      "name": "matches_played",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Partite giocate"
+    },
+    {
+      "name": "wins",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Vittorie"
+    },
+    {
+      "name": "draws",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Pareggi"
+    },
+    {
+      "name": "losses",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Sconfitte"
+    },
+    {
+      "name": "goals_for",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Gol fatti"
+    },
+    {
+      "name": "goals_against",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Gol subiti"
+    },
+    {
+      "name": "budget",
+      "type": "Number",
+      "required": true,
+      "default": 1000000,
+      "description": "Budget disponibile per il mercato"
+    },
+    {
+      "name": "is_user_team",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se è la squadra gestita dall'utente"
+    },
+    {
+      "name": "formation",
+      "type": "Text",
+      "required": false,
+      "description": "Modulo tattico preferito (es. 4-4-2)"
+    },
+    {
+      "name": "team_morale",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Morale generale della squadra (0-100)"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione del record"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Match_Simulate, League_Table, Team_Management",
+  "population": "Popolato all'inizializzazione del gioco, aggiornato dopo ogni partita e operazione di mercato"
+}

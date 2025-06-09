@@ -1,0 +1,163 @@
+{
+  "name": "transfers",
+  "description": "Operazioni di mercato e trattative",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco del trasferimento"
+    },
+    {
+      "name": "player_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": true,
+      "description": "Giocatore coinvolto"
+    },
+    {
+      "name": "from_team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra di provenienza"
+    },
+    {
+      "name": "to_team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra di destinazione"
+    },
+    {
+      "name": "transfer_type",
+      "type": "Text",
+      "required": true,
+      "description": "Tipo (permanent, loan, free_transfer, exchange)"
+    },
+    {
+      "name": "transfer_fee",
+      "type": "Number",
+      "required": false,
+      "description": "Costo del trasferimento"
+    },
+    {
+      "name": "installments",
+      "type": "Array",
+      "required": false,
+      "description": "Rate di pagamento se applicabili"
+    },
+    {
+      "name": "player_salary",
+      "type": "Number",
+      "required": true,
+      "description": "Nuovo stipendio del giocatore"
+    },
+    {
+      "name": "contract_length",
+      "type": "Number",
+      "required": true,
+      "description": "Durata contratto in anni"
+    },
+    {
+      "name": "signing_bonus",
+      "type": "Number",
+      "required": false,
+      "description": "Bonus alla firma"
+    },
+    {
+      "name": "release_clause",
+      "type": "Number",
+      "required": false,
+      "description": "Clausola rescissoria"
+    },
+    {
+      "name": "agent_fee",
+      "type": "Number",
+      "required": false,
+      "description": "Commissioni agente"
+    },
+    {
+      "name": "loan_duration",
+      "type": "Number",
+      "required": false,
+      "description": "Durata prestito in mesi (se applicabile)"
+    },
+    {
+      "name": "loan_fee",
+      "type": "Number",
+      "required": false,
+      "description": "Costo del prestito"
+    },
+    {
+      "name": "buy_option",
+      "type": "Number",
+      "required": false,
+      "description": "Diritto di riscatto (se prestito)"
+    },
+    {
+      "name": "negotiation_status",
+      "type": "Text",
+      "required": true,
+      "default": "initiated",
+      "description": "Stato (initiated, negotiating, agreed, completed, failed)"
+    },
+    {
+      "name": "offer_history",
+      "type": "Array",
+      "required": false,
+      "description": "Storico delle offerte"
+    },
+    {
+      "name": "player_agreement",
+      "type": "Boolean",
+      "required": false,
+      "description": "Accordo raggiunto con il giocatore"
+    },
+    {
+      "name": "medical_passed",
+      "type": "Boolean",
+      "required": false,
+      "description": "Visite mediche superate"
+    },
+    {
+      "name": "announcement_date",
+      "type": "Date",
+      "required": false,
+      "description": "Data di annuncio ufficiale"
+    },
+    {
+      "name": "transfer_window",
+      "type": "Text",
+      "required": true,
+      "description": "Finestra di mercato (summer, winter, emergency)"
+    },
+    {
+      "name": "is_user_involved",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se coinvolge la squadra dell'utente"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di inizio trattativa"
+    },
+    {
+      "name": "completed_at",
+      "type": "Date",
+      "required": false,
+      "description": "Data di completamento"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Transfer_Market, Contract_Negotiation, Market_Updates",
+  "population": "Creato durante le trattative di mercato, aggiornato ad ogni fase della negoziazione"
+}

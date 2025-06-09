@@ -1,0 +1,139 @@
+{
+  "name": "matches",
+  "description": "Partite del campionato con risultati e dettagli",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco della partita"
+    },
+    {
+      "name": "home_team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra di casa"
+    },
+    {
+      "name": "away_team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra ospite"
+    },
+    {
+      "name": "match_date",
+      "type": "Date",
+      "required": true,
+      "description": "Data e ora della partita"
+    },
+    {
+      "name": "matchday",
+      "type": "Number",
+      "required": true,
+      "description": "Giornata di campionato"
+    },
+    {
+      "name": "status",
+      "type": "Text",
+      "required": true,
+      "default": "scheduled",
+      "description": "Stato partita (scheduled, live, finished, postponed)"
+    },
+    {
+      "name": "home_goals",
+      "type": "Number",
+      "required": false,
+      "description": "Gol squadra di casa"
+    },
+    {
+      "name": "away_goals",
+      "type": "Number",
+      "required": false,
+      "description": "Gol squadra ospite"
+    },
+    {
+      "name": "home_formation",
+      "type": "Text",
+      "required": false,
+      "description": "Modulo squadra di casa"
+    },
+    {
+      "name": "away_formation",
+      "type": "Text",
+      "required": false,
+      "description": "Modulo squadra ospite"
+    },
+    {
+      "name": "home_lineup",
+      "type": "Array",
+      "required": false,
+      "description": "Array di player_id della formazione casa"
+    },
+    {
+      "name": "away_lineup",
+      "type": "Array",
+      "required": false,
+      "description": "Array di player_id della formazione ospite"
+    },
+    {
+      "name": "home_substitutions",
+      "type": "Array",
+      "required": false,
+      "description": "Sostituzioni squadra di casa"
+    },
+    {
+      "name": "away_substitutions",
+      "type": "Array",
+      "required": false,
+      "description": "Sostituzioni squadra ospite"
+    },
+    {
+      "name": "attendance",
+      "type": "Number",
+      "required": false,
+      "description": "Spettatori presenti"
+    },
+    {
+      "name": "weather",
+      "type": "Text",
+      "required": false,
+      "description": "Condizioni meteo (sunny, rainy, cloudy)"
+    },
+    {
+      "name": "referee",
+      "type": "Text",
+      "required": false,
+      "description": "Nome dell'arbitro"
+    },
+    {
+      "name": "match_report_id",
+      "type": "Ref",
+      "ref_dataset": "match_reports",
+      "required": false,
+      "description": "Riferimento al report dettagliato"
+    },
+    {
+      "name": "is_user_match",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se coinvolge la squadra dell'utente"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione del record"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Match_Simulate, Calendar_Advance, League_Fixtures",
+  "population": "Generato all'inizio della stagione, aggiornato durante e dopo ogni partita"
+}

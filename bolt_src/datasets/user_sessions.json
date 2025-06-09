@@ -1,0 +1,118 @@
+{
+  "name": "user_sessions",
+  "description": "Sessioni di gioco dell'utente con salvataggi multipli",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco della sessione"
+    },
+    {
+      "name": "session_name",
+      "type": "Text",
+      "required": true,
+      "description": "Nome personalizzato della partita salvata"
+    },
+    {
+      "name": "user_team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra gestita dall'utente"
+    },
+    {
+      "name": "current_season",
+      "type": "Number",
+      "required": true,
+      "default": 1,
+      "description": "Stagione attuale"
+    },
+    {
+      "name": "current_matchday",
+      "type": "Number",
+      "required": true,
+      "default": 1,
+      "description": "Giornata attuale"
+    },
+    {
+      "name": "current_date",
+      "type": "Date",
+      "required": true,
+      "description": "Data di gioco attuale"
+    },
+    {
+      "name": "total_budget",
+      "type": "Number",
+      "required": true,
+      "description": "Budget totale accumulato"
+    },
+    {
+      "name": "achievements",
+      "type": "Array",
+      "required": false,
+      "description": "Lista degli obiettivi raggiunti"
+    },
+    {
+      "name": "difficulty_level",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Livello di difficoltà (easy, normal, hard)"
+    },
+    {
+      "name": "game_speed",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Velocità di gioco (slow, normal, fast)"
+    },
+    {
+      "name": "auto_save",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "Salvataggio automatico attivo"
+    },
+    {
+      "name": "last_played",
+      "type": "Date",
+      "required": true,
+      "description": "Ultima volta che è stata giocata"
+    },
+    {
+      "name": "total_playtime",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Tempo totale di gioco in minuti"
+    },
+    {
+      "name": "is_active",
+      "type": "Boolean",
+      "required": true,
+      "default": true,
+      "description": "True se è la sessione attualmente attiva"
+    },
+    {
+      "name": "save_data",
+      "type": "LongText",
+      "required": true,
+      "description": "Dati completi della partita in formato JSON"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione della sessione"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo salvataggio"
+    }
+  ],
+  "usage": "Utilizzato in Flow Save_Game, Load_Game, Session_Manager",
+  "population": "Creato quando l'utente inizia una nuova partita, aggiornato ad ogni salvataggio"
+}

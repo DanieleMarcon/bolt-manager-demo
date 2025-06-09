@@ -1,0 +1,171 @@
+{
+  "name": "morale_status",
+  "description": "Stato del morale di giocatori e squadre con fattori influenti",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco del record"
+    },
+    {
+      "name": "entity_type",
+      "type": "Text",
+      "required": true,
+      "description": "Tipo entità (player, team)"
+    },
+    {
+      "name": "entity_id",
+      "type": "Text",
+      "required": true,
+      "description": "ID dell'entità (player_id o team_id)"
+    },
+    {
+      "name": "current_morale",
+      "type": "Number",
+      "required": true,
+      "description": "Morale attuale (0-100)"
+    },
+    {
+      "name": "base_morale",
+      "type": "Number",
+      "required": true,
+      "default": 50,
+      "description": "Morale base dell'entità"
+    },
+    {
+      "name": "recent_results_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto risultati recenti (-20 a +20)"
+    },
+    {
+      "name": "playing_time_impact",
+      "type": "Number",
+      "required": false,
+      "description": "Impatto tempo di gioco (-15 a +15, solo giocatori)"
+    },
+    {
+      "name": "training_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto allenamenti (-10 a +10)"
+    },
+    {
+      "name": "transfer_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto operazioni di mercato (-15 a +15)"
+    },
+    {
+      "name": "injury_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto infortuni (-20 a 0)"
+    },
+    {
+      "name": "contract_impact",
+      "type": "Number",
+      "required": false,
+      "description": "Impatto situazione contrattuale (-10 a +10)"
+    },
+    {
+      "name": "team_chemistry_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto chimica di squadra (-10 a +10)"
+    },
+    {
+      "name": "manager_relationship",
+      "type": "Number",
+      "required": false,
+      "description": "Rapporto con l'allenatore (-10 a +10, solo giocatori)"
+    },
+    {
+      "name": "fan_support_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto supporto tifosi (-5 a +10)"
+    },
+    {
+      "name": "media_pressure_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto pressione mediatica (-10 a +5)"
+    },
+    {
+      "name": "personal_issues_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto problemi personali (-15 a 0)"
+    },
+    {
+      "name": "achievement_impact",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Impatto obiettivi raggiunti (0 a +15)"
+    },
+    {
+      "name": "morale_trend",
+      "type": "Text",
+      "required": true,
+      "default": "stable",
+      "description": "Tendenza (rising, stable, declining)"
+    },
+    {
+      "name": "last_significant_event",
+      "type": "Text",
+      "required": false,
+      "description": "Ultimo evento significativo che ha influenzato il morale"
+    },
+    {
+      "name": "event_date",
+      "type": "Date",
+      "required": false,
+      "description": "Data dell'ultimo evento significativo"
+    },
+    {
+      "name": "recovery_rate",
+      "type": "Number",
+      "required": true,
+      "default": 1,
+      "description": "Velocità di recupero del morale (0.5-2.0)"
+    },
+    {
+      "name": "stability_factor",
+      "type": "Number",
+      "required": true,
+      "default": 1,
+      "description": "Fattore di stabilità emotiva (0.5-2.0)"
+    },
+    {
+      "name": "next_evaluation",
+      "type": "Date",
+      "required": true,
+      "description": "Prossima valutazione automatica del morale"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Morale_Calculator, Team_Chemistry, Performance_Analysis",
+  "population": "Aggiornato automaticamente dopo ogni evento significativo (partite, allenamenti, trasferimenti)"
+}

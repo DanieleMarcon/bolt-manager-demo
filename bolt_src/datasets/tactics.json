@@ -1,0 +1,160 @@
+{
+  "name": "tactics",
+  "description": "Schemi tattici e impostazioni strategiche delle squadre",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Text",
+      "required": true,
+      "description": "Identificativo univoco della tattica"
+    },
+    {
+      "name": "team_id",
+      "type": "Ref",
+      "ref_dataset": "teams",
+      "required": true,
+      "description": "Squadra proprietaria della tattica"
+    },
+    {
+      "name": "tactic_name",
+      "type": "Text",
+      "required": true,
+      "description": "Nome personalizzato della tattica"
+    },
+    {
+      "name": "formation",
+      "type": "Text",
+      "required": true,
+      "description": "Modulo (es. 4-4-2, 3-5-2, 4-3-3)"
+    },
+    {
+      "name": "mentality",
+      "type": "Text",
+      "required": true,
+      "default": "balanced",
+      "description": "Mentalità (defensive, balanced, attacking)"
+    },
+    {
+      "name": "tempo",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Ritmo di gioco (slow, normal, fast)"
+    },
+    {
+      "name": "width",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Ampiezza (narrow, normal, wide)"
+    },
+    {
+      "name": "pressing",
+      "type": "Text",
+      "required": true,
+      "default": "medium",
+      "description": "Intensità pressing (low, medium, high)"
+    },
+    {
+      "name": "defensive_line",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Linea difensiva (deep, normal, high)"
+    },
+    {
+      "name": "passing_style",
+      "type": "Text",
+      "required": true,
+      "default": "mixed",
+      "description": "Stile passaggi (short, mixed, long)"
+    },
+    {
+      "name": "crossing",
+      "type": "Text",
+      "required": true,
+      "default": "normal",
+      "description": "Frequenza cross (rare, normal, frequent)"
+    },
+    {
+      "name": "player_positions",
+      "type": "Array",
+      "required": true,
+      "description": "Posizioni specifiche dei giocatori sul campo"
+    },
+    {
+      "name": "player_roles",
+      "type": "Array",
+      "required": true,
+      "description": "Ruoli tattici assegnati ai giocatori"
+    },
+    {
+      "name": "set_pieces",
+      "type": "Array",
+      "required": false,
+      "description": "Impostazioni per calci piazzati"
+    },
+    {
+      "name": "captain_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": false,
+      "description": "Capitano designato per questa tattica"
+    },
+    {
+      "name": "penalty_taker_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": false,
+      "description": "Rigorista designato"
+    },
+    {
+      "name": "free_kick_taker_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": false,
+      "description": "Battitore di punizioni"
+    },
+    {
+      "name": "corner_taker_id",
+      "type": "Ref",
+      "ref_dataset": "players",
+      "required": false,
+      "description": "Battitore di corner"
+    },
+    {
+      "name": "is_default",
+      "type": "Boolean",
+      "required": true,
+      "default": false,
+      "description": "True se è la tattica principale"
+    },
+    {
+      "name": "effectiveness_rating",
+      "type": "Number",
+      "required": false,
+      "description": "Valutazione efficacia basata sui risultati"
+    },
+    {
+      "name": "matches_used",
+      "type": "Number",
+      "required": true,
+      "default": 0,
+      "description": "Numero di partite in cui è stata utilizzata"
+    },
+    {
+      "name": "created_at",
+      "type": "Date",
+      "required": true,
+      "description": "Data di creazione"
+    },
+    {
+      "name": "updated_at",
+      "type": "Date",
+      "required": true,
+      "description": "Ultimo aggiornamento"
+    }
+  ],
+  "usage": "Utilizzato in Flow Match_Simulate, Tactical_Setup, Team_Preparation",
+  "population": "Creato dall'utente tramite interfaccia tattica, aggiornato prima delle partite"
+}
