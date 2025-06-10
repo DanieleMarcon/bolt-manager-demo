@@ -2,6 +2,9 @@
 import { TeamManagementPage } from './pages/TeamManagementPage.js';
 import { TrainingManagementPage } from './pages/TrainingManagementPage.js';
 import { CalendarViewPage } from './pages/CalendarViewPage.js';
+import { TacticalSetupPage } from './pages/TacticalSetupPage.js';
+import { MatchSimulationPage } from './pages/MatchSimulationPage.js';
+import { MatchAnalysisPage } from './pages/MatchAnalysisPage.js';
 
 export class UIManager {
     constructor() {
@@ -9,7 +12,10 @@ export class UIManager {
         this.pages = {
             team: new TeamManagementPage(),
             training: new TrainingManagementPage(),
-            calendar: new CalendarViewPage()
+            calendar: new CalendarViewPage(),
+            tactics: new TacticalSetupPage(),
+            'match-simulation': new MatchSimulationPage(),
+            'match-analysis': new MatchAnalysisPage()
         };
         this.loadingElement = null;
     }
