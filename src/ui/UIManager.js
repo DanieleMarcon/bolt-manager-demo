@@ -6,6 +6,8 @@ import { TacticalSetupPage } from './pages/TacticalSetupPage.js';
 import { MatchSimulationPage } from './pages/MatchSimulationPage.js';
 import { MatchAnalysisPage } from './pages/MatchAnalysisPage.js';
 import { SessionManagerPage } from './pages/SessionManagerPage.js';
+import { TransferMarketPage } from './pages/TransferMarketPage.js';
+import { StaffManagementPage } from './pages/StaffManagementPage.js';
 
 export class UIManager {
     constructor() {
@@ -17,7 +19,9 @@ export class UIManager {
             tactics: new TacticalSetupPage(),
             'match-simulation': new MatchSimulationPage(),
             'match-analysis': new MatchAnalysisPage(),
-            sessions: new SessionManagerPage()
+            sessions: new SessionManagerPage(),
+            transfers: new TransferMarketPage(),
+            staff: new StaffManagementPage()
         };
         this.loadingElement = null;
     }

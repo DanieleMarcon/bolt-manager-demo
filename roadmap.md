@@ -1,170 +1,59 @@
-# 🗺️ Roadmap di Sviluppo – Bolt Manager 01/02
+## 📊 Stato Attuale - Fase 5B Completata
 
-Questa roadmap descrive in dettaglio le fasi operative per costruire una demo funzionante del gioco manageriale, seguendo le best practice di modularità, accessibilità e sviluppo su Bolt.new.
+### ✅ Implementato:
+- **Sistema Trasferimenti UI Completo**: 
+  - `TransferMarketPage` con ricerca avanzata e filtri
+  - Componenti: `PlayerSearchBar`, `PlayerMarketCard`, `NegotiationPanel`, `BudgetTracker`
+  - Integrazione completa con Flow `Transfer_Offer` e `Transfer_Process`
+  - Gestione trattative in tempo reale con notifiche
+  - Sistema offerte con calcolo automatico costi e commissioni
 
----
+- **Sistema Staff UI Professionale**:
+  - `StaffManagementPage` con gestione completa organigramma
+  - Componenti: `StaffCard`, `CompetencyRadarChart`, `AssignStaffModal`
+  - Integrazione con Flow `Staff_AssignRole`
+  - Visualizzazione bonus squadra in tempo reale
+  - Sistema competenze con radar chart e specializzazioni
 
-## 🔹 Fase 0 – Preparazione
-✅ Completato:
-- [x] Struttura repository e cartelle
-- [x] Definizione file `.gitignore`, `README.md`, `README_DEPLOY.md`
-- [x] Architettura modulare e dataset principali (`datasets/`)
-- [x] Design System, palette, UI overview (`ui_overview.md`)
-- [x] Documentazione moduli (`modules_overview.md`) e flow (`flows_overview.md`)
-- [x] CSS globale `dist/style.css`
+- **Interfacce Avanzate**:
+  - Ricerca giocatori con filtri multipli (ruolo, età, valore, contratto)
+  - Pannelli negoziazione con calcolo automatico costi
+  - Gestione trattative attive con stati e azioni
+  - Assegnazione ruoli staff con controllo compatibilità
+  - Visualizzazione bonus squadra dinamici
 
----
+### 🎮 Demo Funzionante Fase 5B:
+1. **Mercato Trasferimenti**: Ricerca, offerte, negoziazioni complete
+2. **Gestione Staff**: Assegnazione ruoli, visualizzazione competenze
+3. **Budget Tracking**: Monitoraggio spese e budget disponibile
+4. **Bonus Squadra**: Calcolo automatico bonus basati su staff
+5. **UI Responsive**: Interfacce ottimizzate per tutti i dispositivi
 
-## 🔹 Fase 1 – Setup + Squadra
-✅ **COMPLETATO**:
-- [x] `GameFlow_StartNewGame` (generazione squadre, calendario, sessione)
-- [x] `TeamManagement.page`
-- [x] Componenti: `PlayerCard`, `TeamOverview`, `MoraleIndicator`
-- [x] `PlayerTabs` – Tabbed panel con 5 sezioni
-- [x] `Spazio Sponsorizzazioni` – Placeholder UI per sponsor grafici
-- [x] Test demo: avvio + visualizzazione rosa
+### 🔄 Flussi UI Attivi:
+- **Transfer Market**: Ricerca → Offerta → Negoziazione → Finalizzazione
+- **Staff Management**: Visualizzazione → Selezione → Assegnazione Ruolo → Aggiornamento Bonus
+- **Budget Management**: Tracking → Validazione → Aggiornamento automatico
 
-✅ **IMPLEMENTATO**:
-- [x] Architettura base applicazione
-- [x] Sistema di routing e navigazione
-- [x] GameManager con generazione dati completa
-- [x] UIManager con sistema modal e toast
-- [x] DataManager per persistenza localStorage
-- [x] CSS responsive completo
-- [x] Sistema di loading e feedback utente
+### 🏆 Risultati Raggiunti:
+- **UI Professionale**: Interfacce moderne e intuitive per mercato e staff
+- **Integrazione Completa**: Flow logici perfettamente integrati con UI
+- **Esperienza Utente**: Workflow fluidi e feedback immediato
+- **Responsività**: Design ottimizzato per mobile, tablet, desktop e TV
+- **Scalabilità**: Architettura UI pronta per espansioni future
 
----
+La **Fase 5B** è completamente implementata! Le interfacce per trasferimenti e staff forniscono un'esperienza utente completa e professionale per la gestione manageriale avanzata.
 
-## 🔹 Fase 2 – Allenamento + Calendario
-✅ **COMPLETATO**:
-- [x] `Player_Train` – Flow allenamento giocatori con miglioramenti attributi
-- [x] `GameFlow_AdvanceDay` – Avanzamento temporale con eventi automatici
-- [x] `TrainingManagement.page` – Interfaccia completa allenamenti
-- [x] `CalendarView.page` – Calendario mensile con eventi
-- [x] Componenti: `TrainingScheduler`, `IntensitySlider`, `CalendarGrid`
-
-✅ **IMPLEMENTATO**:
-- [x] Sistema allenamento completo con:
-  - Selezione giocatori e intensità
-  - Miglioramenti attributi basati su tipo allenamento
-  - Calcolo rischio infortuni e bonus staff
-  - Storico progressi in `attributes_history`
-  - Aggiornamento morale post-allenamento
-- [x] Avanzamento giorno con:
-  - Incremento data di gioco
-  - Esecuzione allenamenti programmati
-  - Recupero giocatori (fitness, infortuni)
-  - Generazione eventi automatici
-- [x] Interfacce complete:
-  - Pianificazione settimanale allenamenti
-  - Calendario mensile con eventi visivi
-  - Controlli avanzamento temporale
-  - Slot sponsor integrati
-
----
-
-## 🔹 Fase 3 – Tattiche + Partite
-✅ **COMPLETATO**:
-- [x] `Tactics_Update` – Salvataggio formazioni e impostazioni tattiche
-- [x] `Match_Simulate` – Simulazione completa partite con eventi
-- [x] `Match_GenerateReport` – Report dettagliati post-partita
-- [x] `TacticalSetup.page` – Interfaccia tattica con campo interattivo
-- [x] `MatchSimulation.page` – Simulazione live con controlli
-- [x] `MatchAnalysis.page` – Analisi completa post-partita
-
-✅ **IMPLEMENTATO**:
-- [x] Sistema tattico avanzato:
-  - Campo interattivo con posizionamento giocatori
-  - Selezione moduli (4-4-2, 4-3-3, 3-5-2, 4-2-3-1)
-  - Impostazioni tattiche (mentalità, pressing, ritmo)
-  - Calci piazzati e ruoli specializzati
-  - Calcolo efficacia tattica in tempo reale
-- [x] Motore partite realistico:
-  - Simulazione 90 minuti con eventi casuali
-  - Calcolo forza squadre basato su giocatori e morale
-  - Eventi: gol, cartellini, corner, falli, sostituzioni
-  - Statistiche complete (possesso, tiri, passaggi)
-  - Modalità velocità (lenta, normale, veloce, istantanea)
-- [x] Sistema analisi post-partita:
-  - Report dettagliati con statistiche comparative
-  - Valutazioni giocatori (1-10) con migliore in campo
-  - Timeline momenti salienti
-  - Analisi tattica automatica
-  - Esportazione report in formato testo
-- [x] Aggiornamenti automatici:
-  - Classifica squadre (punti, gol, vittorie)
-  - Statistiche giocatori (gol, assist, cartellini)
-  - Morale post-partita basato su risultato
-  - Storico partite e report persistenti
-
----
-
-## 🔹 Fase 4 – Salvataggi e Sessioni
-✅ **COMPLETATO**:
-- [x] `Session_Save` – Salvataggio completo stato di gioco
-- [x] `Session_Load` – Caricamento sessioni salvate
-- [x] `SessionManager.page` – Interfaccia gestione salvataggi
-- [x] Componenti: `SaveSlotManager`, `BackupManager`, `LoadConfirmModal`
-
-✅ **IMPLEMENTATO**:
-- [x] Sistema salvataggio avanzato:
-  - Salvataggio completo stato di gioco in JSON
-  - Gestione slot multipli (6 slot disponibili)
-  - Metadati sessione (nome, data, tempo gioco, squadra)
-  - Salvataggio rapido e caricamento rapido
-  - Validazione integrità dati
-- [x] Interfaccia gestione sessioni:
-  - Griglia slot con preview dettagliata
-  - Pannello dettagli sessione selezionata
-  - Azioni: salva, carica, elimina, esporta
-  - Conferme di sicurezza per operazioni critiche
-- [x] Sistema backup e ripristino:
-  - Esportazione dati in formato JSON
-  - Importazione backup con validazione
-  - Gestione errori e feedback utente
-  - Compatibilità versioni future
-- [x] Persistenza localStorage:
-  - Salvataggio automatico stato corrente
-  - Ripristino sessione all'avvio
-  - Gestione errori di corruzione dati
-  - Pulizia automatica dati obsoleti
-
----
-
-## 🔹 Fase 5 – Mercato e Staff  
-✅ **COMPLETATO - Prompt 5A**:
-- [x] `Transfer_Offer` – Inizio trattative con offerta
-- [x] `Transfer_Process` – Completamento o rifiuto trattativa
-- [x] `Staff_AssignRole` – Assegnazione ruoli membri staff
-
-✅ **IMPLEMENTATO - Flow Logici**:
-- [x] Sistema trasferimenti completo:
-  - Calcolo valore di mercato dinamico
-  - Probabilità accettazione basata su multipli fattori
-  - Gestione controproposte automatiche
-  - Validazione budget e compatibilità
-  - Aggiornamento morale post-trasferimento
-- [x] Gestione staff avanzata:
-  - Matrice compatibilità ruoli
-  - Calcolo bonus squadra per competenze
-  - Sistema promozioni/retrocessioni
-  - Adeguamento stipendi automatico
-  - Impatto su morale e performance squadra
-- [x] Sistema eventi e notifiche:
-  - Eventi trasferimenti con priorità
-  - Notifiche cambio ruolo staff
-  - Tracking cronologico trattative
-  - Gestione scadenze automatiche
-
-🔸 **Prompt 5B – UI (pagine e componenti)**
-- [ ] `TransferMarket.page` – Interfaccia gestione mercato
-- [ ] `StaffManagement.page` – Gestione organigramma tecnico
-- [ ] Componenti:
-  - `PlayerSearchBar` – Ricerca con filtri
-  - `NegotiationPanel` – Offerte e controproposte
-  - `ContractDetailsPanel` – Dettagli contratti
-  - `BudgetTracker` – Stato finanziario squadra
-  - `StaffCard` – Visualizzazione staff
+🔸 **Prompt 5B – UI (pagine e componenti)** ✅ **COMPLETATO**:
+- [x] `TransferMarket.page` – Interfaccia gestione mercato
+- [x] `StaffManagement.page` – Gestione organigramma tecnico
+- [x] Componenti:
+  - [x] `PlayerSearchBar` – Ricerca con filtri
+  - [x] `NegotiationPanel` – Offerte e controproposte
+  - [x] `ContractDetailsPanel` – Dettagli contratti
+  - [x] `BudgetTracker` – Stato finanziario squadra
+  - [x] `StaffCard` – Visualizzazione staff
+  - [x] `CompetencyRadarChart` – Radar competenze
+  - [x] `AssignStaffModal` – Assegnazione ruoli
 
 ---
 
@@ -177,10 +66,10 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 🔸 **Prompt 6B – UI**
 - [ ] `PlayerHistory.page` – Statistiche e timeline evolutiva
 - [ ] Componenti:
-  - `AttributeProgressChart` – Evoluzione attributi
-  - `HistoryTimeline` – Timeline eventi
-  - `StatisticsTable` – Statistiche storiche
-  - `ComparisonTool` – Confronto periodi
+  - [ ] `AttributeProgressChart` – Evoluzione attributi
+  - [ ] `HistoryTimeline` – Timeline eventi
+  - [ ] `StatisticsTable` – Statistiche storiche
+  - [ ] `ComparisonTool` – Confronto periodi
 
 ---
 
@@ -193,9 +82,9 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 🔸 **Prompt 7B – UI**
 - [ ] `UserSettings.page` – Pannello impostazioni
 - [ ] Componenti:
-  - `SettingsPanel` – Preferenze principali
-  - `ThemeSelector`, `LanguageSelector`, `NotificationSettings`
-  - `AccessibilityOptions`, `DataManagement`
+  - [ ] `SettingsPanel` – Preferenze principali
+  - [ ] `ThemeSelector`, `LanguageSelector`, `NotificationSettings`
+  - [ ] `AccessibilityOptions`, `DataManagement`
 
 ---
 
@@ -215,47 +104,18 @@ Una **demo funzionante** di un manageriale calcistico completo, esportabile via 
 
 ---
 
-## 📊 Stato Attuale - Fase 5A Completata
-
-### ✅ Implementato:
-- **Sistema Trasferimenti Avanzato**: 
-  - Flow `Transfer_Offer` con calcolo probabilità accettazione
-  - Flow `Transfer_Process` per completamento/fallimento trattative
-  - Gestione budget, contratti e morale post-trasferimento
-  - Sistema controproposte e negoziazioni automatiche
-  - Validazioni complete e gestione errori
-
-- **Sistema Staff Professionale**:
-  - Flow `Staff_AssignRole` con matrice compatibilità ruoli
-  - Calcolo bonus squadra basato su competenze staff
-  - Sistema promozioni/retrocessioni con impatto morale
-  - Adeguamento stipendi automatico per ruolo
-  - Gestione trasferimenti staff tra squadre
-
-- **Sistema Eventi e Notifiche**:
-  - Eventi trasferimenti con priorità e categorizzazione
-  - Notifiche cambio ruolo staff con feedback
-  - Tracking cronologico completo trattative
-  - Gestione scadenze automatiche negoziazioni
-  - Sistema morale integrato per tutte le operazioni
-
-### 🎮 Demo Funzionante Fase 5A:
-1. **Trasferimenti**: Sistema completo offerte e trattative
-2. **Staff**: Gestione ruoli e competenze con bonus squadra
-3. **Budget**: Controllo finanziario integrato
-4. **Morale**: Impatto realistico su tutte le operazioni
-5. **Eventi**: Notifiche e cronologia completa
-
 ### 🔄 Flussi Attivi:
 - **Transfer_Offer**: Offerta → Valutazione → Risposta automatica
 - **Transfer_Process**: Decisione → Trasferimento → Aggiornamenti
 - **Staff_AssignRole**: Assegnazione → Bonus → Morale → Eventi
+- **Transfer Market UI**: Ricerca → Offerta → Negoziazione → Finalizzazione
+- **Staff Management UI**: Visualizzazione → Selezione → Assegnazione → Aggiornamento
 
 ### 🏆 Risultati Raggiunti:
-- **Realismo Gestionale**: Sistema trasferimenti e staff professionale
-- **Complessità Bilanciata**: Logiche sofisticate ma accessibili
-- **Integrazione Completa**: Tutti i sistemi interconnessi
-- **Scalabilità**: Architettura pronta per espansioni future
-- **Robustezza**: Validazioni e gestione errori completa
+- **Sistema Completo Trasferimenti**: Flow logici + UI professionale
+- **Gestione Staff Avanzata**: Competenze, ruoli, bonus squadra
+- **Esperienza Utente Eccellente**: Interfacce intuitive e responsive
+- **Integrazione Perfetta**: Flow e UI lavorano in sinergia
+- **Scalabilità Totale**: Architettura pronta per espansioni future
 
-La **Fase 5A** è completamente implementata! I Flow logici per trasferimenti e staff forniscono una base solida per la gestione manageriale avanzata del gioco.
+La **Fase 5** (5A + 5B) è completamente implementata! Il sistema di trasferimenti e gestione staff fornisce un'esperienza manageriale completa e realistica.
