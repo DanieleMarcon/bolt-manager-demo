@@ -241,6 +241,12 @@ export class UserSettingsApplyFlow {
     }
 
     loadUserSettings(userId) {
+        // CORREZIONE: Verifica che gameData esista prima di accedere alle userSettings
+        if (!this.gameManager.gameData) {
+            console.log('⚠️ GameData not available, returning default settings');
+            return this.getDefaultSettings();
+        }
+
         // Inizializza dataset user_settings se non esiste
         if (!this.gameManager.gameData.userSettings) {
             this.gameManager.gameData.userSettings = [];
@@ -510,6 +516,14 @@ export class UserSettingsApplyFlow {
 
     saveUserSettings(userId, settings) {
         try {
+            // CORREZIONE: Verifica che gameData esista prima di salvare
+            if (!this.gameManager.gameData) {
+                console.warn('⚠️ GameData not available, cannot save settings to dataset');
+                // Salva solo in localStorage come fallback
+                localStorage.setItem(`boltManager_userSettings_${userId}`, JSON.stringify(settings));
+                return { success: true, fallback: true };
+            }
+
             // Inizializza dataset se non esiste
             if (!this.gameManager.gameData.userSettings) {
                 this.gameManager.gameData.userSettings = [];
@@ -610,6 +624,12 @@ export class UserSettingsApplyFlow {
     }
 
     generateSettingsEvent(userId, eventType, details) {
+        // CORREZIONE: Verifica che gameData esista prima di generare eventi
+        if (!this.gameManager.gameData) {
+            console.warn('⚠️ GameData not available, cannot generate settings event');
+            return;
+        }
+
         // Inizializza gameEvents se non esiste
         if (!this.gameManager.gameData.gameEvents) {
             this.gameManager.gameData.gameEvents = [];
