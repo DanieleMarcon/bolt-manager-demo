@@ -1,11 +1,15 @@
 // UI management and page routing
 import { TeamManagementPage } from './pages/TeamManagementPage.js';
+import { TrainingManagementPage } from './pages/TrainingManagementPage.js';
+import { CalendarViewPage } from './pages/CalendarViewPage.js';
 
 export class UIManager {
     constructor() {
         this.currentPage = null;
         this.pages = {
-            team: new TeamManagementPage()
+            team: new TeamManagementPage(),
+            training: new TrainingManagementPage(),
+            calendar: new CalendarViewPage()
         };
         this.loadingElement = null;
     }

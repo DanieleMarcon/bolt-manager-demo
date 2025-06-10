@@ -16,9 +16,7 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 ---
 
 ## 🔹 Fase 1 – Setup + Squadra
-🎯 Obiettivo: creare una prima sessione funzionante
-
-🚧 **IN CORSO**:
+✅ **COMPLETATO**:
 - [x] `GameFlow_StartNewGame` (generazione squadre, calendario, sessione)
 - [x] `TeamManagement.page`
 - [x] Componenti: `PlayerCard`, `TeamOverview`, `MoraleIndicator`
@@ -26,7 +24,7 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 - [x] `Spazio Sponsorizzazioni` – Placeholder UI per sponsor grafici
 - [x] Test demo: avvio + visualizzazione rosa
 
-✅ **COMPLETATO**:
+✅ **IMPLEMENTATO**:
 - [x] Architettura base applicazione
 - [x] Sistema di routing e navigazione
 - [x] GameManager con generazione dati completa
@@ -38,11 +36,30 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 ---
 
 ## 🔹 Fase 2 – Allenamento + Calendario
-🎯 Obiettivo: permettere sviluppo giocatori e avanzamento temporale
+🚧 **IN CORSO**:
+- [x] `Player_Train` – Flow allenamento giocatori con miglioramenti attributi
+- [x] `GameFlow_AdvanceDay` – Avanzamento temporale con eventi automatici
+- [x] `TrainingManagement.page` – Interfaccia completa allenamenti
+- [x] `CalendarView.page` – Calendario mensile con eventi
+- [x] Componenti: `TrainingScheduler`, `IntensitySlider`, `CalendarGrid`
 
-- [ ] `Player_Train`, `GameFlow_AdvanceDay`
-- [ ] `TrainingManagement.page`, `CalendarView.page`
-- [ ] Componenti: `TrainingScheduler`, `ProgressChart`, `CalendarGrid`
+✅ **IMPLEMENTATO**:
+- [x] Sistema allenamento completo con:
+  - Selezione giocatori e intensità
+  - Miglioramenti attributi basati su tipo allenamento
+  - Calcolo rischio infortuni e bonus staff
+  - Storico progressi in `attributes_history`
+  - Aggiornamento morale post-allenamento
+- [x] Avanzamento giorno con:
+  - Incremento data di gioco
+  - Esecuzione allenamenti programmati
+  - Recupero giocatori (fitness, infortuni)
+  - Generazione eventi automatici
+- [x] Interfacce complete:
+  - Pianificazione settimanale allenamenti
+  - Calendario mensile con eventi visivi
+  - Controlli avanzamento temporale
+  - Slot sponsor integrati
 
 ---
 
@@ -88,31 +105,48 @@ Una demo completa, esportabile via `dist/`, compatibile con SiteGround o hosting
 
 ---
 
-## 📊 Stato Attuale - Fase 1
+## 📊 Stato Attuale - Fase 2
 
 ### ✅ Implementato:
-- **Architettura completa**: App modulare con GameManager, UIManager, DataManager
-- **GameFlow_StartNewGame**: Generazione automatica di 6 squadre, 120 giocatori, staff, calendario
-- **TeamManagement.page**: Interfaccia completa con overview squadra e griglia giocatori
-- **Sistema UI avanzato**: Modal, toast, loading, navigazione responsive
-- **PlayerCard interattive**: Click per dettagli completi con sistema tab
-- **Filtri e ricerca**: Per ruolo, ordinamento, ricerca testuale
-- **Persistenza dati**: localStorage per salvataggio automatico
-- **Design responsive**: Mobile, tablet, desktop, Smart TV
-- **Accessibilità**: Navigazione tastiera, focus management, ARIA
+- **Sistema Allenamento Completo**: 
+  - Flow `Player_Train` con miglioramenti attributi realistici
+  - Calcolo bonus staff e rischio infortuni
+  - Interfaccia pianificazione settimanale
+  - Selezione giocatori con filtri disponibilità
+  - Slider intensità con preview effetti
+  - Storico allenamenti con risultati dettagliati
 
-### 🎮 Demo Funzionante:
-1. **Avvio**: Click "Inizia Nuova Partita" genera tutto il mondo di gioco
-2. **Navigazione**: Sidebar funzionale con sezioni organizzate
-3. **Gestione squadra**: Visualizzazione completa rosa con statistiche
-4. **Dettagli giocatori**: Modal con 5 tab (Profilo, Infortuni, Contratto, Trasferimento, Storia)
-5. **Filtri avanzati**: Per ruolo, ordinamento, ricerca real-time
-6. **Responsive**: Funziona perfettamente su tutti i dispositivi
+- **Sistema Avanzamento Temporale**:
+  - Flow `GameFlow_AdvanceDay` con eventi automatici
+  - Recupero giocatori (fitness, infortuni, morale)
+  - Esecuzione allenamenti programmati
+  - Generazione eventi di gioco cronologici
 
-### 🧪 Test Disponibili:
-- Bottone "Test Nuova Partita" per rigenerare dati
-- Navigazione completa tra sezioni
-- Interazione con tutti i componenti UI
-- Persistenza automatica in localStorage
+- **Interfacce Avanzate**:
+  - `TrainingManagement.page` con controlli completi
+  - `CalendarView.page` con griglia mensile interattiva
+  - Visualizzazione eventi su calendario
+  - Controlli avanzamento giorno/settimana
+  - Slot sponsor integrati in entrambe le pagine
 
-La **Fase 1** è completamente funzionante e pronta per l'evoluzione verso le fasi successive!
+- **Componenti UI Specializzati**:
+  - `TrainingScheduler` - Griglia settimanale con eventi
+  - `IntensitySlider` - Controllo intensità con feedback
+  - `CalendarGrid` - Calendario mensile navigabile
+  - `PlayerSelectorList` - Selezione multipla con stato
+  - `UpcomingEventsList` - Lista eventi futuri
+  - Modal risultati allenamento dettagliati
+
+### 🎮 Demo Funzionante Fase 2:
+1. **Allenamento**: Pianifica e esegui sessioni con miglioramenti visibili
+2. **Calendario**: Naviga mesi, visualizza eventi, avanza tempo
+3. **Progressione**: Vedi evoluzione giocatori nel tempo
+4. **Eventi**: Sistema notifiche automatiche per eventi importanti
+5. **Persistenza**: Tutto salvato automaticamente in localStorage
+
+### 🔄 Flussi Attivi:
+- **Player_Train**: Allenamento → Miglioramenti → Storico
+- **GameFlow_AdvanceDay**: Tempo → Eventi → Aggiornamenti
+- **Navigazione**: Team → Training → Calendar (fluida)
+
+La **Fase 2** è completamente funzionante! Il sistema di allenamento e avanzamento temporale fornisce una base solida per l'evoluzione verso tattiche, partite e funzionalità avanzate.
