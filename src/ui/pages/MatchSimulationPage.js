@@ -31,9 +31,9 @@ export class MatchSimulationPage {
         return `
             <div class="page-container">
                 <!-- Breadcrumb -->
-                <nav class="breadcrumb">
+                <nav class="breadcrumb" aria-label="Navigazione">
                     <a href="#dashboard">Home</a>
-                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-separator" aria-hidden="true">></span>
                     <span class="breadcrumb-current">Partita</span>
                 </nav>
 
@@ -43,31 +43,31 @@ export class MatchSimulationPage {
                 </div>
 
                 <!-- Live Score -->
-                <div id="liveScore" class="live-score">
-                    <div class="score-display">
+                <div id="liveScore" class="live-score" aria-live="polite">
+                    <div class="score-display" aria-label="Punteggio attuale">
                         <span id="homeScore" class="home-score">0</span>
-                        <span class="score-separator">-</span>
+                        <span class="score-separator" aria-hidden="true">-</span>
                         <span id="awayScore" class="away-score">0</span>
                     </div>
-                    <div id="matchTime" class="match-time">0'</div>
-                    <div id="matchStatus" class="match-status">Pre-Partita</div>
+                    <div id="matchTime" class="match-time" aria-label="Minuto di gioco">0'</div>
+                    <div id="matchStatus" class="match-status" aria-label="Stato partita">Pre-Partita</div>
                 </div>
 
                 <!-- Match Controls -->
-                <div class="match-controls">
-                    <button id="startMatchBtn" class="button button-primary button-large">
+                <div class="match-controls" aria-label="Controlli partita">
+                    <button id="startMatchBtn" class="button button-primary button-large" aria-label="Inizia partita">
                         ▶️ Inizia Partita
                     </button>
-                    <button id="pauseMatchBtn" class="button button-secondary" style="display: none;">
+                    <button id="pauseMatchBtn" class="button button-secondary" style="display: none;" aria-label="Pausa partita">
                         ⏸️ Pausa
                     </button>
-                    <button id="resumeMatchBtn" class="button button-secondary" style="display: none;">
+                    <button id="resumeMatchBtn" class="button button-secondary" style="display: none;" aria-label="Riprendi partita">
                         ▶️ Riprendi
                     </button>
                     
                     <div class="speed-controls">
-                        <label>Velocità:</label>
-                        <select id="speedSelect">
+                        <label for="speedSelect">Velocità:</label>
+                        <select id="speedSelect" aria-label="Seleziona velocità simulazione">
                             <option value="slow">Lenta</option>
                             <option value="normal" selected>Normale</option>
                             <option value="fast">Veloce</option>
@@ -76,12 +76,19 @@ export class MatchSimulationPage {
                     </div>
                 </div>
 
+                <!-- Sponsor Vertical -->
+                <div class="sponsor-slot sponsor-vertical" aria-label="Sponsor">
+                    <span class="sponsor-label">Partner Stadio</span>
+                    <img src="https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=200&h=400&fit=crop" 
+                         alt="Sponsor Stadium" class="sponsor-image">
+                </div>
+
                 <!-- Match Content -->
                 <div class="match-content">
                     <!-- Live Events -->
                     <div class="match-events-section">
                         <h3>Eventi Live</h3>
-                        <div id="liveEvents" class="live-events">
+                        <div id="liveEvents" class="live-events" aria-live="polite">
                             <div class="no-events">La partita non è ancora iniziata</div>
                         </div>
                     </div>
@@ -89,17 +96,17 @@ export class MatchSimulationPage {
                     <!-- Live Stats -->
                     <div class="live-stats-section">
                         <h3>Statistiche Live</h3>
-                        <div id="liveStats" class="live-stats">
+                        <div id="liveStats" class="live-stats" aria-label="Statistiche partita">
                             <!-- Will be populated during simulation -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Sponsor Vertical -->
-                <div class="sponsor-vertical">
-                    <h4>Partner Stadio</h4>
-                    <img src="https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=200&h=400&fit=crop" 
-                         alt="Sponsor Stadium" class="sponsor-image">
+                <!-- Sponsor Banner -->
+                <div class="sponsor-slot sponsor-banner" aria-label="Sponsor">
+                    <span class="sponsor-label">Sponsor Ufficiale</span>
+                    <img src="https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=800&h=100&fit=crop" 
+                         alt="Sponsor Banner" class="sponsor-image">
                 </div>
 
                 <!-- Lineups -->
@@ -487,6 +494,7 @@ export class MatchSimulationPage {
 
         const eventElement = document.createElement('div');
         eventElement.className = `live-event ${event.importance}`;
+        eventElement.setAttribute('aria-live', 'polite');
         eventElement.innerHTML = `
             <span class="event-minute">${event.minute}'</span>
             <span class="event-description">${event.description}</span>

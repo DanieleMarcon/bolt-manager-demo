@@ -28,28 +28,29 @@ export class TeamManagementPage {
         return `
             <div class="page-container">
                 <!-- Breadcrumb -->
-                <nav class="breadcrumb">
+                <nav class="breadcrumb" aria-label="Navigazione">
                     <a href="#dashboard">Home</a>
-                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-separator" aria-hidden="true">></span>
                     <span class="breadcrumb-current">Squadra</span>
                 </nav>
-
-                <!-- Sponsor Slot -->
-                <div class="sponsor-slot">
-                    <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800&h=60&fit=crop" 
-                         alt="Sponsor" class="sponsor-image">
-                </div>
 
                 <!-- Team Overview -->
                 <div id="teamOverview" class="team-overview">
                     <!-- Will be populated by loadTeamData() -->
                 </div>
 
+                <!-- Sponsor Banner -->
+                <div class="sponsor-slot sponsor-horizontal" aria-label="Sponsor">
+                    <span class="sponsor-label">Partner Ufficiale</span>
+                    <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800&h=60&fit=crop" 
+                         alt="Sponsor" class="sponsor-image">
+                </div>
+
                 <!-- Player Filters -->
-                <div class="player-filters">
+                <div class="player-filters" aria-label="Filtri giocatori">
                     <div class="filter-group">
                         <label for="positionFilter">Ruolo:</label>
-                        <select id="positionFilter" class="filter-select">
+                        <select id="positionFilter" class="filter-select" aria-label="Filtra per ruolo">
                             <option value="all">Tutti</option>
                             <option value="GK">Portieri</option>
                             <option value="DEF">Difensori</option>
@@ -60,7 +61,7 @@ export class TeamManagementPage {
                     
                     <div class="filter-group">
                         <label for="sortSelect">Ordina per:</label>
-                        <select id="sortSelect" class="filter-select">
+                        <select id="sortSelect" class="filter-select" aria-label="Ordina per">
                             <option value="name">Nome</option>
                             <option value="age">Età</option>
                             <option value="overall_rating">Rating</option>
@@ -70,13 +71,21 @@ export class TeamManagementPage {
                     </div>
                     
                     <div class="filter-group">
-                        <input type="text" id="searchInput" class="search-input" placeholder="Cerca giocatore...">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Cerca giocatore..." 
+                               aria-label="Cerca giocatore per nome">
                     </div>
                 </div>
 
                 <!-- Players Grid -->
-                <div id="playersGrid" class="players-grid">
+                <div id="playersGrid" class="players-grid" aria-label="Lista giocatori">
                     <!-- Will be populated by loadPlayersGrid() -->
+                </div>
+
+                <!-- Sponsor Sidebar -->
+                <div class="sponsor-slot sponsor-vertical" aria-label="Sponsor">
+                    <span class="sponsor-label">Sponsor Tecnico</span>
+                    <img src="https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=160&h=400&fit=crop" 
+                         alt="Sponsor Tecnico" class="sponsor-image">
                 </div>
 
                 <!-- Test Button -->
@@ -264,10 +273,11 @@ export class TeamManagementPage {
         const fitnessColor = this.getFitnessColor(player.fitness);
         
         return `
-            <div class="player-card" data-player-id="${player.id}" tabindex="0">
+            <div class="player-card" data-player-id="${player.id}" tabindex="0" 
+                 aria-label="Giocatore ${player.first_name} ${player.last_name}, ${player.position}, rating ${player.overall_rating}">
                 <div class="player-header">
                     <div class="player-avatar">
-                        <span class="player-position">${player.position}</span>
+                        <span class="player-position" aria-hidden="true">${player.position}</span>
                     </div>
                     <div class="player-info">
                         <h4 class="player-name">${player.first_name} ${player.last_name}</h4>
@@ -281,14 +291,14 @@ export class TeamManagementPage {
                 <div class="player-stats">
                     <div class="stat-row">
                         <span class="stat-label">Morale</span>
-                        <div class="progress-bar">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="${Math.round(player.morale)}" aria-valuemin="0" aria-valuemax="100">
                             <div class="progress-fill" style="width: ${player.morale}%; background-color: ${moraleColor}"></div>
                             <span class="progress-text">${Math.round(player.morale)}%</span>
                         </div>
                     </div>
                     <div class="stat-row">
                         <span class="stat-label">Forma</span>
-                        <div class="progress-bar">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="${Math.round(player.fitness)}" aria-valuemin="0" aria-valuemax="100">
                             <div class="progress-fill" style="width: ${player.fitness}%; background-color: ${fitnessColor}"></div>
                             <span class="progress-text">${Math.round(player.fitness)}%</span>
                         </div>
@@ -297,10 +307,10 @@ export class TeamManagementPage {
                 
                 <div class="player-status">
                     ${player.injury_status !== 'healthy' ? 
-                        `<span class="status-badge status-injury">🤕 ${player.injury_days} giorni</span>` : 
-                        `<span class="status-badge status-healthy">✅ Disponibile</span>`
+                        `<span class="status-badge status-injury" aria-label="Infortunato per ${player.injury_days} giorni">🤕 ${player.injury_days} giorni</span>` : 
+                        `<span class="status-badge status-healthy" aria-label="Giocatore disponibile">✅ Disponibile</span>`
                     }
-                    ${player.is_captain ? '<span class="status-badge status-captain">👑 Capitano</span>' : ''}
+                    ${player.is_captain ? '<span class="status-badge status-captain" aria-label="Capitano della squadra">👑 Capitano</span>' : ''}
                 </div>
             </div>
         `;
@@ -332,16 +342,16 @@ export class TeamManagementPage {
         const content = `
             <div class="player-details">
                 <div class="player-tabs">
-                    <div class="tab-nav">
-                        <button class="tab-btn active" data-tab="profile">Profilo</button>
-                        <button class="tab-btn" data-tab="injuries">Infortuni</button>
-                        <button class="tab-btn" data-tab="contract">Contratto</button>
-                        <button class="tab-btn" data-tab="transfer">Trasferimento</button>
-                        <button class="tab-btn" data-tab="history">Storia</button>
+                    <div class="tab-nav" role="tablist">
+                        <button class="tab-btn active" data-tab="profile" role="tab" aria-selected="true" id="tab-profile" aria-controls="profile">Profilo</button>
+                        <button class="tab-btn" data-tab="injuries" role="tab" aria-selected="false" id="tab-injuries" aria-controls="injuries">Infortuni</button>
+                        <button class="tab-btn" data-tab="contract" role="tab" aria-selected="false" id="tab-contract" aria-controls="contract">Contratto</button>
+                        <button class="tab-btn" data-tab="transfer" role="tab" aria-selected="false" id="tab-transfer" aria-controls="transfer">Trasferimento</button>
+                        <button class="tab-btn" data-tab="history" role="tab" aria-selected="false" id="tab-history" aria-controls="history">Storia</button>
                     </div>
                     
                     <div class="tab-content">
-                        <div class="tab-panel active" id="profile">
+                        <div class="tab-panel active" id="profile" role="tabpanel" aria-labelledby="tab-profile">
                             <h4>Attributi</h4>
                             <div class="attributes-grid">
                                 <div class="attribute-item">
@@ -387,7 +397,7 @@ export class TeamManagementPage {
                             </div>
                         </div>
                         
-                        <div class="tab-panel" id="injuries">
+                        <div class="tab-panel" id="injuries" role="tabpanel" aria-labelledby="tab-injuries">
                             <h4>Stato Fisico</h4>
                             <div class="injury-status">
                                 ${player.injury_status === 'healthy' ? 
@@ -397,7 +407,7 @@ export class TeamManagementPage {
                             </div>
                         </div>
                         
-                        <div class="tab-panel" id="contract">
+                        <div class="tab-panel" id="contract" role="tabpanel" aria-labelledby="tab-contract">
                             <h4>Dettagli Contratto</h4>
                             <div class="contract-info">
                                 <div class="contract-item">
@@ -411,7 +421,7 @@ export class TeamManagementPage {
                             </div>
                         </div>
                         
-                        <div class="tab-panel" id="transfer">
+                        <div class="tab-panel" id="transfer" role="tabpanel" aria-labelledby="tab-transfer">
                             <h4>Valore di Mercato</h4>
                             <div class="transfer-info">
                                 <div class="value-display">
@@ -421,7 +431,7 @@ export class TeamManagementPage {
                             </div>
                         </div>
                         
-                        <div class="tab-panel" id="history">
+                        <div class="tab-panel" id="history" role="tabpanel" aria-labelledby="tab-history">
                             <h4>Statistiche Stagione</h4>
                             <div class="stats-grid">
                                 <div class="stat-item">
@@ -466,11 +476,15 @@ export class TeamManagementPage {
                 const tabId = btn.dataset.tab;
                 
                 // Remove active class from all tabs and panels
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
                 
                 // Add active class to clicked tab and corresponding panel
                 btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
                 document.getElementById(tabId).classList.add('active');
             });
         });

@@ -27,18 +27,18 @@ export class CalendarViewPage {
         return `
             <div class="page-container">
                 <!-- Breadcrumb -->
-                <nav class="breadcrumb">
+                <nav class="breadcrumb" aria-label="Navigazione">
                     <a href="#dashboard">Home</a>
-                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-separator" aria-hidden="true">></span>
                     <span class="breadcrumb-current">Calendario</span>
                 </nav>
 
                 <!-- Calendar Header -->
                 <div class="calendar-header">
                     <div class="calendar-navigation">
-                        <button id="prevMonthBtn" class="button button-ghost">‹ Precedente</button>
+                        <button id="prevMonthBtn" class="button button-ghost" aria-label="Mese precedente">‹ Precedente</button>
                         <h2 id="currentMonthYear" class="month-year">--</h2>
-                        <button id="nextMonthBtn" class="button button-ghost">Successivo ›</button>
+                        <button id="nextMonthBtn" class="button button-ghost" aria-label="Mese successivo">Successivo ›</button>
                     </div>
                     <div class="current-game-date">
                         <span class="date-label">Data di gioco:</span>
@@ -48,15 +48,15 @@ export class CalendarViewPage {
 
                 <!-- Calendar Grid -->
                 <div class="calendar-container">
-                    <div class="calendar-grid">
-                        <div class="calendar-header-row">
-                            <div class="calendar-day-header">Lun</div>
-                            <div class="calendar-day-header">Mar</div>
-                            <div class="calendar-day-header">Mer</div>
-                            <div class="calendar-day-header">Gio</div>
-                            <div class="calendar-day-header">Ven</div>
-                            <div class="calendar-day-header">Sab</div>
-                            <div class="calendar-day-header">Dom</div>
+                    <div class="calendar-grid" role="grid" aria-label="Calendario mensile">
+                        <div class="calendar-header-row" role="row">
+                            <div class="calendar-day-header" role="columnheader">Lun</div>
+                            <div class="calendar-day-header" role="columnheader">Mar</div>
+                            <div class="calendar-day-header" role="columnheader">Mer</div>
+                            <div class="calendar-day-header" role="columnheader">Gio</div>
+                            <div class="calendar-day-header" role="columnheader">Ven</div>
+                            <div class="calendar-day-header" role="columnheader">Sab</div>
+                            <div class="calendar-day-header" role="columnheader">Dom</div>
                         </div>
                         <div id="calendarDays" class="calendar-days">
                             <!-- Will be populated by loadCalendarGrid() -->
@@ -64,30 +64,30 @@ export class CalendarViewPage {
                     </div>
                 </div>
 
-                <!-- Calendar Actions -->
-                <div class="calendar-actions">
-                    <button id="advanceDayBtn" class="button button-primary button-large">
-                        ⏭️ Avanza di 1 Giorno
-                    </button>
-                    <button id="advanceWeekBtn" class="button button-secondary">
-                        📅 Avanza di 1 Settimana
-                    </button>
-                    <button id="todayBtn" class="button button-ghost">
-                        📍 Oggi
-                    </button>
+                <!-- Sponsor Box -->
+                <div class="sponsor-slot sponsor-horizontal" aria-label="Sponsor">
+                    <span class="sponsor-label">Partner Ufficiale</span>
+                    <img src="https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=800&h=100&fit=crop" 
+                         alt="Sponsor Calendar" class="sponsor-image">
                 </div>
 
-                <!-- Sponsor Box -->
-                <div class="sponsor-box">
-                    <h4>Partner Ufficiale</h4>
-                    <img src="https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=300&h=150&fit=crop" 
-                         alt="Sponsor Calendar" class="sponsor-image">
+                <!-- Calendar Actions -->
+                <div class="calendar-actions">
+                    <button id="advanceDayBtn" class="button button-primary button-large" aria-label="Avanza di un giorno">
+                        ⏭️ Avanza di 1 Giorno
+                    </button>
+                    <button id="advanceWeekBtn" class="button button-secondary" aria-label="Avanza di una settimana">
+                        📅 Avanza di 1 Settimana
+                    </button>
+                    <button id="todayBtn" class="button button-ghost" aria-label="Vai a oggi">
+                        📍 Oggi
+                    </button>
                 </div>
 
                 <!-- Upcoming Events -->
                 <div class="upcoming-events">
                     <h3>Prossimi Eventi</h3>
-                    <div id="upcomingEventsList" class="events-list">
+                    <div id="upcomingEventsList" class="events-list" aria-label="Lista prossimi eventi">
                         <!-- Will be populated by loadUpcomingEvents() -->
                     </div>
                 </div>
@@ -95,7 +95,7 @@ export class CalendarViewPage {
                 <!-- Recent Events -->
                 <div class="recent-events">
                     <h3>Eventi Recenti</h3>
-                    <div id="recentEventsList" class="events-list">
+                    <div id="recentEventsList" class="events-list" aria-label="Lista eventi recenti">
                         <!-- Will be populated by loadRecentEvents() -->
                     </div>
                 </div>
@@ -204,7 +204,7 @@ export class CalendarViewPage {
         }
 
         // Render calendar days
-        const daysHTML = calendarDays.map(day => {
+        const daysHTML = calendarDays.map((day, index) => {
             const dayClasses = [
                 'calendar-day',
                 !day.isCurrentMonth ? 'other-month' : '',
@@ -222,7 +222,8 @@ export class CalendarViewPage {
             const moreEvents = day.events.length > 3 ? `<div class="more-events">+${day.events.length - 3}</div>` : '';
 
             return `
-                <div class="${dayClasses}" data-date="${day.date.toISOString()}" tabindex="0">
+                <div class="${dayClasses}" data-date="${day.date.toISOString()}" tabindex="0" 
+                     role="gridcell" aria-label="${day.date.toLocaleDateString('it-IT', {weekday: 'long', day: 'numeric', month: 'long'})}${day.events.length > 0 ? `, ${day.events.length} eventi` : ''}">
                     <div class="day-number">${day.date.getDate()}</div>
                     <div class="day-events">
                         ${eventsHTML}
@@ -336,7 +337,7 @@ export class CalendarViewPage {
             const priorityClass = event.priority >= 4 ? 'high-priority' : event.priority >= 3 ? 'medium-priority' : 'low-priority';
 
             return `
-                <div class="event-item ${priorityClass}">
+                <div class="event-item ${priorityClass}" tabindex="0" aria-label="${event.title}, ${event.description}, ${daysFromNow === 0 ? 'Oggi' : daysFromNow === 1 ? 'Domani' : `Tra ${daysFromNow} giorni`}">
                     <div class="event-date">
                         <span class="event-day">${eventDate.toLocaleDateString('it-IT', { weekday: 'short' })}</span>
                         <span class="event-date-num">${eventDate.getDate()}</span>
@@ -352,7 +353,7 @@ export class CalendarViewPage {
                         </span>
                     </div>
                     <div class="event-type">
-                        <span class="event-icon">${this.getEventIcon(event.type)}</span>
+                        <span class="event-icon" aria-hidden="true">${this.getEventIcon(event.type)}</span>
                     </div>
                 </div>
             `;
@@ -381,7 +382,7 @@ export class CalendarViewPage {
             const categoryClass = `category-${event.event_category}`;
 
             return `
-                <div class="event-item ${categoryClass}">
+                <div class="event-item ${categoryClass}" tabindex="0" aria-label="${event.title}: ${event.description}">
                     <div class="event-date">
                         <span class="event-time">${eventDate.toLocaleDateString('it-IT')}</span>
                     </div>
@@ -390,7 +391,7 @@ export class CalendarViewPage {
                         <p class="event-description">${event.description}</p>
                     </div>
                     <div class="event-type">
-                        <span class="event-icon">${this.getEventIcon(event.event_type)}</span>
+                        <span class="event-icon" aria-hidden="true">${this.getEventIcon(event.event_type)}</span>
                     </div>
                 </div>
             `;
@@ -459,7 +460,7 @@ export class CalendarViewPage {
         const eventsHTML = events.length > 0 ? 
             events.map(event => `
                 <div class="day-detail-event">
-                    <span class="event-icon">${event.icon}</span>
+                    <span class="event-icon" aria-hidden="true">${event.icon}</span>
                     <div class="event-content">
                         <h4>${event.title}</h4>
                         <p>${event.description}</p>
@@ -471,7 +472,7 @@ export class CalendarViewPage {
         const content = `
             <div class="day-details">
                 <h3>${dateString}</h3>
-                <div class="day-events-list">
+                <div class="day-events-list" aria-label="Eventi del giorno">
                     ${eventsHTML}
                 </div>
             </div>
