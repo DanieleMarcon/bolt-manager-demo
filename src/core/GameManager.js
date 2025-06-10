@@ -12,14 +12,20 @@ export class GameManager {
             moraleStatus: [],
             trainings: [],
             gameEvents: [],
-            matchReports: []
+            matchReports: [],
+            transfers: [],
+            attributesHistory: []
         };
+        this.currentDate = new Date();
     }
 
     async init() {
         console.log('🎮 GameManager initializing...');
+        // Load existing data if available
+        this.loadGameData();
     }
 
+    // === PHASE 1: GAME INITIALIZATION ===
     async startNewGame() {
         console.log('🚀 Executing GameFlow_StartNewGame...');
         
@@ -44,6 +50,13 @@ export class GameManager {
         // Step 7: Initialize morale status
         const moraleStatus = this.initializeMoraleStatus(teams, players);
         
+        // Step 8: Initialize other datasets
+        const trainings = [];
+        const gameEvents = [];
+        const matchReports = [];
+        const transfers = [];
+        const attributesHistory = [];
+        
         // Store game data
         this.gameData = {
             teams,
@@ -53,10 +66,15 @@ export class GameManager {
             userSession,
             tactics,
             moraleStatus,
-            trainings: [],
-            gameEvents: [],
-            matchReports: []
+            trainings,
+            gameEvents,
+            matchReports,
+            transfers,
+            attributesHistory
         };
+        
+        // Set current date
+        this.currentDate = new Date();
         
         // Save to localStorage for persistence
         this.saveGameData();
@@ -456,20 +474,19 @@ export class GameManager {
         return moraleStatuses;
     }
 
-    // === PHASE 2 METHODS ===
-
+    // === PHASE 2: TRAINING AND CALENDAR ===
     async executePlayerTrain(params) {
+        console.log('🏃 Executing Player_Train flow...');
+        
         const { playerIds, trainingType, intensity, teamId } = params;
         
-        console.log(`🏃 Executing Player_Train for ${playerIds.length} players`);
-
         // Create training record
         const trainingRecord = {
             id: `training_${Date.now()}`,
             team_id: teamId,
-            training_date: new Date().toISOString(),
+            training_date: this.currentDate.toISOString(),
             training_type: trainingType,
-            intensity: intensity,
+            intensity: intensity.toString(),
             focus_area: trainingType,
             duration_minutes: 90,
             participants: playerIds,
@@ -478,7 +495,7 @@ export class GameManager {
             weather_conditions: 'normal',
             facility_quality: 75,
             injury_risk: this.calculateInjuryRisk(intensity),
-            morale_impact: this.calculateMoraleImpact(intensity),
+            morale_impact: this.calculateMoraleImpact(trainingType, intensity),
             fitness_gain: this.calculateFitnessGain(intensity),
             skill_improvements: [],
             injuries_occurred: [],
@@ -495,150 +512,154 @@ export class GameManager {
             const player = this.gameData.players.find(p => p.id === playerId);
             if (!player || player.injury_status !== 'healthy') continue;
 
-            const result = this.processPlayerTraining(player, trainingType, intensity);
-            results.push(result);
+            const result = {
+                playerId: playerId,
+                attributeChanges: {},
+                fitnessChange: 0,
+                moraleChange: 0,
+                injury: null
+            };
 
-            // Update player in gameData
-            const playerIndex = this.gameData.players.findIndex(p => p.id === playerId);
-            if (playerIndex !== -1) {
-                this.gameData.players[playerIndex] = { ...player, ...result.playerUpdates };
-            }
+            // Calculate attribute improvements
+            const improvements = this.calculateAttributeImprovements(player, trainingType, intensity);
+            result.attributeChanges = improvements;
 
-            // Add to training record
-            if (Object.keys(result.attributeChanges).length > 0) {
-                trainingRecord.skill_improvements.push({
-                    player_id: playerId,
-                    improvements: result.attributeChanges
-                });
-            }
+            // Apply improvements to player
+            Object.entries(improvements).forEach(([attribute, change]) => {
+                if (player[attribute] !== undefined) {
+                    player[attribute] = Math.min(100, player[attribute] + change);
+                }
+            });
 
-            if (result.injury) {
+            // Calculate fitness change
+            const fitnessChange = this.calculateFitnessChange(intensity);
+            result.fitnessChange = fitnessChange;
+            player.fitness = Math.max(0, Math.min(100, player.fitness + fitnessChange));
+
+            // Calculate morale change
+            const moraleChange = this.calculatePlayerMoraleChange(trainingType, intensity);
+            result.moraleChange = moraleChange;
+            player.morale = Math.max(0, Math.min(100, player.morale + moraleChange));
+
+            // Check for injuries
+            if (Math.random() < (trainingRecord.injury_risk / 100)) {
+                const injury = this.generateInjury(intensity);
+                result.injury = injury;
+                player.injury_status = injury.severity;
+                player.injury_days = injury.days;
                 trainingRecord.injuries_occurred.push({
                     player_id: playerId,
-                    injury: result.injury
+                    injury_type: injury.type,
+                    severity: injury.severity,
+                    days: injury.days
                 });
             }
+
+            // Update player timestamp
+            player.updated_at = new Date().toISOString();
+
+            // Create attribute history record
+            if (Object.keys(improvements).length > 0) {
+                const historyRecord = {
+                    id: `history_${playerId}_${Date.now()}`,
+                    player_id: playerId,
+                    record_date: new Date().toISOString(),
+                    overall_rating: player.overall_rating,
+                    pace: player.pace,
+                    shooting: player.shooting,
+                    passing: player.passing,
+                    dribbling: player.dribbling,
+                    defending: player.defending,
+                    physical: player.physical,
+                    fitness: player.fitness,
+                    morale: player.morale,
+                    market_value: player.market_value,
+                    change_reason: 'training',
+                    training_id: trainingRecord.id,
+                    match_id: null,
+                    attribute_changes: improvements,
+                    season: 1,
+                    player_age_at_time: player.age,
+                    is_significant_change: Object.values(improvements).some(change => Math.abs(change) >= 2),
+                    created_at: new Date().toISOString()
+                };
+
+                this.gameData.attributesHistory.push(historyRecord);
+            }
+
+            results.push(result);
         }
 
-        // Add training to gameData
+        // Add training record to game data
         this.gameData.trainings.push(trainingRecord);
 
-        // Generate game event
-        this.generateGameEvent({
-            type: 'training',
-            title: `Allenamento ${trainingType} completato`,
-            description: `${playerIds.length} giocatori hanno partecipato all'allenamento`,
-            priority: 2,
-            team_id: teamId
-        });
-
-        // Save data
+        // Save game data
         this.saveGameData();
 
         return { trainingRecord, results };
     }
 
-    processPlayerTraining(player, trainingType, intensity) {
-        const result = {
-            playerId: player.id,
-            attributeChanges: {},
-            playerUpdates: {},
-            injury: null
-        };
-
-        // Calculate attribute improvements based on training type
-        const improvements = this.calculateAttributeImprovements(trainingType, intensity);
-        
-        // Apply improvements
-        Object.entries(improvements).forEach(([attribute, improvement]) => {
-            if (improvement > 0) {
-                const oldValue = player[attribute];
-                const newValue = Math.min(100, oldValue + improvement);
-                
-                if (newValue > oldValue) {
-                    result.attributeChanges[attribute] = newValue - oldValue;
-                    result.playerUpdates[attribute] = newValue;
-                }
-            }
-        });
-
-        // Update fitness (decreases with training)
-        const fitnessLoss = Math.max(1, intensity * 2 + Math.random() * 3);
-        result.playerUpdates.fitness = Math.max(20, player.fitness - fitnessLoss);
-
-        // Check for injuries
-        const injuryChance = this.calculateInjuryRisk(intensity) / 100;
-        if (Math.random() < injuryChance) {
-            const injury = this.generateTrainingInjury();
-            result.injury = injury;
-            result.playerUpdates.injury_status = 'minor';
-            result.playerUpdates.injury_days = injury.days;
-        }
-
-        // Update morale slightly
-        const moraleChange = Math.random() * 4 - 2; // -2 to +2
-        result.playerUpdates.morale = Math.max(0, Math.min(100, player.morale + moraleChange));
-
-        return result;
-    }
-
-    calculateAttributeImprovements(trainingType, intensity) {
+    calculateAttributeImprovements(player, trainingType, intensity) {
+        const improvements = {};
         const baseImprovement = intensity * 0.5; // 0.5 to 2.5 base improvement
-        
-        const improvements = {
-            pace: 0,
-            shooting: 0,
-            passing: 0,
-            dribbling: 0,
-            defending: 0,
-            physical: 0
-        };
 
         switch (trainingType) {
             case 'fitness':
-                improvements.physical = baseImprovement + Math.random() * 2;
-                improvements.pace = (baseImprovement / 2) + Math.random();
+                if (Math.random() < 0.7) improvements.physical = Math.round(baseImprovement + Math.random());
+                if (Math.random() < 0.5) improvements.pace = Math.round(baseImprovement * 0.5);
                 break;
             case 'technical':
-                improvements.dribbling = baseImprovement + Math.random() * 2;
-                improvements.passing = (baseImprovement / 2) + Math.random();
-                improvements.shooting = Math.random();
+                if (Math.random() < 0.7) improvements.dribbling = Math.round(baseImprovement + Math.random());
+                if (Math.random() < 0.6) improvements.passing = Math.round(baseImprovement * 0.8);
+                if (Math.random() < 0.4) improvements.shooting = Math.round(baseImprovement * 0.6);
                 break;
             case 'tactical':
-                improvements.passing = baseImprovement + Math.random() * 2;
-                improvements.defending = (baseImprovement / 2) + Math.random();
+                if (Math.random() < 0.6) improvements.passing = Math.round(baseImprovement + Math.random());
+                if (Math.random() < 0.5) improvements.defending = Math.round(baseImprovement * 0.7);
                 break;
         }
-
-        // Round improvements
-        Object.keys(improvements).forEach(key => {
-            improvements[key] = Math.round(improvements[key]);
-        });
 
         return improvements;
     }
 
     calculateInjuryRisk(intensity) {
-        return Math.min(15, intensity * 2 + Math.random() * 5); // 0-15% risk
+        return Math.min(15, intensity * 2 + Math.random() * 5);
     }
 
-    calculateMoraleImpact(intensity) {
-        return Math.round((intensity - 3) * 2); // -4 to +4
+    calculateMoraleImpact(trainingType, intensity) {
+        return Math.round((intensity - 3) * 2 + (Math.random() - 0.5) * 4);
     }
 
     calculateFitnessGain(intensity) {
-        return Math.round(intensity * 0.5); // 0.5 to 2.5
+        return Math.round(intensity * 1.5 + Math.random() * 2);
     }
 
-    generateTrainingInjury() {
-        const injuries = [
-            { description: 'Affaticamento muscolare', days: 3 },
-            { description: 'Stiramento', days: 7 },
-            { description: 'Contusione', days: 5 },
-            { description: 'Crampi', days: 2 }
-        ];
+    calculateFitnessChange(intensity) {
+        // Higher intensity = more fitness loss during training
+        return Math.round(-intensity * 0.5 + Math.random() * 2);
+    }
 
-        return injuries[Math.floor(Math.random() * injuries.length)];
+    calculatePlayerMoraleChange(trainingType, intensity) {
+        // Moderate intensity is best for morale
+        const optimalIntensity = 3;
+        const deviation = Math.abs(intensity - optimalIntensity);
+        return Math.round(-deviation + Math.random() * 3);
+    }
+
+    generateInjury(intensity) {
+        const injuryTypes = ['muscle_strain', 'minor_knock', 'fatigue'];
+        const severities = ['minor', 'moderate'];
+        
+        const type = injuryTypes[Math.floor(Math.random() * injuryTypes.length)];
+        const severity = severities[Math.floor(Math.random() * severities.length)];
+        const days = severity === 'minor' ? 1 + Math.floor(Math.random() * 3) : 3 + Math.floor(Math.random() * 7);
+        
+        return {
+            type,
+            severity,
+            days,
+            description: `${type.replace('_', ' ')} (${severity})`
+        };
     }
 
     scheduleTraining(params) {
@@ -649,7 +670,7 @@ export class GameManager {
             team_id: teamId,
             training_date: date,
             training_type: type,
-            intensity: intensity,
+            intensity: intensity.toString(),
             focus_area: type,
             duration_minutes: 90,
             participants: playerIds,
@@ -675,45 +696,38 @@ export class GameManager {
     }
 
     async executeAdvanceDay(days = 1) {
-        console.log(`📅 Executing GameFlow_AdvanceDay for ${days} days`);
-
-        const currentDate = new Date(this.getCurrentDate());
-        const newDate = new Date(currentDate);
-        newDate.setDate(currentDate.getDate() + days);
-
+        console.log(`📅 Executing GameFlow_AdvanceDay (${days} days)...`);
+        
         const eventsGenerated = [];
-
-        // Process each day
+        
         for (let i = 0; i < days; i++) {
-            const processDate = new Date(currentDate);
-            processDate.setDate(currentDate.getDate() + i + 1);
-
-            // Execute scheduled trainings
-            const scheduledTrainings = this.gameData.trainings.filter(training => {
+            // Advance current date
+            this.currentDate.setDate(this.currentDate.getDate() + 1);
+            
+            // Process scheduled trainings for this date
+            const todayTrainings = this.gameData.trainings.filter(training => {
                 const trainingDate = new Date(training.training_date);
-                return trainingDate.toDateString() === processDate.toDateString() && 
+                return trainingDate.toDateString() === this.currentDate.toDateString() && 
                        training.status === 'scheduled';
             });
 
-            for (const training of scheduledTrainings) {
+            for (const training of todayTrainings) {
                 try {
-                    await this.executePlayerTrain({
+                    const result = await this.executePlayerTrain({
                         playerIds: training.participants,
                         trainingType: training.training_type,
-                        intensity: training.intensity,
+                        intensity: parseInt(training.intensity),
                         teamId: training.team_id
                     });
 
-                    // Mark as completed
-                    const trainingIndex = this.gameData.trainings.findIndex(t => t.id === training.id);
-                    if (trainingIndex !== -1) {
-                        this.gameData.trainings[trainingIndex].status = 'completed';
-                    }
+                    // Update training status
+                    training.status = 'completed';
+                    training.updated_at = new Date().toISOString();
 
                     eventsGenerated.push({
                         type: 'training',
-                        title: 'Allenamento Eseguito',
-                        description: `Allenamento ${training.training_type} completato automaticamente`,
+                        title: 'Allenamento Completato',
+                        description: `Allenamento ${training.training_type} completato`,
                         priority: 2
                     });
                 } catch (error) {
@@ -722,210 +736,184 @@ export class GameManager {
             }
 
             // Update player recovery
-            this.updatePlayerRecovery();
+            this.gameData.players.forEach(player => {
+                if (player.injury_days > 0) {
+                    player.injury_days--;
+                    if (player.injury_days === 0) {
+                        player.injury_status = 'healthy';
+                        eventsGenerated.push({
+                            type: 'recovery',
+                            title: 'Giocatore Recuperato',
+                            description: `${player.first_name} ${player.last_name} è tornato disponibile`,
+                            priority: 3
+                        });
+                    }
+                }
+
+                // Natural fitness recovery
+                if (player.fitness < 100) {
+                    player.fitness = Math.min(100, player.fitness + 1 + Math.random() * 2);
+                }
+
+                player.updated_at = new Date().toISOString();
+            });
 
             // Generate random events
-            if (Math.random() < 0.3) { // 30% chance per day
-                const randomEvent = this.generateRandomGameEvent();
+            if (Math.random() < 0.1) { // 10% chance per day
+                const randomEvent = this.generateRandomEvent();
                 if (randomEvent) {
                     eventsGenerated.push(randomEvent);
-                }
-            }
-
-            // Check for upcoming matches (3 days notice)
-            const upcomingMatches = this.getUpcomingMatches(this.getUserTeam().id, 1);
-            upcomingMatches.forEach(match => {
-                const matchDate = new Date(match.match_date);
-                const daysUntilMatch = Math.ceil((matchDate - processDate) / (1000 * 60 * 60 * 24));
-                
-                if (daysUntilMatch === 3) {
-                    const homeTeam = this.gameData.teams.find(t => t.id === match.home_team_id);
-                    const awayTeam = this.gameData.teams.find(t => t.id === match.away_team_id);
-                    
-                    eventsGenerated.push({
-                        type: 'match',
-                        title: 'Partita in Arrivo',
-                        description: `${homeTeam?.name} vs ${awayTeam?.name} tra 3 giorni`,
-                        priority: 4
+                    this.gameData.gameEvents.push({
+                        id: `event_${Date.now()}_${Math.random()}`,
+                        event_type: randomEvent.type,
+                        event_category: 'info',
+                        title: randomEvent.title,
+                        description: randomEvent.description,
+                        related_entity_type: null,
+                        related_entity_id: null,
+                        team_id: null,
+                        player_id: null,
+                        match_id: null,
+                        priority: randomEvent.priority,
+                        is_read: false,
+                        is_user_relevant: true,
+                        auto_generated: true,
+                        expires_at: null,
+                        action_required: false,
+                        action_type: null,
+                        action_data: null,
+                        event_date: new Date().toISOString(),
+                        game_date: this.currentDate.toISOString(),
+                        created_at: new Date().toISOString()
                     });
                 }
-            });
+            }
         }
 
-        // Update current date
-        this.gameData.userSession.current_date = newDate.toISOString();
-        this.gameData.userSession.updated_at = new Date().toISOString();
+        // Update user session
+        if (this.gameData.userSession) {
+            this.gameData.userSession.current_date = this.currentDate.toISOString();
+            this.gameData.userSession.updated_at = new Date().toISOString();
+        }
 
-        // Add events to game data
-        eventsGenerated.forEach(event => {
-            this.generateGameEvent(event);
-        });
-
-        // Save data
+        // Save game data
         this.saveGameData();
 
         return {
-            newDate: newDate.toISOString(),
+            newDate: this.currentDate.toISOString(),
             eventsGenerated
         };
     }
 
-    updatePlayerRecovery() {
-        this.gameData.players.forEach(player => {
-            // Fitness recovery
-            if (player.fitness < 100) {
-                player.fitness = Math.min(100, player.fitness + 1 + Math.random() * 2);
-            }
-
-            // Injury recovery
-            if (player.injury_days > 0) {
-                player.injury_days = Math.max(0, player.injury_days - 1);
-                if (player.injury_days === 0) {
-                    player.injury_status = 'healthy';
-                }
-            }
-
-            // Morale natural variation
-            const moraleChange = (Math.random() - 0.5) * 2; // -1 to +1
-            player.morale = Math.max(0, Math.min(100, player.morale + moraleChange));
-
-            player.updated_at = new Date().toISOString();
-        });
-    }
-
-    generateRandomGameEvent() {
+    generateRandomEvent() {
         const eventTypes = [
-            {
-                type: 'news',
-                title: 'Notizie dal Mondo del Calcio',
-                description: 'Aggiornamenti dal campionato',
-                priority: 1
-            },
-            {
-                type: 'injury',
-                title: 'Infortunio in Allenamento',
-                description: 'Un giocatore si è infortunato durante la sessione',
-                priority: 3
-            },
-            {
-                type: 'transfer',
-                title: 'Rumors di Mercato',
-                description: 'Voci su possibili trasferimenti',
-                priority: 2
-            }
+            { type: 'news', title: 'Notizie di Mercato', description: 'Voci di mercato interessanti', priority: 1 },
+            { type: 'weather', title: 'Condizioni Meteo', description: 'Previsioni per le prossime partite', priority: 1 },
+            { type: 'training', title: 'Aggiornamento Allenamenti', description: 'Nuove metodologie di allenamento disponibili', priority: 2 }
         ];
 
-        return eventTypes[Math.floor(Math.random() * eventTypes.length)];
+        const randomEvent = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+        return randomEvent;
     }
 
-    generateGameEvent(eventData) {
-        const event = {
-            id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            event_type: eventData.type,
-            event_category: 'info',
-            title: eventData.title,
-            description: eventData.description,
-            related_entity_type: eventData.entityType || null,
-            related_entity_id: eventData.entityId || null,
-            team_id: eventData.team_id || null,
-            player_id: eventData.player_id || null,
-            match_id: eventData.match_id || null,
-            priority: eventData.priority || 1,
-            is_read: false,
-            is_user_relevant: true,
-            auto_generated: true,
-            expires_at: null,
-            action_required: false,
-            action_type: null,
-            action_data: null,
-            event_date: new Date().toISOString(),
-            game_date: this.getCurrentDate(),
-            created_at: new Date().toISOString()
-        };
-
-        this.gameData.gameEvents = this.gameData.gameEvents || [];
-        this.gameData.gameEvents.push(event);
-
-        return event;
-    }
-
-    // === PHASE 3 METHODS ===
-
+    // === PHASE 3: TACTICS AND MATCHES ===
     async updateTactics(params) {
-        const { 
-            teamId, formation, mentality, tempo, width, pressing, 
-            defensiveLine, passingStyle, crossing, playerPositions, 
-            playerRoles, setPieces, captainId, penaltyTakerId, 
-            freeKickTakerId, cornerTakerId, tacticName 
+        console.log('⚙️ Executing Tactics_Update flow...');
+        
+        const {
+            teamId,
+            formation,
+            mentality,
+            tempo,
+            width,
+            pressing,
+            defensiveLine,
+            passingStyle,
+            crossing,
+            playerPositions,
+            playerRoles,
+            setPieces,
+            captainId,
+            penaltyTakerId,
+            freeKickTakerId,
+            cornerTakerId,
+            tacticName
         } = params;
 
-        console.log(`⚙️ Executing Tactics_Update for team ${teamId}`);
-
         // Find existing tactics or create new
-        let tacticsIndex = this.gameData.tactics.findIndex(t => t.team_id === teamId && t.is_default);
+        let tactics = this.gameData.tactics.find(t => t.team_id === teamId && t.is_default);
         
-        const tacticsData = {
-            id: tacticsIndex >= 0 ? this.gameData.tactics[tacticsIndex].id : `tactics_${teamId}_${Date.now()}`,
-            team_id: teamId,
-            tactic_name: tacticName || 'Tattica Principale',
-            formation: formation,
-            mentality: mentality,
-            tempo: tempo,
-            width: width,
-            pressing: pressing,
-            defensive_line: defensiveLine,
-            passing_style: passingStyle,
-            crossing: crossing,
-            player_positions: playerPositions,
-            player_roles: playerRoles,
-            set_pieces: setPieces,
-            captain_id: captainId,
-            penalty_taker_id: penaltyTakerId,
-            free_kick_taker_id: freeKickTakerId,
-            corner_taker_id: cornerTakerId,
-            is_default: true,
-            effectiveness_rating: this.calculateTacticalEffectiveness(params),
-            matches_used: tacticsIndex >= 0 ? this.gameData.tactics[tacticsIndex].matches_used : 0,
-            created_at: tacticsIndex >= 0 ? this.gameData.tactics[tacticsIndex].created_at : new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        };
-
-        if (tacticsIndex >= 0) {
-            this.gameData.tactics[tacticsIndex] = tacticsData;
+        if (!tactics) {
+            tactics = {
+                id: `tactics_${teamId}_${Date.now()}`,
+                team_id: teamId,
+                tactic_name: tacticName || 'Tattica Principale',
+                formation,
+                mentality,
+                tempo,
+                width,
+                pressing,
+                defensive_line: defensiveLine,
+                passing_style: passingStyle,
+                crossing,
+                player_positions: playerPositions,
+                player_roles: playerRoles,
+                set_pieces: setPieces,
+                captain_id: captainId,
+                penalty_taker_id: penaltyTakerId,
+                free_kick_taker_id: freeKickTakerId,
+                corner_taker_id: cornerTakerId,
+                is_default: true,
+                effectiveness_rating: this.calculateTacticalEffectiveness(params),
+                matches_used: 0,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+            
+            this.gameData.tactics.push(tactics);
         } else {
-            this.gameData.tactics.push(tacticsData);
+            // Update existing tactics
+            tactics.formation = formation;
+            tactics.mentality = mentality;
+            tactics.tempo = tempo;
+            tactics.width = width;
+            tactics.pressing = pressing;
+            tactics.defensive_line = defensiveLine;
+            tactics.passing_style = passingStyle;
+            tactics.crossing = crossing;
+            tactics.player_positions = playerPositions;
+            tactics.player_roles = playerRoles;
+            tactics.set_pieces = setPieces;
+            tactics.captain_id = captainId;
+            tactics.penalty_taker_id = penaltyTakerId;
+            tactics.free_kick_taker_id = freeKickTakerId;
+            tactics.corner_taker_id = cornerTakerId;
+            tactics.effectiveness_rating = this.calculateTacticalEffectiveness(params);
+            tactics.updated_at = new Date().toISOString();
         }
 
         // Update team formation
-        const teamIndex = this.gameData.teams.findIndex(t => t.id === teamId);
-        if (teamIndex >= 0) {
-            this.gameData.teams[teamIndex].formation = formation;
-            this.gameData.teams[teamIndex].updated_at = new Date().toISOString();
+        const team = this.gameData.teams.find(t => t.id === teamId);
+        if (team) {
+            team.formation = formation;
+            team.updated_at = new Date().toISOString();
         }
 
-        // Generate event
-        this.generateGameEvent({
-            type: 'tactical',
-            title: 'Tattica Aggiornata',
-            description: `Nuova formazione ${formation} salvata`,
-            priority: 2,
-            team_id: teamId
-        });
-
+        // Save game data
         this.saveGameData();
-        return tacticsData;
+
+        return tactics;
     }
 
     calculateTacticalEffectiveness(params) {
-        let effectiveness = 50; // Base
+        let effectiveness = 50; // Base effectiveness
 
-        // Formation balance bonus
+        // Formation balance
         effectiveness += 10;
 
-        // Player assignment bonus
-        if (params.playerPositions && params.playerPositions.length === 11) {
-            effectiveness += 20;
-        }
+        // Player assignments
+        const assignedCount = params.playerPositions?.filter(pos => pos.playerId).length || 0;
+        effectiveness += (assignedCount / 11) * 20;
 
         // Tactical coherence
         if (params.mentality === 'attacking' && params.tempo === 'fast') {
@@ -935,208 +923,312 @@ export class GameManager {
             effectiveness += 5;
         }
 
-        return Math.min(100, Math.max(0, effectiveness));
+        return Math.min(100, Math.max(0, Math.round(effectiveness)));
     }
 
     async simulateMatch(matchId) {
-        console.log(`⚽ Executing Match_Simulate for match ${matchId}`);
-
+        console.log('⚽ Executing Match_Simulate flow...');
+        
         const match = this.gameData.matches.find(m => m.id === matchId);
         if (!match) {
             throw new Error('Match not found');
         }
 
-        // Get teams and players
+        // Get teams and their data
         const homeTeam = this.gameData.teams.find(t => t.id === match.home_team_id);
         const awayTeam = this.gameData.teams.find(t => t.id === match.away_team_id);
-        const homePlayers = this.getPlayersByTeam(match.home_team_id).filter(p => p.injury_status === 'healthy').slice(0, 11);
-        const awayPlayers = this.getPlayersByTeam(match.away_team_id).filter(p => p.injury_status === 'healthy').slice(0, 11);
+        
+        const homePlayers = this.getPlayersByTeam(match.home_team_id)
+            .filter(p => p.injury_status === 'healthy')
+            .sort((a, b) => b.overall_rating - a.overall_rating)
+            .slice(0, 11);
+            
+        const awayPlayers = this.getPlayersByTeam(match.away_team_id)
+            .filter(p => p.injury_status === 'healthy')
+            .sort((a, b) => b.overall_rating - a.overall_rating)
+            .slice(0, 11);
 
         // Calculate team strengths
         const homeStrength = this.calculateTeamStrength(homePlayers, homeTeam);
         const awayStrength = this.calculateTeamStrength(awayPlayers, awayTeam);
 
         // Simulate match events
-        const events = this.simulateMatchEvents(homeStrength, awayStrength, homePlayers, awayPlayers);
-        
-        // Calculate final score
-        const homeGoals = events.filter(e => e.type === 'goal' && e.team === 'home').length;
-        const awayGoals = events.filter(e => e.type === 'goal' && e.team === 'away').length;
+        const events = [];
+        const stats = {
+            home_possession: 45 + Math.random() * 10,
+            away_possession: 45 + Math.random() * 10,
+            home_shots: 0,
+            away_shots: 0,
+            home_shots_on_target: 0,
+            away_shots_on_target: 0,
+            home_corners: 0,
+            away_corners: 0,
+            home_fouls: 0,
+            away_fouls: 0,
+            home_yellow_cards: 0,
+            away_yellow_cards: 0,
+            home_red_cards: 0,
+            away_red_cards: 0,
+            home_passes: 0,
+            away_passes: 0,
+            home_pass_accuracy: 75 + Math.random() * 20,
+            away_pass_accuracy: 75 + Math.random() * 20
+        };
 
-        // Generate statistics
-        const stats = this.generateMatchStatistics(homeStrength, awayStrength, events);
+        let homeGoals = 0;
+        let awayGoals = 0;
 
-        // Update match
-        const matchIndex = this.gameData.matches.findIndex(m => m.id === matchId);
-        if (matchIndex >= 0) {
-            this.gameData.matches[matchIndex] = {
-                ...match,
-                status: 'finished',
-                home_goals: homeGoals,
-                away_goals: awayGoals,
-                home_formation: homeTeam.formation,
-                away_formation: awayTeam.formation,
-                home_lineup: homePlayers.map(p => p.id),
-                away_lineup: awayPlayers.map(p => p.id),
-                attendance: Math.floor(20000 + Math.random() * 30000),
-                weather: ['sunny', 'cloudy', 'rainy'][Math.floor(Math.random() * 3)],
-                referee: 'Arbitro ' + Math.floor(Math.random() * 100),
-                updated_at: new Date().toISOString()
-            };
+        // Simulate 90 minutes
+        for (let minute = 1; minute <= 90; minute++) {
+            // Generate random events
+            if (Math.random() < 0.15) { // 15% chance per minute
+                const event = this.generateMatchEvent(minute, homeStrength, awayStrength, homePlayers, awayPlayers);
+                if (event) {
+                    events.push(event);
+                    
+                    // Update stats based on event
+                    if (event.type === 'goal') {
+                        if (event.team === 'home') {
+                            homeGoals++;
+                        } else {
+                            awayGoals++;
+                        }
+                    } else if (event.type === 'shot') {
+                        if (event.team === 'home') {
+                            stats.home_shots++;
+                            if (Math.random() < 0.4) stats.home_shots_on_target++;
+                        } else {
+                            stats.away_shots++;
+                            if (Math.random() < 0.4) stats.away_shots_on_target++;
+                        }
+                    } else if (event.type === 'corner') {
+                        if (event.team === 'home') {
+                            stats.home_corners++;
+                        } else {
+                            stats.away_corners++;
+                        }
+                    } else if (event.type === 'foul') {
+                        if (event.team === 'home') {
+                            stats.home_fouls++;
+                        } else {
+                            stats.away_fouls++;
+                        }
+                    } else if (event.type === 'yellow_card') {
+                        if (event.team === 'home') {
+                            stats.home_yellow_cards++;
+                        } else {
+                            stats.away_yellow_cards++;
+                        }
+                    }
+                }
+            }
         }
 
-        // Generate match report
-        const matchReport = await this.generateMatchReport(matchId, events, stats, homePlayers, awayPlayers);
+        // Normalize possession
+        const totalPossession = stats.home_possession + stats.away_possession;
+        stats.home_possession = Math.round((stats.home_possession / totalPossession) * 100);
+        stats.away_possession = 100 - stats.home_possession;
+
+        // Generate additional stats
+        stats.home_passes = Math.round(stats.home_possession * 5 + Math.random() * 100);
+        stats.away_passes = Math.round(stats.away_possession * 5 + Math.random() * 100);
+
+        // Update match
+        match.status = 'finished';
+        match.home_goals = homeGoals;
+        match.away_goals = awayGoals;
+        match.home_formation = homeTeam.formation || '4-4-2';
+        match.away_formation = awayTeam.formation || '4-4-2';
+        match.home_lineup = homePlayers.map(p => p.id);
+        match.away_lineup = awayPlayers.map(p => p.id);
+        match.attendance = 20000 + Math.random() * 30000;
+        match.weather = ['sunny', 'cloudy', 'rainy'][Math.floor(Math.random() * 3)];
+        match.referee = 'Arbitro ' + Math.floor(Math.random() * 100);
+        match.updated_at = new Date().toISOString();
 
         // Update team standings
-        this.updateTeamStandings(match.home_team_id, match.away_team_id, homeGoals, awayGoals);
+        this.updateTeamStandings(homeTeam, awayTeam, homeGoals, awayGoals);
 
         // Update player statistics
-        this.updatePlayerStatistics(events, homePlayers, awayPlayers);
+        this.updatePlayerStatistics(homePlayers, awayPlayers, events);
 
-        // Generate game event
-        this.generateGameEvent({
-            type: 'match',
-            title: `${homeTeam.name} ${homeGoals}-${awayGoals} ${awayTeam.name}`,
-            description: `Partita completata - Giornata ${match.matchday}`,
-            priority: 4,
-            match_id: matchId
-        });
+        // Generate match report
+        const matchReport = await this.generateMatchReport(match, events, stats, homePlayers, awayPlayers);
 
+        // Update morale based on result
+        this.updatePostMatchMorale(homeTeam, awayTeam, homeGoals, awayGoals);
+
+        // Save game data
         this.saveGameData();
 
-        return {
-            match: this.gameData.matches[matchIndex],
-            events,
-            stats,
-            report: matchReport
-        };
+        return { match, events, stats, matchReport };
     }
 
     calculateTeamStrength(players, team) {
         const avgRating = players.reduce((sum, p) => sum + p.overall_rating, 0) / players.length;
-        const moraleBonus = (team.team_morale - 50) / 10; // -5 to +5
-        const homeBonus = 2; // Assume home advantage for now
-        
-        return avgRating + moraleBonus + homeBonus;
+        const moraleBonus = (team.team_morale - 50) * 0.2;
+        return avgRating + moraleBonus;
     }
 
-    simulateMatchEvents(homeStrength, awayStrength, homePlayers, awayPlayers) {
-        const events = [];
-        const totalStrength = homeStrength + awayStrength;
-        const homeAdvantage = homeStrength / totalStrength;
+    generateMatchEvent(minute, homeStrength, awayStrength, homePlayers, awayPlayers) {
+        const eventTypes = ['shot', 'corner', 'foul', 'goal', 'yellow_card'];
+        const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+        
+        // Determine which team based on strength
+        const strengthRatio = homeStrength / (homeStrength + awayStrength);
+        const isHome = Math.random() < strengthRatio;
+        
+        const players = isHome ? homePlayers : awayPlayers;
+        const randomPlayer = players[Math.floor(Math.random() * players.length)];
 
-        // Simulate 90 minutes in 10-minute blocks
-        for (let block = 0; block < 9; block++) {
-            const minute = (block * 10) + Math.floor(Math.random() * 10) + 1;
-
-            // Goal chance (higher for stronger team)
-            if (Math.random() < 0.15) { // 15% chance per block
-                const isHome = Math.random() < homeAdvantage;
-                const players = isHome ? homePlayers : awayPlayers;
-                const scorer = players[Math.floor(Math.random() * players.length)];
-
-                events.push({
+        switch (eventType) {
+            case 'goal':
+                if (Math.random() < 0.03) { // 3% chance for goal
+                    return {
+                        minute,
+                        type: 'goal',
+                        team: isHome ? 'home' : 'away',
+                        player_id: randomPlayer.id,
+                        player_name: `${randomPlayer.first_name} ${randomPlayer.last_name}`,
+                        description: `⚽ Gol di ${randomPlayer.first_name} ${randomPlayer.last_name}!`
+                    };
+                }
+                break;
+            case 'shot':
+                return {
                     minute,
-                    type: 'goal',
+                    type: 'shot',
                     team: isHome ? 'home' : 'away',
-                    player_id: scorer.id,
-                    description: `⚽ Gol di ${scorer.first_name} ${scorer.last_name}!`
-                });
-            }
-
-            // Other events
-            if (Math.random() < 0.3) { // 30% chance for other events
-                const eventTypes = ['yellow_card', 'corner', 'shot', 'foul'];
-                const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
-                const isHome = Math.random() < 0.5;
-                const players = isHome ? homePlayers : awayPlayers;
-                const player = players[Math.floor(Math.random() * players.length)];
-
-                events.push({
+                    player_id: randomPlayer.id,
+                    player_name: `${randomPlayer.first_name} ${randomPlayer.last_name}`,
+                    description: `🎯 Tiro di ${randomPlayer.first_name} ${randomPlayer.last_name}`
+                };
+            case 'corner':
+                return {
                     minute,
-                    type: eventType,
+                    type: 'corner',
                     team: isHome ? 'home' : 'away',
-                    player_id: player.id,
-                    description: this.getEventDescription(eventType, player)
-                });
-            }
+                    description: `📐 Calcio d'angolo per ${isHome ? 'casa' : 'ospiti'}`
+                };
+            case 'foul':
+                return {
+                    minute,
+                    type: 'foul',
+                    team: isHome ? 'home' : 'away',
+                    player_id: randomPlayer.id,
+                    player_name: `${randomPlayer.first_name} ${randomPlayer.last_name}`,
+                    description: `⚠️ Fallo di ${randomPlayer.first_name} ${randomPlayer.last_name}`
+                };
+            case 'yellow_card':
+                if (Math.random() < 0.02) { // 2% chance for card
+                    return {
+                        minute,
+                        type: 'yellow_card',
+                        team: isHome ? 'home' : 'away',
+                        player_id: randomPlayer.id,
+                        player_name: `${randomPlayer.first_name} ${randomPlayer.last_name}`,
+                        description: `🟨 Cartellino giallo per ${randomPlayer.first_name} ${randomPlayer.last_name}`
+                    };
+                }
+                break;
         }
 
-        return events.sort((a, b) => a.minute - b.minute);
+        return null;
     }
 
-    getEventDescription(eventType, player) {
-        const descriptions = {
-            'yellow_card': `🟨 Cartellino giallo per ${player.first_name} ${player.last_name}`,
-            'corner': `📐 Calcio d'angolo`,
-            'shot': `🎯 Tiro di ${player.first_name} ${player.last_name}`,
-            'foul': `⚠️ Fallo di ${player.first_name} ${player.last_name}`
-        };
-        return descriptions[eventType] || 'Evento di gioco';
-    }
-
-    generateMatchStatistics(homeStrength, awayStrength, events) {
-        const totalStrength = homeStrength + awayStrength;
-        const homePossession = Math.round((homeStrength / totalStrength) * 100);
-        const awayPossession = 100 - homePossession;
-
-        return {
-            home_possession: homePossession,
-            away_possession: awayPossession,
-            home_shots: 8 + Math.floor(Math.random() * 10),
-            away_shots: 6 + Math.floor(Math.random() * 8),
-            home_shots_on_target: 3 + Math.floor(Math.random() * 5),
-            away_shots_on_target: 2 + Math.floor(Math.random() * 4),
-            home_corners: events.filter(e => e.type === 'corner' && e.team === 'home').length + Math.floor(Math.random() * 5),
-            away_corners: events.filter(e => e.type === 'corner' && e.team === 'away').length + Math.floor(Math.random() * 5),
-            home_fouls: events.filter(e => e.type === 'foul' && e.team === 'home').length + Math.floor(Math.random() * 8),
-            away_fouls: events.filter(e => e.type === 'foul' && e.team === 'away').length + Math.floor(Math.random() * 8),
-            home_yellow_cards: events.filter(e => e.type === 'yellow_card' && e.team === 'home').length,
-            away_yellow_cards: events.filter(e => e.type === 'yellow_card' && e.team === 'away').length,
-            home_red_cards: 0,
-            away_red_cards: 0,
-            home_passes: 200 + Math.floor(Math.random() * 300),
-            away_passes: 180 + Math.floor(Math.random() * 250),
-            home_pass_accuracy: 75 + Math.floor(Math.random() * 20),
-            away_pass_accuracy: 70 + Math.floor(Math.random() * 25)
-        };
-    }
-
-    async generateMatchReport(matchId, events, stats, homePlayers, awayPlayers) {
-        console.log(`📊 Executing Match_GenerateReport for match ${matchId}`);
-
-        const match = this.gameData.matches.find(m => m.id === matchId);
-        const homeTeam = this.gameData.teams.find(t => t.id === match.home_team_id);
-        const awayTeam = this.gameData.teams.find(t => t.id === match.away_team_id);
-
-        // Generate player ratings
-        const playerRatings = [];
+    updateTeamStandings(homeTeam, awayTeam, homeGoals, awayGoals) {
+        homeTeam.matches_played++;
+        awayTeam.matches_played++;
         
-        [...homePlayers, ...awayPlayers].forEach(player => {
-            const baseRating = 6.0;
-            const performanceVariation = (Math.random() - 0.5) * 2; // -1 to +1
-            const goalBonus = events.filter(e => e.type === 'goal' && e.player_id === player.id).length * 0.5;
-            const cardPenalty = events.filter(e => e.type === 'yellow_card' && e.player_id === player.id).length * -0.2;
+        homeTeam.goals_for += homeGoals;
+        homeTeam.goals_against += awayGoals;
+        awayTeam.goals_for += awayGoals;
+        awayTeam.goals_against += homeGoals;
+
+        if (homeGoals > awayGoals) {
+            homeTeam.wins++;
+            homeTeam.points += 3;
+            awayTeam.losses++;
+        } else if (awayGoals > homeGoals) {
+            awayTeam.wins++;
+            awayTeam.points += 3;
+            homeTeam.losses++;
+        } else {
+            homeTeam.draws++;
+            awayTeam.draws++;
+            homeTeam.points++;
+            awayTeam.points++;
+        }
+
+        homeTeam.updated_at = new Date().toISOString();
+        awayTeam.updated_at = new Date().toISOString();
+    }
+
+    updatePlayerStatistics(homePlayers, awayPlayers, events) {
+        const allPlayers = [...homePlayers, ...awayPlayers];
+        
+        // Update matches played
+        allPlayers.forEach(player => {
+            player.matches_played++;
+            player.updated_at = new Date().toISOString();
+        });
+
+        // Update stats based on events
+        events.forEach(event => {
+            if (event.player_id) {
+                const player = allPlayers.find(p => p.id === event.player_id);
+                if (player) {
+                    switch (event.type) {
+                        case 'goal':
+                            player.goals_scored++;
+                            break;
+                        case 'yellow_card':
+                            player.yellow_cards++;
+                            break;
+                        case 'red_card':
+                            player.red_cards++;
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    async generateMatchReport(match, events, stats, homePlayers, awayPlayers) {
+        console.log('📊 Executing Match_GenerateReport flow...');
+        
+        const allPlayers = [...homePlayers, ...awayPlayers];
+        
+        // Generate player ratings
+        const playerRatings = allPlayers.map(player => {
+            const baseRating = 5.5 + Math.random() * 2; // 5.5-7.5 base
             
-            const rating = Math.max(1, Math.min(10, baseRating + performanceVariation + goalBonus + cardPenalty));
+            // Bonus for goals/assists
+            let bonus = 0;
+            events.forEach(event => {
+                if (event.player_id === player.id && event.type === 'goal') {
+                    bonus += 1.5;
+                }
+            });
             
-            playerRatings.push({
+            const finalRating = Math.min(10, Math.max(1, baseRating + bonus));
+            
+            return {
                 player_id: player.id,
                 player_name: `${player.first_name} ${player.last_name}`,
                 position: player.position,
-                rating: Math.round(rating * 10) / 10 // Round to 1 decimal
-            });
+                rating: Math.round(finalRating * 10) / 10
+            };
         });
 
-        // Find man of the match (highest rating)
+        // Find man of the match
         const manOfTheMatch = playerRatings.reduce((best, current) => 
             current.rating > best.rating ? current : best
         );
 
         // Generate key moments
         const keyMoments = events
-            .filter(e => ['goal', 'red_card', 'penalty'].includes(e.type))
+            .filter(event => ['goal', 'red_card', 'penalty'].includes(event.type))
             .map(event => ({
                 minute: event.minute,
                 type: event.type,
@@ -1144,129 +1236,258 @@ export class GameManager {
                 importance: event.type === 'goal' ? 'high' : 'medium'
             }));
 
+        // Generate tactical analysis
+        const tacticalAnalysis = this.generateTacticalAnalysis(match, stats, events);
+
         const matchReport = {
-            id: `report_${matchId}`,
-            match_id: matchId,
+            id: `report_${match.id}`,
+            match_id: match.id,
             match_events: events,
-            ...stats,
+            home_possession: stats.home_possession,
+            away_possession: stats.away_possession,
+            home_shots: stats.home_shots,
+            away_shots: stats.away_shots,
+            home_shots_on_target: stats.home_shots_on_target,
+            away_shots_on_target: stats.away_shots_on_target,
+            home_corners: stats.home_corners,
+            away_corners: stats.away_corners,
+            home_fouls: stats.home_fouls,
+            away_fouls: stats.away_fouls,
+            home_yellow_cards: stats.home_yellow_cards,
+            away_yellow_cards: stats.away_yellow_cards,
+            home_red_cards: stats.home_red_cards,
+            away_red_cards: stats.away_red_cards,
+            home_passes: stats.home_passes,
+            away_passes: stats.away_passes,
+            home_pass_accuracy: stats.home_pass_accuracy,
+            away_pass_accuracy: stats.away_pass_accuracy,
             player_ratings: playerRatings,
             man_of_the_match: manOfTheMatch.player_id,
             key_moments: keyMoments,
-            tactical_analysis: this.generateTacticalAnalysis(homeTeam, awayTeam, stats),
-            weather_impact: 'Condizioni normali, nessun impatto significativo',
-            referee_performance: 7 + Math.floor(Math.random() * 3), // 7-9
-            attendance_impact: 'Il pubblico ha sostenuto la squadra di casa',
+            tactical_analysis: tacticalAnalysis,
+            weather_impact: this.getWeatherImpact(match.weather),
+            referee_performance: 6 + Math.random() * 3,
+            attendance_impact: 'Supporto positivo del pubblico di casa',
             injury_time_home: Math.floor(Math.random() * 4),
-            injury_time_away: Math.floor(Math.random() * 6),
+            injury_time_away: Math.floor(Math.random() * 4),
             created_at: new Date().toISOString()
         };
 
-        // Add to game data
-        this.gameData.matchReports = this.gameData.matchReports || [];
-        this.gameData.matchReports.push(matchReport);
-
         // Update match with report reference
-        const matchIndex = this.gameData.matches.findIndex(m => m.id === matchId);
-        if (matchIndex >= 0) {
-            this.gameData.matches[matchIndex].match_report_id = matchReport.id;
-        }
+        match.match_report_id = matchReport.id;
+
+        // Add to game data
+        this.gameData.matchReports.push(matchReport);
 
         return matchReport;
     }
 
-    generateTacticalAnalysis(homeTeam, awayTeam, stats) {
-        const homeDominance = stats.home_possession > 60;
-        const awayDominance = stats.away_possession > 60;
-        const balanced = !homeDominance && !awayDominance;
-
-        if (homeDominance) {
-            return `${homeTeam.name} ha dominato il possesso palla (${stats.home_possession}%) e ha creato più occasioni da gol. La formazione ${homeTeam.formation} si è dimostrata efficace nel controllo del gioco.`;
-        } else if (awayDominance) {
-            return `${awayTeam.name} ha controllato il gioco con ${stats.away_possession}% di possesso. La tattica ospite ha limitato le occasioni della squadra di casa.`;
+    generateTacticalAnalysis(match, stats, events) {
+        const homeGoals = match.home_goals;
+        const awayGoals = match.away_goals;
+        
+        let analysis = '';
+        
+        if (homeGoals > awayGoals) {
+            analysis = 'La squadra di casa ha dominato la partita con un gioco offensivo efficace. ';
+        } else if (awayGoals > homeGoals) {
+            analysis = 'Gli ospiti hanno saputo sfruttare le loro occasioni meglio della squadra di casa. ';
         } else {
-            return `Partita equilibrata con entrambe le squadre che hanno avuto le loro occasioni. Il risultato rispecchia l'andamento del match.`;
+            analysis = 'Partita equilibrata con entrambe le squadre che hanno avuto le loro occasioni. ';
+        }
+
+        if (stats.home_possession > 60) {
+            analysis += 'Il controllo del possesso palla è stato determinante per il risultato finale.';
+        } else if (stats.away_possession > 60) {
+            analysis += 'Gli ospiti hanno controllato il gioco per gran parte della partita.';
+        } else {
+            analysis += 'Il possesso palla è stato equamente distribuito tra le due squadre.';
+        }
+
+        return analysis;
+    }
+
+    getWeatherImpact(weather) {
+        const impacts = {
+            'sunny': 'Condizioni ideali per il gioco',
+            'cloudy': 'Condizioni normali senza particolari influenze',
+            'rainy': 'La pioggia ha reso il terreno scivoloso influenzando il gioco'
+        };
+        return impacts[weather] || 'Condizioni normali';
+    }
+
+    updatePostMatchMorale(homeTeam, awayTeam, homeGoals, awayGoals) {
+        let homeMoraleChange = 0;
+        let awayMoraleChange = 0;
+
+        if (homeGoals > awayGoals) {
+            homeMoraleChange = 5 + Math.random() * 5; // +5 to +10
+            awayMoraleChange = -(3 + Math.random() * 4); // -3 to -7
+        } else if (awayGoals > homeGoals) {
+            awayMoraleChange = 5 + Math.random() * 5;
+            homeMoraleChange = -(3 + Math.random() * 4);
+        } else {
+            homeMoraleChange = 1 + Math.random() * 2; // +1 to +3
+            awayMoraleChange = 1 + Math.random() * 2;
+        }
+
+        // Update team morale
+        homeTeam.team_morale = Math.max(0, Math.min(100, homeTeam.team_morale + homeMoraleChange));
+        awayTeam.team_morale = Math.max(0, Math.min(100, awayTeam.team_morale + awayMoraleChange));
+
+        // Update player morale
+        const homePlayers = this.getPlayersByTeam(homeTeam.id);
+        const awayPlayers = this.getPlayersByTeam(awayTeam.id);
+
+        homePlayers.forEach(player => {
+            player.morale = Math.max(0, Math.min(100, player.morale + homeMoraleChange));
+            player.updated_at = new Date().toISOString();
+        });
+
+        awayPlayers.forEach(player => {
+            player.morale = Math.max(0, Math.min(100, player.morale + awayMoraleChange));
+            player.updated_at = new Date().toISOString();
+        });
+    }
+
+    // === PHASE 4: SESSION MANAGEMENT ===
+    async saveSession(sessionName = null, slotId = null) {
+        console.log('💾 Executing Session_Save flow...');
+        
+        try {
+            // Create session data snapshot
+            const sessionData = {
+                teams: this.gameData.teams,
+                players: this.gameData.players,
+                staff: this.gameData.staff,
+                matches: this.gameData.matches,
+                tactics: this.gameData.tactics,
+                moraleStatus: this.gameData.moraleStatus,
+                trainings: this.gameData.trainings,
+                gameEvents: this.gameData.gameEvents,
+                matchReports: this.gameData.matchReports,
+                transfers: this.gameData.transfers,
+                attributesHistory: this.gameData.attributesHistory,
+                currentDate: this.currentDate.toISOString()
+            };
+
+            // Create or update user session
+            let userSession = this.gameData.userSession;
+            if (!userSession) {
+                const userTeam = this.getUserTeam();
+                userSession = this.createUserSession(userTeam);
+                this.gameData.userSession = userSession;
+            }
+
+            // Update session metadata
+            userSession.session_name = sessionName || userSession.session_name;
+            userSession.current_date = this.currentDate.toISOString();
+            userSession.last_played = new Date().toISOString();
+            userSession.save_data = JSON.stringify(sessionData);
+            userSession.updated_at = new Date().toISOString();
+
+            // Save to localStorage
+            this.saveGameData();
+
+            console.log('✅ Session saved successfully');
+            return {
+                success: true,
+                sessionId: userSession.id,
+                sessionName: userSession.session_name,
+                saveDate: userSession.updated_at
+            };
+
+        } catch (error) {
+            console.error('Error saving session:', error);
+            throw new Error('Errore durante il salvataggio: ' + error.message);
         }
     }
 
-    updateTeamStandings(homeTeamId, awayTeamId, homeGoals, awayGoals) {
-        const homeTeamIndex = this.gameData.teams.findIndex(t => t.id === homeTeamId);
-        const awayTeamIndex = this.gameData.teams.findIndex(t => t.id === awayTeamId);
-
-        if (homeTeamIndex >= 0) {
-            const homeTeam = this.gameData.teams[homeTeamIndex];
-            homeTeam.matches_played += 1;
-            homeTeam.goals_for += homeGoals;
-            homeTeam.goals_against += awayGoals;
-
-            if (homeGoals > awayGoals) {
-                homeTeam.wins += 1;
-                homeTeam.points += 3;
-            } else if (homeGoals === awayGoals) {
-                homeTeam.draws += 1;
-                homeTeam.points += 1;
-            } else {
-                homeTeam.losses += 1;
+    async loadSession(sessionId) {
+        console.log('📂 Executing Session_Load flow...');
+        
+        try {
+            // Load from localStorage
+            const savedData = this.loadGameData();
+            if (!savedData || !savedData.userSession) {
+                throw new Error('Nessuna sessione trovata');
             }
 
-            homeTeam.updated_at = new Date().toISOString();
-        }
-
-        if (awayTeamIndex >= 0) {
-            const awayTeam = this.gameData.teams[awayTeamIndex];
-            awayTeam.matches_played += 1;
-            awayTeam.goals_for += awayGoals;
-            awayTeam.goals_against += homeGoals;
-
-            if (awayGoals > homeGoals) {
-                awayTeam.wins += 1;
-                awayTeam.points += 3;
-            } else if (awayGoals === homeGoals) {
-                awayTeam.draws += 1;
-                awayTeam.points += 1;
-            } else {
-                awayTeam.losses += 1;
+            // Verify session integrity
+            if (!savedData.userSession.save_data) {
+                throw new Error('Dati sessione corrotti');
             }
 
-            awayTeam.updated_at = new Date().toISOString();
+            // Deserialize session data
+            const sessionData = JSON.parse(savedData.userSession.save_data);
+            
+            // Restore game state
+            this.gameData = {
+                teams: sessionData.teams || [],
+                players: sessionData.players || [],
+                staff: sessionData.staff || [],
+                matches: sessionData.matches || [],
+                userSession: savedData.userSession,
+                tactics: sessionData.tactics || [],
+                moraleStatus: sessionData.moraleStatus || [],
+                trainings: sessionData.trainings || [],
+                gameEvents: sessionData.gameEvents || [],
+                matchReports: sessionData.matchReports || [],
+                transfers: sessionData.transfers || [],
+                attributesHistory: sessionData.attributesHistory || []
+            };
+
+            // Restore current date
+            if (sessionData.currentDate) {
+                this.currentDate = new Date(sessionData.currentDate);
+            }
+
+            // Update last played
+            this.gameData.userSession.last_played = new Date().toISOString();
+            this.gameData.userSession.is_active = true;
+
+            // Save updated session
+            this.saveGameData();
+
+            console.log('✅ Session loaded successfully');
+            return {
+                success: true,
+                sessionData: this.gameData,
+                currentDate: this.currentDate.toISOString()
+            };
+
+        } catch (error) {
+            console.error('Error loading session:', error);
+            throw new Error('Errore durante il caricamento: ' + error.message);
         }
     }
 
-    updatePlayerStatistics(events, homePlayers, awayPlayers) {
-        events.forEach(event => {
-            if (event.player_id) {
-                const playerIndex = this.gameData.players.findIndex(p => p.id === event.player_id);
-                if (playerIndex >= 0) {
-                    const player = this.gameData.players[playerIndex];
+    getSavedSessions() {
+        try {
+            const savedData = localStorage.getItem('boltManager_gameData');
+            if (!savedData) return [];
 
-                    switch (event.type) {
-                        case 'goal':
-                            player.goals_scored += 1;
-                            break;
-                        case 'yellow_card':
-                            player.yellow_cards += 1;
-                            break;
-                        case 'red_card':
-                            player.red_cards += 1;
-                            break;
-                    }
+            const gameData = JSON.parse(savedData);
+            if (!gameData.userSession) return [];
 
-                    player.updated_at = new Date().toISOString();
-                }
-            }
-        });
-
-        // Update matches played for all participants
-        [...homePlayers, ...awayPlayers].forEach(player => {
-            const playerIndex = this.gameData.players.findIndex(p => p.id === player.id);
-            if (playerIndex >= 0) {
-                this.gameData.players[playerIndex].matches_played += 1;
-                this.gameData.players[playerIndex].updated_at = new Date().toISOString();
-            }
-        });
+            return [{
+                id: gameData.userSession.id,
+                session_name: gameData.userSession.session_name,
+                user_team_name: this.getUserTeam()?.name || 'Squadra Sconosciuta',
+                current_season: gameData.userSession.current_season,
+                current_matchday: gameData.userSession.current_matchday,
+                current_date: gameData.userSession.current_date,
+                last_played: gameData.userSession.last_played,
+                total_playtime: gameData.userSession.total_playtime,
+                is_active: gameData.userSession.is_active
+            }];
+        } catch (error) {
+            console.error('Error getting saved sessions:', error);
+            return [];
+        }
     }
 
     // === UTILITY METHODS ===
-
     saveGameData() {
         try {
             localStorage.setItem('boltManager_gameData', JSON.stringify(this.gameData));
@@ -1282,6 +1503,12 @@ export class GameManager {
             const savedData = localStorage.getItem('boltManager_gameData');
             if (savedData) {
                 this.gameData = JSON.parse(savedData);
+                
+                // Restore current date if available
+                if (this.gameData.userSession?.current_date) {
+                    this.currentDate = new Date(this.gameData.userSession.current_date);
+                }
+                
                 console.log('📂 Game data loaded from localStorage');
                 return this.gameData;
             }
@@ -1304,7 +1531,7 @@ export class GameManager {
     }
 
     getCurrentDate() {
-        return this.gameData.userSession?.current_date || new Date().toISOString();
+        return this.currentDate.toISOString();
     }
 
     getUserTeam() {
@@ -1342,7 +1569,6 @@ export class GameManager {
 
     getUpcomingMatches(teamId, limit = 5) {
         const currentDate = new Date(this.getCurrentDate());
-        
         return this.gameData.matches
             .filter(match => 
                 (match.home_team_id === teamId || match.away_team_id === teamId) &&
@@ -1364,7 +1590,7 @@ export class GameManager {
     }
 
     getMatchReport(matchId) {
-        return this.gameData.matchReports?.find(report => report.match_id === matchId);
+        return this.gameData.matchReports.find(report => report.match_id === matchId);
     }
 
     getUpcomingEvents(days = 7) {
@@ -1385,8 +1611,8 @@ export class GameManager {
                 const awayTeam = this.gameData.teams.find(t => t.id === match.away_team_id);
                 
                 events.push({
-                    date: match.match_date,
                     type: 'match',
+                    date: match.match_date,
                     title: `${homeTeam?.short_name || 'HOME'} vs ${awayTeam?.short_name || 'AWAY'}`,
                     description: `Giornata ${match.matchday}`,
                     priority: 4
@@ -1401,8 +1627,8 @@ export class GameManager {
             })
             .forEach(training => {
                 events.push({
-                    date: training.training_date,
                     type: 'training',
+                    date: training.training_date,
                     title: `Allenamento ${training.training_type}`,
                     description: `Intensità ${training.intensity}`,
                     priority: 2

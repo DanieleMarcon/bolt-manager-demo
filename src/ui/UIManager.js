@@ -5,6 +5,7 @@ import { CalendarViewPage } from './pages/CalendarViewPage.js';
 import { TacticalSetupPage } from './pages/TacticalSetupPage.js';
 import { MatchSimulationPage } from './pages/MatchSimulationPage.js';
 import { MatchAnalysisPage } from './pages/MatchAnalysisPage.js';
+import { SessionManagerPage } from './pages/SessionManagerPage.js';
 
 export class UIManager {
     constructor() {
@@ -15,7 +16,8 @@ export class UIManager {
             calendar: new CalendarViewPage(),
             tactics: new TacticalSetupPage(),
             'match-simulation': new MatchSimulationPage(),
-            'match-analysis': new MatchAnalysisPage()
+            'match-analysis': new MatchAnalysisPage(),
+            sessions: new SessionManagerPage()
         };
         this.loadingElement = null;
     }
