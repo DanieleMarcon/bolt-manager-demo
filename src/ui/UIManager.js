@@ -8,6 +8,7 @@ import { MatchAnalysisPage } from './pages/MatchAnalysisPage.js';
 import { SessionManagerPage } from './pages/SessionManagerPage.js';
 import { TransferMarketPage } from './pages/TransferMarketPage.js';
 import { StaffManagementPage } from './pages/StaffManagementPage.js';
+import { PlayerHistoryPage } from './pages/PlayerHistoryPage.js';
 
 export class UIManager {
     constructor() {
@@ -21,7 +22,8 @@ export class UIManager {
             'match-analysis': new MatchAnalysisPage(),
             sessions: new SessionManagerPage(),
             transfers: new TransferMarketPage(),
-            staff: new StaffManagementPage()
+            staff: new StaffManagementPage(),
+            history: new PlayerHistoryPage()
         };
         this.loadingElement = null;
     }
