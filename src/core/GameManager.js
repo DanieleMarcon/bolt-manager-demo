@@ -5,6 +5,7 @@ import { DataManager } from '../data/DataManager.js';
 import { TransferOfferFlow } from '../../bolt_src/flows/Transfer_Offer.js';
 import { TransferProcessFlow } from '../../bolt_src/flows/Transfer_Process.js';
 import { StaffAssignRoleFlow } from '../../bolt_src/flows/Staff_AssignRole.js';
+import { ReportCompileHistoryFlow } from '../../bolt_src/flows/Report_CompileHistory.js';
 
 export class GameManager {
     constructor() {
@@ -15,6 +16,7 @@ export class GameManager {
         this.transferOfferFlow = new TransferOfferFlow(this);
         this.transferProcessFlow = new TransferProcessFlow(this);
         this.staffAssignRoleFlow = new StaffAssignRoleFlow(this);
+        this.reportCompileHistoryFlow = new ReportCompileHistoryFlow(this);
     }
 
     async init() {
@@ -41,6 +43,11 @@ export class GameManager {
     // Staff Management Flow Methods
     async executeStaffAssignRole(params) {
         return await this.staffAssignRoleFlow.execute(params);
+    }
+
+    // History Report Flow Methods
+    async executeReportCompileHistory(params) {
+        return await this.reportCompileHistoryFlow.execute(params);
     }
 
     // Game state methods
@@ -136,6 +143,70 @@ export class GameManager {
         return events.sort((a, b) => a.date - b.date);
     }
 
+    // History and Reports methods
+    getPlayerAttributesHistory(playerId, startDate = null, endDate = null) {
+        let history = this.gameData?.attributesHistory?.filter(record => record.player_id === playerId) || [];
+        
+        if (startDate) {
+            const start = new Date(startDate);
+            history = history.filter(record => new Date(record.record_date) >= start);
+        }
+        
+        if (endDate) {
+            const end = new Date(endDate);
+            history = history.filter(record => new Date(record.record_date) <= end);
+        }
+        
+        return history.sort((a, b) => new Date(a.record_date) - new Date(b.record_date));
+    }
+
+    getPlayerMatchHistory(playerId, startDate = null, endDate = null) {
+        const playerMatches = [];
+        
+        this.gameData?.matchReports?.forEach(report => {
+            const playerRating = report.player_ratings?.find(rating => rating.player_id === playerId);
+            if (playerRating) {
+                const match = this.gameData.matches.find(m => m.id === report.match_id);
+                if (match) {
+                    const matchDate = new Date(match.match_date);
+                    
+                    // Apply date filters
+                    if (startDate && matchDate < new Date(startDate)) return;
+                    if (endDate && matchDate > new Date(endDate)) return;
+                    
+                    playerMatches.push({
+                        matchId: match.id,
+                        date: match.match_date,
+                        homeTeam: match.home_team_id,
+                        awayTeam: match.away_team_id,
+                        result: `${match.home_goals}-${match.away_goals}`,
+                        rating: playerRating.rating,
+                        position: playerRating.position
+                    });
+                }
+            }
+        });
+        
+        return playerMatches.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    getSavedHistoryReports() {
+        return this.gameData?.historyReports || [];
+    }
+
+    getHistoryReport(reportId) {
+        const savedReport = this.gameData?.historyReports?.find(r => r.id === reportId);
+        if (savedReport && savedReport.full_report_data) {
+            try {
+                return JSON.parse(savedReport.full_report_data);
+            } catch (error) {
+                console.error('Error parsing saved report:', error);
+                return null;
+            }
+        }
+        return null;
+    }
+
     // Save/Load methods
     saveGameData() {
         this.dataManager.saveToStorage(this.gameData, null);
@@ -225,6 +296,7 @@ export class GameManager {
             userSessions: [],
             userSettings: [],
             attributesHistory: [],
+            historyReports: [], // Add history reports dataset
             currentDate: new Date().toISOString()
         };
 
