@@ -131,21 +131,64 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 
 ---
 
-## 🔹 Fase 5 – Mercato e Staff
-🎯 Obiettivo: gestione trasferimenti e ruoli tecnici
+## 🔹 Fase 5 – Mercato e Staff  
+🎯 Obiettivo: gestione mercato trasferimenti e staff tecnico
 
-- [ ] `Transfer_Offer`, `Transfer_Process`, `Staff_AssignRole`
-- [ ] `TransferMarket.page`, `StaffManagement.page`
-- [ ] Componenti: `NegotiationPanel`, `ContractDetails`, `StaffCard`
+🔸 **Prompt 5A – Logica (flow)**
+- [ ] `Transfer_Offer` – Inizio trattative con offerta
+- [ ] `Transfer_Process` – Completamento o rifiuto trattativa
+- [ ] `Staff_AssignRole` – Assegnazione ruoli membri staff
+
+🔸 **Prompt 5B – UI (pagine e componenti)**
+- [ ] `TransferMarket.page` – Interfaccia gestione mercato
+- [ ] `StaffManagement.page` – Gestione organigramma tecnico
+- [ ] Componenti:
+  - `PlayerSearchBar` – Ricerca con filtri
+  - `NegotiationPanel` – Offerte e controproposte
+  - `ContractDetailsPanel` – Dettagli contratti
+  - `BudgetTracker` – Stato finanziario squadra
+  - `StaffCard` – Visualizzazione staff
 
 ---
 
-## 🔹 Fase 6 – Storico e Impostazioni
-🎯 Obiettivo: finalizzare la demo con dati storici e preferenze
+## 🔹 Fase 6 – Storico e Report  
+🎯 Obiettivo: cronologia giocatori e statistiche avanzate
 
-- [ ] `Report_CompileHistory`, `UserSettings_Apply`
-- [ ] `PlayerHistory.page`, `UserSettings.page`
-- [ ] Test finale, ottimizzazioni, polish UI
+🔸 **Prompt 6A – Logica**
+- [ ] `Report_CompileHistory` – Compilazione storico progressi
+
+🔸 **Prompt 6B – UI**
+- [ ] `PlayerHistory.page` – Statistiche e timeline evolutiva
+- [ ] Componenti:
+  - `AttributeProgressChart` – Evoluzione attributi
+  - `HistoryTimeline` – Timeline eventi
+  - `StatisticsTable` – Statistiche storiche
+  - `ComparisonTool` – Confronto periodi
+
+---
+
+## 🔹 Fase 7 – Impostazioni e UX finali  
+🎯 Obiettivo: gestione preferenze utente, accessibilità e polish
+
+🔸 **Prompt 7A – Logica**
+- [ ] `UserSettings_Apply` – Applicazione configurazioni utente
+
+🔸 **Prompt 7B – UI**
+- [ ] `UserSettings.page` – Pannello impostazioni
+- [ ] Componenti:
+  - `SettingsPanel` – Preferenze principali
+  - `ThemeSelector`, `LanguageSelector`, `NotificationSettings`
+  - `AccessibilityOptions`, `DataManagement`
+
+---
+
+## 🔚 Fase 8 – Finalizzazione progetto  
+- [ ] Refactoring e ottimizzazioni CSS
+- [ ] Esportazione `dist/` finale
+- [ ] Testing responsive (mobile, TV, desktop)
+- [ ] Inserimento dinamico sponsor
+- [ ] Script di deploy automatico (CI/CD, zip o FTP)
+- [ ] Validazione accessibilità (WCAG 2.1 AA)
 
 ---
 
