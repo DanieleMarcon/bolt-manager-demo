@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolt Manager 01/02</title>
+    <link rel="stylesheet" href="dist/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- App container -->
+        <div class="app-layout">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-content">
+                    <h1 class="app-title">⚽ Bolt Manager 01/02</h1>
+                    <div class="top-bar-actions">
+                        <button id="quickSaveBtn" class="button button-secondary">💾 Salva</button>
+                        <button id="settingsBtn" class="button button-ghost">⚙️</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">🏠 Principale</h3>
+                        <a href="#dashboard" class="nav-link">Dashboard</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">📊 Squadra</h3>
+                        <a href="#team" class="nav-link active">Rosa Giocatori</a>
+                        <a href="#team-stats" class="nav-link">Statistiche</a>
+                        <a href="#team-morale" class="nav-link">Morale</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">⚽ Partite</h3>
+                        <a href="#next-match" class="nav-link">Prossima Partita</a>
+                        <a href="#calendar" class="nav-link">Calendario</a>
+                        <a href="#results" class="nav-link">Risultati</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">🏃 Allenamento</h3>
+                        <a href="#training" class="nav-link">Pianificazione</a>
+                        <a href="#training-programs" class="nav-link">Programmi</a>
+                        <a href="#training-progress" class="nav-link">Progressi</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">⚙️ Tattiche</h3>
+                        <a href="#tactics" class="nav-link">Formazione</a>
+                        <a href="#tactics-schemes" class="nav-link">Schemi</a>
+                        <a href="#tactics-roles" class="nav-link">Ruoli</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">💰 Trasferimenti</h3>
+                        <a href="#transfers" class="nav-link">Mercato</a>
+                        <a href="#negotiations" class="nav-link">Trattative</a>
+                        <a href="#contracts" class="nav-link">Contratti</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">👥 Staff</h3>
+                        <a href="#staff" class="nav-link">Gestione Staff</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">📈 Storico</h3>
+                        <a href="#history" class="nav-link">Progressi Giocatori</a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">⚙️ Sistema</h3>
+                        <a href="#settings" class="nav-link">Impostazioni</a>
+                        <a href="#sessions" class="nav-link">Salvataggi</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content" id="mainContent">
+                <!-- Content will be dynamically loaded here -->
+                <div id="pageContent">
+                    <!-- Initial welcome screen -->
+                    <div class="welcome-screen">
+                        <div class="welcome-content">
+                            <h2>Benvenuto in Bolt Manager 01/02</h2>
+                            <p>Il gioco manageriale calcistico moderno, costruito interamente con Bolt.new</p>
+                            <button id="startNewGameBtn" class="button button-primary button-large">
+                                🎮 Inizia Nuova Partita
+                            </button>
+                            <button id="loadGameBtn" class="button button-secondary button-large">
+                                📁 Carica Partita
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modal Container -->
+        <div id="modalContainer" class="modal-container"></div>
+
+        <!-- Toast Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
