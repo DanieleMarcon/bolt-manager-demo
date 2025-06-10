@@ -132,12 +132,29 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 ---
 
 ## 🔹 Fase 5 – Mercato e Staff  
-🎯 Obiettivo: gestione mercato trasferimenti e staff tecnico
+✅ **COMPLETATO - Prompt 5A**:
+- [x] `Transfer_Offer` – Inizio trattative con offerta
+- [x] `Transfer_Process` – Completamento o rifiuto trattativa
+- [x] `Staff_AssignRole` – Assegnazione ruoli membri staff
 
-🔸 **Prompt 5A – Logica (flow)**
-- [ ] `Transfer_Offer` – Inizio trattative con offerta
-- [ ] `Transfer_Process` – Completamento o rifiuto trattativa
-- [ ] `Staff_AssignRole` – Assegnazione ruoli membri staff
+✅ **IMPLEMENTATO - Flow Logici**:
+- [x] Sistema trasferimenti completo:
+  - Calcolo valore di mercato dinamico
+  - Probabilità accettazione basata su multipli fattori
+  - Gestione controproposte automatiche
+  - Validazione budget e compatibilità
+  - Aggiornamento morale post-trasferimento
+- [x] Gestione staff avanzata:
+  - Matrice compatibilità ruoli
+  - Calcolo bonus squadra per competenze
+  - Sistema promozioni/retrocessioni
+  - Adeguamento stipendi automatico
+  - Impatto su morale e performance squadra
+- [x] Sistema eventi e notifiche:
+  - Eventi trasferimenti con priorità
+  - Notifiche cambio ruolo staff
+  - Tracking cronologico trattative
+  - Gestione scadenze automatiche
 
 🔸 **Prompt 5B – UI (pagine e componenti)**
 - [ ] `TransferMarket.page` – Interfaccia gestione mercato
@@ -194,57 +211,51 @@ Questa roadmap descrive in dettaglio le fasi operative per costruire una demo fu
 
 ## ✅ Obiettivo finale
 
-Una demo completa, esportabile via `dist/`, compatibile con SiteGround o hosting statico, accessibile e responsive. Pronta per l'evoluzione futura in direzione multiplayer, API o espansioni.
+Una **demo funzionante** di un manageriale calcistico completo, esportabile via `dist/`, compatibile con SiteGround o hosting statico, accessibile e responsive. Pronto per l'evoluzione futura in direzione multiplayer, API o espansioni.
 
 ---
 
-## 📊 Stato Attuale - Fase 4
+## 📊 Stato Attuale - Fase 5A Completata
 
 ### ✅ Implementato:
-- **Sistema Salvataggio Completo**: 
-  - Serializzazione completa stato di gioco in JSON
-  - Gestione 6 slot di salvataggio con metadati
-  - Salvataggio rapido e caricamento rapido
-  - Validazione integrità e gestione errori
-  - Persistenza localStorage con backup automatico
+- **Sistema Trasferimenti Avanzato**: 
+  - Flow `Transfer_Offer` con calcolo probabilità accettazione
+  - Flow `Transfer_Process` per completamento/fallimento trattative
+  - Gestione budget, contratti e morale post-trasferimento
+  - Sistema controproposte e negoziazioni automatiche
+  - Validazioni complete e gestione errori
 
-- **Interfaccia Gestione Sessioni**:
-  - Griglia slot con preview dettagliata sessioni
-  - Pannello dettagli con statistiche complete
-  - Azioni sicure: salva, carica, elimina con conferme
-  - Indicatori stato (attiva, salvata, vuota)
-  - Informazioni tempo gioco e progressi
+- **Sistema Staff Professionale**:
+  - Flow `Staff_AssignRole` con matrice compatibilità ruoli
+  - Calcolo bonus squadra basato su competenze staff
+  - Sistema promozioni/retrocessioni con impatto morale
+  - Adeguamento stipendi automatico per ruolo
+  - Gestione trasferimenti staff tra squadre
 
-- **Sistema Backup e Ripristino**:
-  - Esportazione dati in formato JSON strutturato
-  - Importazione backup con validazione formato
-  - Gestione versioni e compatibilità
-  - Feedback utente per tutte le operazioni
+- **Sistema Eventi e Notifiche**:
+  - Eventi trasferimenti con priorità e categorizzazione
+  - Notifiche cambio ruolo staff con feedback
+  - Tracking cronologico completo trattative
+  - Gestione scadenze automatiche negoziazioni
+  - Sistema morale integrato per tutte le operazioni
 
-- **Flow Session Management**:
-  - `Session_Save`: Snapshot completo con metadati
-  - `Session_Load`: Ripristino stato con validazione
-  - Gestione errori robusta e recovery automatico
-  - Aggiornamento automatico timestamp e statistiche
-
-### 🎮 Demo Funzionante Fase 4:
-1. **Salvataggio**: Salva stato completo con un click
-2. **Caricamento**: Ripristina sessioni salvate istantaneamente
-3. **Gestione Slot**: 6 slot con preview e dettagli
-4. **Backup**: Esporta/importa dati per sicurezza
-5. **Persistenza**: Tutto salvato automaticamente in localStorage
+### 🎮 Demo Funzionante Fase 5A:
+1. **Trasferimenti**: Sistema completo offerte e trattative
+2. **Staff**: Gestione ruoli e competenze con bonus squadra
+3. **Budget**: Controllo finanziario integrato
+4. **Morale**: Impatto realistico su tutte le operazioni
+5. **Eventi**: Notifiche e cronologia completa
 
 ### 🔄 Flussi Attivi:
-- **Session_Save**: Stato → Serializzazione → Salvataggio
-- **Session_Load**: Caricamento → Validazione → Ripristino
-- **Backup Export**: Dati → JSON → Download
-- **Backup Import**: File → Validazione → Ripristino
+- **Transfer_Offer**: Offerta → Valutazione → Risposta automatica
+- **Transfer_Process**: Decisione → Trasferimento → Aggiornamenti
+- **Staff_AssignRole**: Assegnazione → Bonus → Morale → Eventi
 
 ### 🏆 Risultati Raggiunti:
-- **Persistenza Totale**: Nessuna perdita dati tra sessioni
-- **Gestione Avanzata**: Slot multipli con metadati completi
-- **Sicurezza Dati**: Backup, validazione, recovery
-- **UX Professionale**: Interfacce intuitive con feedback
-- **Scalabilità**: Sistema pronto per funzionalità cloud
+- **Realismo Gestionale**: Sistema trasferimenti e staff professionale
+- **Complessità Bilanciata**: Logiche sofisticate ma accessibili
+- **Integrazione Completa**: Tutti i sistemi interconnessi
+- **Scalabilità**: Architettura pronta per espansioni future
+- **Robustezza**: Validazioni e gestione errori completa
 
-La **Fase 4** è completamente funzionante! Il sistema di salvataggio e gestione sessioni fornisce una base solida per la persistenza dei dati e l'esperienza utente continua.
+La **Fase 5A** è completamente implementata! I Flow logici per trasferimenti e staff forniscono una base solida per la gestione manageriale avanzata del gioco.
