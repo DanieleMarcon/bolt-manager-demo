@@ -6,6 +6,7 @@ import { TransferOfferFlow } from '../../bolt_src/flows/Transfer_Offer.js';
 import { TransferProcessFlow } from '../../bolt_src/flows/Transfer_Process.js';
 import { StaffAssignRoleFlow } from '../../bolt_src/flows/Staff_AssignRole.js';
 import { ReportCompileHistoryFlow } from '../../bolt_src/flows/Report_CompileHistory.js';
+import { UserSettingsApplyFlow } from '../../bolt_src/flows/UserSettings_Apply.js';
 
 export class GameManager {
     constructor() {
@@ -17,6 +18,7 @@ export class GameManager {
         this.transferProcessFlow = new TransferProcessFlow(this);
         this.staffAssignRoleFlow = new StaffAssignRoleFlow(this);
         this.reportCompileHistoryFlow = new ReportCompileHistoryFlow(this);
+        this.userSettingsApplyFlow = new UserSettingsApplyFlow(this);
     }
 
     async init() {
@@ -26,6 +28,28 @@ export class GameManager {
         
         if (!this.gameData) {
             console.log('No existing game data found');
+        }
+
+        // Load and apply user settings
+        await this.loadUserSettings();
+    }
+
+    async loadUserSettings() {
+        try {
+            // Load user settings and apply them
+            const result = await this.userSettingsApplyFlow.execute({
+                action: 'apply',
+                settings: this.userSettingsApplyFlow.loadUserSettings('default'),
+                applyLive: true
+            });
+
+            if (result.success) {
+                console.log('✅ User settings loaded and applied');
+            } else {
+                console.warn('⚠️ Failed to load user settings:', result.error);
+            }
+        } catch (error) {
+            console.error('Error loading user settings:', error);
         }
     }
 
@@ -73,6 +97,7 @@ export class GameManager {
             attributesHistory: [],
             moraleStatus: [],
             historyReports: [],
+            userSettings: [],
             
             // User session
             userSession: {
@@ -970,6 +995,15 @@ export class GameManager {
     getPlayerMorale(playerId) {
         if (!this.gameData.moraleStatus) return null;
         return this.gameData.moraleStatus.find(m => m.entity_id === playerId && m.entity_type === 'player');
+    }
+
+    // User Settings Flow Methods
+    async executeUserSettingsApply(params) {
+        return await this.userSettingsApplyFlow.execute(params);
+    }
+
+    getUserSettings(userId = 'default') {
+        return this.userSettingsApplyFlow.loadUserSettings(userId);
     }
 
     // Session management
