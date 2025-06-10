@@ -9,6 +9,7 @@ import { SessionManagerPage } from './pages/SessionManagerPage.js';
 import { TransferMarketPage } from './pages/TransferMarketPage.js';
 import { StaffManagementPage } from './pages/StaffManagementPage.js';
 import { PlayerHistoryPage } from './pages/PlayerHistoryPage.js';
+import { UserSettingsPage } from './pages/UserSettingsPage.js';
 
 export class UIManager {
     constructor() {
@@ -23,7 +24,8 @@ export class UIManager {
             sessions: new SessionManagerPage(),
             transfers: new TransferMarketPage(),
             staff: new StaffManagementPage(),
-            history: new PlayerHistoryPage()
+            history: new PlayerHistoryPage(),
+            settings: new UserSettingsPage()
         };
         this.loadingElement = null;
     }
