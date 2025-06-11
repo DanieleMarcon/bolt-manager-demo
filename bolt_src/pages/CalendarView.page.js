@@ -37,8 +37,8 @@
   <div id="sponsorBannerContainer" class="sponsor-banner-container"></div>
 </div>
 
-<script>
-class CalendarViewPage {
+<script type="module">
+export default class CalendarViewPage {
   constructor() {
     this.events = [];
     this.currentDate = new Date();
