@@ -1,0 +1,12 @@
+{
+  "name": "bolt-manager-01-02",
+  "version": "1.0.0",
+  "description": "Demo manageriale calcistica creata con Bolt.new",
+  "main": "main.js",
+  "scripts": {
+    "start": "vite preview"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "type": "module"
+}
