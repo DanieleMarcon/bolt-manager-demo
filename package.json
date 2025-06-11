@@ -1,12 +1,11 @@
 {
   "name": "bolt-manager-01-02",
   "version": "1.0.0",
-  "description": "Demo manageriale calcistica creata con Bolt.new",
-  "main": "main.js",
+  "description": "Demo manageriale calcistica realizzata con Bolt.new",
+  "main": "index.html",
   "scripts": {
-    "start": "vite preview"
+    "build": "echo 'No build step needed. Ready to deploy.'"
   },
-  "dependencies": {},
-  "devDependencies": {},
-  "type": "module"
+  "author": "Your Name",
+  "license": "MIT"
 }
