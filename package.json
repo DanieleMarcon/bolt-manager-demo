@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Demo manageriale calcistica realizzata con Bolt.new",
   "main": "index.html",
-  "scripts": {
-    "build": "echo 'No build step needed. Ready to deploy.'"
-  },
+ "scripts": {
+  "build": "cp -r ./dist ./build"
+},
   "author": "Your Name",
   "license": "MIT"
 }
