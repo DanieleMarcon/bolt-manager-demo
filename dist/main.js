@@ -1,6 +1,6 @@
 // 📦 Importazioni Flussi principali dal progetto bolt-core
-import { GameFlow_StartNewGame } from "../bolt-core/bolt_src/flows/GameFlow_StartNewGame.js";
-import { Session_Load } from "../bolt-core/bolt_src/flows/Session_Load.js";
+import { GameFlow_StartNewGame } from "../bolt_src/flows/GameFlow_StartNewGame.js";
+import { Session_Load } from "../bolt_src/flows/Session_Load.js";
 
 // 📣 Funzione feedback utente (toast)
 function showToast(message, isError = false) {
