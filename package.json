@@ -2,7 +2,7 @@
   "name": "bolt-manager-01-02",
   "version": "1.0.0",
   "description": "Demo manageriale calcistica realizzata con Bolt.new",
-  "main": "index.html",
+  "main": "src/index.html",
  "scripts": {
   "build": "cp -r ./dist ./build"
 },
