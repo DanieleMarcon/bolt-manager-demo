@@ -1,7 +1,7 @@
 // main.js – router-ready per Bolt UI
 
-import { GameFlow_StartNewGame } from "../bolt-core/bolt_src/flows/GameFlow_StartNewGame.js";
-import { Session_Load } from "../bolt-core/bolt_src/flows/Session_Load.js";
+import { GameFlow_StartNewGame } from "../bolt_src/flows/GameFlow_StartNewGame.js";
+import { Session_Load } from "../bolt_src/flows/Session_Load.js";
 
 // 🔁 Router dinamico basato su hash
 async function loadPageFromHash() {
