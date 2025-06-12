@@ -245,8 +245,8 @@
 }
 </style>
 
-<script>
-class StaffManagementPage {
+<script type="module">
+export default class StaffManagementPage {
   constructor() {
     this.staffMembers = [];
     this.selectedCategory = 'all';
