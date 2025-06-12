@@ -4,7 +4,7 @@
   "description": "Demo manageriale calcistica realizzata con Bolt.new",
   "main": "src/index.html",
  "scripts": {
-  "build": "cp -r src/ build"
+  "build": "cp -r ./src ./build"
 },
   "author": "Lavoro Sporco di Marcon Daniele",
   "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati."
