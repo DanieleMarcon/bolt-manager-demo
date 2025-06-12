@@ -6,6 +6,6 @@
  "scripts": {
   "build": "cp -r ./dist ./build"
 },
-  "author": "Your Name",
-  "license": "MIT"
+  "author": "Lavoro Sporco di Marcon Daniele",
+  "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati."
 }
