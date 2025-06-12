@@ -1,61 +1,101 @@
-// main.js – router-ready per Bolt UI
-
 import { GameFlow_StartNewGame } from "../bolt_src/flows/GameFlow_StartNewGame.js";
 import { Session_Load } from "../bolt_src/flows/Session_Load.js";
 
-// 🔁 Router dinamico basato su hash
-async function loadPageFromHash() {
-  const pageContainer = document.getElementById("pageContent");
-  const hash = window.location.hash.slice(1) || "dashboard";
-  const pageName = hash.charAt(0).toUpperCase() + hash.slice(1) + ".page.js";
+// Import statici delle pagine
+import DashboardPage from "./pages/Dashboard.page.js";
+import TeamPage from "./pages/Team.page.js";
+import TeamStatsPage from "./pages/TeamStats.page.js";
+import TeamMoralePage from "./pages/TeamMorale.page.js";
+import NextMatchPage from "./pages/NextMatch.page.js";
+import CalendarViewPage from "./pages/CalendarView.page.js";
+import ResultsPage from "./pages/Results.page.js";
+import TrainingManagementPage from "./pages/TrainingManagement.page.js";
+import TrainingProgramsPage from "./pages/TrainingPrograms.page.js";
+import TrainingProgressPage from "./pages/TrainingProgress.page.js";
+import TacticalSetupPage from "./pages/TacticalSetup.page.js";
+import TacticalSchemesPage from "./pages/TacticalSchemes.page.js";
+import TacticalRolesPage from "./pages/TacticalRoles.page.js";
+import TransfersPage from "./pages/Transfers.page.js";
+import NegotiationsPage from "./pages/Negotiations.page.js";
+import ContractsPage from "./pages/Contracts.page.js";
+import StaffManagementPage from "./pages/StaffManagement.page.js";
+import PlayerHistoryPage from "./pages/PlayerHistory.page.js";
+import UserSettingsPage from "./pages/UserSettings.page.js";
+import SessionManagerPage from "./pages/SessionManager.page.js";
 
-  try {
-    const module = await import(`./pages/${pageName}`);
-    if (typeof module.default === "function") {
-      new module.default();
-    } else {
-      pageContainer.innerHTML = `<p>Errore: modulo ${pageName} non esporta una classe di default</p>`;
-    }
-  } catch (err) {
-    console.error("Errore caricamento pagina:", err);
-    pageContainer.innerHTML = `<p>Pagina non trovata: ${pageName}</p>`;
+// Mappa delle route
+const routes = {
+  dashboard: DashboardPage,
+  team: TeamPage,
+  "team-stats": TeamStatsPage,
+  "team-morale": TeamMoralePage,
+  "next-match": NextMatchPage,
+  calendar: CalendarViewPage,
+  results: ResultsPage,
+  training: TrainingManagementPage,
+  "training-programs": TrainingProgramsPage,
+  "training-progress": TrainingProgressPage,
+  tactics: TacticalSetupPage,
+  "tactics-schemes": TacticalSchemesPage,
+  "tactics-roles": TacticalRolesPage,
+  transfers: TransfersPage,
+  negotiations: NegotiationsPage,
+  contracts: ContractsPage,
+  staff: StaffManagementPage,
+  history: PlayerHistoryPage,
+  settings: UserSettingsPage,
+  sessions: SessionManagerPage,
+};
+
+// Routing statico
+async function loadPageFromHash() {
+  const hash = window.location.hash.slice(1) || "dashboard";
+  const pageContainer = document.getElementById("pageContent");
+  pageContainer.innerHTML = "";
+
+  const PageClass = routes[hash];
+  if (PageClass) {
+    new PageClass();
+  } else {
+    pageContainer.innerHTML = `<p>Pagina non trovata: ${hash}</p>`;
   }
 }
 
-// 🧠 Avvia nuova partita
+// Eventi
+function setupEventListeners() {
+  document.getElementById("startNewGameBtn")?.addEventListener("click", startNewGame);
+  document.getElementById("loadGameBtn")?.addEventListener("click", loadGame);
+  window.addEventListener("hashchange", loadPageFromHash);
+}
+
+// Nuova partita
 async function startNewGame() {
   try {
     const sessionName = prompt("Nome nuova sessione:");
     const selectedTeam = "Team A";
-    const result = await GameFlow_StartNewGame({
-      session_name: sessionName,
-      user_team_id: selectedTeam,
-      difficulty: "standard"
-    });
-    console.log("✅ Nuova partita avviata:", result);
+    const result = await GameFlow_StartNewGame({ session_name: sessionName, user_team_id: selectedTeam, difficulty: "standard" });
     showToast("Nuova partita avviata!");
     window.location.hash = "team";
-  } catch (err) {
-    console.error("Errore nuova partita:", err);
+  } catch (error) {
+    console.error("Errore avvio:", error);
     showToast("Errore avvio partita", true);
   }
 }
 
-// 📂 Carica partita
+// Carica partita
 async function loadGame() {
   try {
     const sessionId = prompt("ID sessione da caricare:");
     const result = await Session_Load({ session_id: sessionId });
-    console.log("✅ Partita caricata:", result);
     showToast("Partita caricata con successo!");
     window.location.hash = "dashboard";
-  } catch (err) {
-    console.error("Errore caricamento:", err);
+  } catch (error) {
+    console.error("Errore caricamento:", error);
     showToast("Errore caricamento partita", true);
   }
 }
 
-// 📣 Toast
+// Toast
 function showToast(message, isError = false) {
   const toast = document.createElement("div");
   toast.className = `toast ${isError ? "error" : "success"}`;
@@ -64,16 +104,8 @@ function showToast(message, isError = false) {
   setTimeout(() => toast.remove(), 4000);
 }
 
-// 🔁 Eventi UI iniziali
-function setupEventListeners() {
-  document.getElementById("startNewGameBtn")?.addEventListener("click", startNewGame);
-  document.getElementById("loadGameBtn")?.addEventListener("click", loadGame);
-  window.addEventListener("hashchange", loadPageFromHash);
-}
-
-// 🚀 Inizializzazione
+// Init
 window.addEventListener("DOMContentLoaded", () => {
-  console.log("⚡ Bolt Manager UI inizializzata");
   setupEventListeners();
   loadPageFromHash();
 });
