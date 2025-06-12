@@ -159,7 +159,7 @@
 }
 </style>
 
-<script>
+<script type="module">
 export default class UserSettingsPage {
   constructor() {
     this.init();
