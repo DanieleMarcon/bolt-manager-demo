@@ -30,12 +30,18 @@ bolt_src/
 ├── storage/ → Variabili e salvataggi Bolt
 
 dist/
-├── index.html, main.js, style.css → Web app esportata
-├── assets/icons/, logos/, json/ → Risorse statiche
+├── index.html → Interfaccia principale
+├── main.js → Logica routing e eventi utente
+├── style.css → Design System globale
+├── assets/ → Icone, loghi, immagini statiche
 
 deploy/
 ├── README_DEPLOY.md → Istruzioni deploy (es. SiteGround)
 ├── deploy.sh → Automazione futura (es. CI/CD)
+
+yaml
+Copia
+Modifica
 
 ---
 
@@ -46,15 +52,18 @@ deploy/
 - **Tattiche**: moduli, mentalità, marcature, ruoli
 - **Partite**: engine testuale, eventi, sostituzioni, report
 - **Mercato**: offerte, contratti, clausole, scouting
-- **Calendario**: avanzamento giorno/turno, eventi automatici
-- **Salvataggi**: gestione sessioni, backup, quickload
+- **Scouting**: mascheramento, precisione, shortlist, report
+- **Direzione**: finanze, sponsor, obiettivi board
+- **Notizie**: comunicati dinamici, eventi, notifiche
+- **Storico**: andamento attributi, prestazioni, timeline
+- **Sistema**: salvataggi, impostazioni utente
 
 ---
 
 ## 🎨 UX/UI
 
-- Design system personalizzato
-- CSS nativo `dist/style.css` compatibile con Bolt.new
+- Design system personalizzato e documentato
+- CSS nativo (`dist/style.css`) con componenti globali
 - Responsive 100% (mobile, tablet, desktop, Smart TV)
 - Accessibilità completa (focus, tastiera, ARIA, contrasto)
 - 50+ componenti UI riutilizzabili
@@ -64,37 +73,55 @@ deploy/
 
 ## 🔄 Flusso di lavoro
 
-1. Costruzione Flussi + Pages in Bolt.new
-2. Salvataggio nel repo (`bolt_src/`)
-3. Esportazione HTML/CSS/JS → `dist/`
-4. Deploy manuale (es. FTP) o CI/CD automatico
-5. Versionamento e backup via GitHub
+1. Sviluppo in Bolt.new (Flows, Datasets, Pages, Components)
+2. Esportazione in `/dist` (HTML + JS + CSS)
+3. Deploy manuale (es. FTP su SiteGround) o CI/CD GitHub
+4. Aggiornamento documentazione in `*.md`
+5. Versionamento via Git
 
 ---
 
 ## ☁️ Hosting consigliato
 
-- 🔹 **SiteGround**: upload in `public_html/`
-- 🔹 **GitHub Pages** o **Netlify** per versioni statiche rapide
-- ✅ `dist/` contiene tutto il necessario
+- 🔹 **SiteGround**: upload diretto in `public_html/`
+- 🔹 **GitHub Pages**: hosting gratuito per versioni statiche
+- 🔹 **Netlify**: deploy CI/CD con anteprime automatiche
+
+✅ Il contenuto della cartella `dist/` è completo e autonomo.
 
 ---
 
-## 🧭 Roadmap
+## 📄 Documentazione tecnica
 
-🔗 La roadmap completa e aggiornata è disponibile nel file [`roadmap.md`](./roadmap.md)
+La documentazione completa è suddivisa in sezioni:
+
+- `modules_overview.md` → panoramica moduli principali
+- `datasets_overview.md` → struttura e relazioni dataset
+- `flows_overview.md` → logica di gioco e flussi interni
+- `ui_overview.md` → layout, componenti e accessibilità
+- `roadmap.md` → milestone e obiettivi futuri
 
 ---
 
 ## 🔧 Requisiti per collaborare
 
 - ✅ Account su [Bolt.new](https://bolt.new)
-- ✅ Nozioni base di Bolt Flows e Pages
-- ✅ Git + GitHub per versionamento
-- ✅ Editor consigliato: VS Code
+- ✅ Familiarità con Bolt Flows, Datasets e Pages
+- ✅ Conoscenza Git + GitHub per versionamento
+- ✅ Editor consigliato: **VS Code**
 
 ---
 
 ## ✅ Obiettivo finale
 
-Una **demo funzionante** di un manageriale calcistico completo, esportabile, riutilizzabile, facilmente estendibile e compatibile con qualsiasi hosting. Pronto per evolversi in progetto commerciale, educativo o open-source.
+Una **demo funzionante e completa** di un manageriale calcistico moderno, progettata per essere:
+
+- Esportabile e deployabile ovunque
+- Modulare e documentata
+- Pronta per diventare un progetto **commerciale**, **educativo** o **open-source**
+
+---
+
+*Aggiornato a: Giugno 2025*  
+*Versione: 1.1*  
+*Compatibilità: Bolt.new latest + tutti i browser moderni*
