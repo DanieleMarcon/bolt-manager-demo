@@ -284,3 +284,55 @@ button {
     display: none;
   }
 }
+
+/* ===========================
+   🆕 COMPONENTI AGGIUNTIVI
+=========================== */
+
+/* Sponsor Banner */
+.sponsor-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.sponsor-banner img {
+  height: 24px;
+  max-width: 100px;
+  margin-left: 8px;
+  object-fit: contain;
+}
+
+/* Request Board Button */
+.request-board-btn {
+  background-color: var(--warning);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.request-board-btn:hover {
+  background-color: #d97706;
+  transform: scale(1.02);
+}
+
+/* ===========================
+   ♿ ACCESSIBILITÀ AGGIUNTIVA
+=========================== */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.tv-focus:focus {
+  outline: 3px solid yellow;
+  transform: scale(1.05);
+}
