@@ -22,6 +22,12 @@ import StaffManagementPage from "./pages/StaffManagement.page.js";
 import PlayerHistoryPage from "./pages/PlayerHistory.page.js";
 import UserSettingsPage from "./pages/UserSettings.page.js";
 import SessionManagerPage from "./pages/SessionManager.page.js";
+import BoardPage from "./pages/Board.page.js";
+import FinanceOverviewPage from "./pages/FinanceOverview.page.js";
+import PressCenterPage from "./pages/PressCenter.page.js";
+import ScoutingPage from "./pages/Scouting.page.js";
+import ShortlistPage from "./pages/Shortlist.page.js";
+import ScoutingReportsPage from "./pages/ScoutingReports.page.js";
 
 // Mappa delle route
 const routes = {
@@ -45,6 +51,12 @@ const routes = {
   history: PlayerHistoryPage,
   settings: UserSettingsPage,
   sessions: SessionManagerPage,
+  board: BoardPage,
+  finances: FinanceOverviewPage,
+  press: PressCenterPage,
+  scouting: ScoutingPage,
+  shortlist: ShortlistPage,
+  reports: ScoutingReportsPage,
 };
 
 // Routing statico
@@ -65,6 +77,9 @@ async function loadPageFromHash() {
 function setupEventListeners() {
   document.getElementById("startNewGameBtn")?.addEventListener("click", startNewGame);
   document.getElementById("loadGameBtn")?.addEventListener("click", loadGame);
+  document.getElementById("notificationsBtn")?.addEventListener("click", () => {
+    window.location.hash = "press";
+  });
   window.addEventListener("hashchange", loadPageFromHash);
 }
 
