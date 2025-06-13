@@ -226,8 +226,8 @@
 }
 </style>
 
-<script>
-class TransferMarketPage {
+<script type="module">
+export default class TransferMarketPage {
   constructor() {
     this.players = [];
     this.filteredPlayers = [];

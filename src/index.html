@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bolt Manager 01/02</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
@@ -16,6 +16,7 @@
                     <h1 class="app-title">⚽ Bolt Manager 01/02</h1>
                     <div class="top-bar-actions">
                         <button id="quickSaveBtn" class="button button-secondary">💾 Salva</button>
+                        <button id="notificationsBtn" class="button button-ghost">🔔</button>
                         <button id="settingsBtn" class="button button-ghost">⚙️</button>
                     </div>
                 </div>
@@ -28,52 +29,70 @@
                         <h3 class="nav-section-title">🏠 Principale</h3>
                         <a href="#dashboard" class="nav-link">Dashboard</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">📊 Squadra</h3>
                         <a href="#team" class="nav-link active">Rosa Giocatori</a>
                         <a href="#team-stats" class="nav-link">Statistiche</a>
                         <a href="#team-morale" class="nav-link">Morale</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">⚽ Partite</h3>
                         <a href="#next-match" class="nav-link">Prossima Partita</a>
                         <a href="#calendar" class="nav-link">Calendario</a>
                         <a href="#results" class="nav-link">Risultati</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">🏃 Allenamento</h3>
                         <a href="#training" class="nav-link">Pianificazione</a>
                         <a href="#training-programs" class="nav-link">Programmi</a>
                         <a href="#training-progress" class="nav-link">Progressi</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">⚙️ Tattiche</h3>
                         <a href="#tactics" class="nav-link">Formazione</a>
                         <a href="#tactics-schemes" class="nav-link">Schemi</a>
                         <a href="#tactics-roles" class="nav-link">Ruoli</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">💰 Trasferimenti</h3>
                         <a href="#transfers" class="nav-link">Mercato</a>
                         <a href="#negotiations" class="nav-link">Trattative</a>
                         <a href="#contracts" class="nav-link">Contratti</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">👥 Staff</h3>
                         <a href="#staff" class="nav-link">Gestione Staff</a>
                     </div>
-                    
+
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">🧠 Scouting</h3>
+                        <a href="#scouting" class="nav-link">Osservazione</a>
+                        <a href="#shortlist" class="nav-link">Shortlist</a>
+                        <a href="#reports" class="nav-link">Report Scout</a>
+                    </div>
+
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">🏛️ Direzione</h3>
+                        <a href="#board" class="nav-link">Board & Obiettivi</a>
+                        <a href="#finances" class="nav-link">Finanze Club</a>
+                    </div>
+
+                    <div class="nav-section">
+                        <h3 class="nav-section-title">📣 Notizie</h3>
+                        <a href="#press" class="nav-link">Comunicati Stampa</a>
+                    </div>
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">📈 Storico</h3>
                         <a href="#history" class="nav-link">Progressi Giocatori</a>
                     </div>
-                    
+
                     <div class="nav-section">
                         <h3 class="nav-section-title">⚙️ Sistema</h3>
                         <a href="#settings" class="nav-link">Impostazioni</a>
@@ -101,6 +120,11 @@
                     </div>
                 </div>
             </main>
+
+            <!-- Sponsor Banner (Global Component) -->
+            <footer class="footer">
+                <div id="sponsorBanner" class="sponsor-banner"></div>
+            </footer>
         </div>
 
         <!-- Modal Container -->
@@ -110,6 +134,6 @@
         <div id="toastContainer" class="toast-container"></div>
     </div>
 
-    <script type="module" src="./main.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

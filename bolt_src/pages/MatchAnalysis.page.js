@@ -155,8 +155,8 @@
 }
 </style>
 
-<script>
-class MatchAnalysisPage {
+<script type="module">
+export default class MatchAnalysisPage {
   constructor() {
     this.matchData = null;
     this.matchReport = null;

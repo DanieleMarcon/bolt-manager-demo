@@ -159,355 +159,192 @@
 }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  initializePage();
-});
-
-async function initializePage() {
-  try {
-    // Initialize components
-    initializeComponents();
-    
-    // Load settings
-    await loadSettings();
-    
-    // Bind events
-    bindEvents();
-    
-    console.log('User Settings page initialized');
-  } catch (error) {
-    console.error('Error initializing User Settings page:', error);
-    showError('Errore durante l\'inizializzazione della pagina');
+<script type="module">
+export default class UserSettingsPage {
+  constructor() {
+    this.init();
   }
-}
 
-function initializeComponents() {
-  // Settings tab navigation
-  const tabNavigationContainer = document.querySelector('.settings-tab-navigation-container');
-  const tabNavigation = document.createElement('div');
-  tabNavigation.className = 'settings-tab-navigation';
-  tabNavigationContainer.appendChild(tabNavigation);
-  
-  // Settings panels
-  const sections = ['general', 'appearance', 'gameplay', 'audio', 'notifications', 'accessibility', 'language', 'data', 'about'];
-  
-  sections.forEach(section => {
-    const panelContainer = document.querySelector(`.settings-panel-container[data-section="${section}"]`);
-    const panel = document.createElement('div');
-    panel.className = 'settings-panel';
-    panel.dataset.section = section;
-    panelContainer.appendChild(panel);
-  });
-  
-  // Theme selector (in appearance panel)
-  const appearancePanel = document.querySelector('.settings-panel-container[data-section="appearance"]');
-  const themeSelector = document.createElement('div');
-  themeSelector.className = 'theme-selector';
-  appearancePanel.appendChild(themeSelector);
-  
-  // Language selector (in language panel)
-  const languagePanel = document.querySelector('.settings-panel-container[data-section="language"]');
-  const languageSelector = document.createElement('div');
-  languageSelector.className = 'language-selector';
-  languagePanel.appendChild(languageSelector);
-  
-  // Accessibility options (in accessibility panel)
-  const accessibilityPanel = document.querySelector('.settings-panel-container[data-section="accessibility"]');
-  const accessibilityOptions = document.createElement('div');
-  accessibilityOptions.className = 'accessibility-options';
-  accessibilityPanel.appendChild(accessibilityOptions);
-  
-  // Gameplay settings (in gameplay panel)
-  const gameplayPanel = document.querySelector('.settings-panel-container[data-section="gameplay"]');
-  const gameplaySettings = document.createElement('div');
-  gameplaySettings.className = 'gameplay-settings';
-  gameplayPanel.appendChild(gameplaySettings);
-  
-  // Sponsor banner
-  const sponsorBannerContainer = document.querySelector('.sponsor-banner-container');
-  const sponsorBanner = document.createElement('div');
-  sponsorBanner.className = 'sponsor-banner';
-  sponsorBannerContainer.appendChild(sponsorBanner);
-}
-
-async function loadSettings() {
-  try {
-    // In a real app, this would call the UserSettings_Apply flow to get current settings
-    const settings = await fetchSettings();
-    
-    // Apply settings to components
-    applySettingsToComponents(settings);
-  } catch (error) {
-    console.error('Error loading settings:', error);
-    showError('Errore nel caricamento delle impostazioni');
-  }
-}
-
-async function fetchSettings() {
-  // In a real app, this would call the backend API
-  // For now, return mock data
-  return {
-    general: {
-      autoSave: true,
-      autoSaveInterval: 10,
-      confirmActions: true,
-      showTutorials: true,
-      interfaceDensity: 'normal'
-    },
-    appearance: {
-      theme: 'auto',
-      accentColor: 'blue',
-      fontSize: 'medium',
-      enableAnimations: true,
-      animationSpeed: 'normal'
-    },
-    gameplay: {
-      difficulty: 'normal',
-      matchSpeed: 'normal',
-      autoAdvance: false,
-      matchDetail: 'medium',
-      realism: 'balanced'
-    },
-    audio: {
-      masterVolume: 80,
-      musicVolume: 60,
-      sfxVolume: 70,
-      enableMusic: true,
-      enableSfx: true
-    },
-    notifications: {
-      enableNotifications: true,
-      matchNotifications: true,
-      transferNotifications: true,
-      injuryNotifications: true,
-      newsNotifications: true
-    },
-    accessibility: {
-      highContrast: false,
-      reduceMotion: false,
-      textSize: 'normal',
-      enhancedDescriptions: false,
-      focusHighlight: true
-    },
-    language: {
-      language: 'it'
+  async init() {
+    try {
+      this.initializeComponents();
+      await this.loadSettings();
+      this.bindEvents();
+      console.log('User Settings page initialized');
+    } catch (error) {
+      console.error('Error initializing User Settings page:', error);
+      this.showError("Errore durante l'inizializzazione della pagina");
     }
-  };
-}
+  }
 
-function applySettingsToComponents(settings) {
-  // Apply settings to each component
-  const settingsPanels = document.querySelectorAll('.settings-panel');
-  settingsPanels.forEach(panel => {
-    if (panel.settingsPanel) {
+  initializeComponents() {
+    const tabNavigationContainer = document.querySelector('.settings-tab-navigation-container');
+    const tabNavigation = document.createElement('div');
+    tabNavigation.className = 'settings-tab-navigation';
+    tabNavigationContainer?.appendChild(tabNavigation);
+
+    const sections = ['general', 'appearance', 'gameplay', 'audio', 'notifications', 'accessibility', 'language', 'data', 'about'];
+    sections.forEach(section => {
+      const panelContainer = document.querySelector(`.settings-panel-container[data-section="${section}"]`);
+      const panel = document.createElement('div');
+      panel.className = 'settings-panel';
+      panel.dataset.section = section;
+      panelContainer?.appendChild(panel);
+    });
+
+    document.querySelector('.settings-panel-container[data-section="appearance"]')?.appendChild(this.createDiv('theme-selector'));
+    document.querySelector('.settings-panel-container[data-section="language"]')?.appendChild(this.createDiv('language-selector'));
+    document.querySelector('.settings-panel-container[data-section="accessibility"]')?.appendChild(this.createDiv('accessibility-options'));
+    document.querySelector('.settings-panel-container[data-section="gameplay"]')?.appendChild(this.createDiv('gameplay-settings'));
+    document.querySelector('.sponsor-banner-container')?.appendChild(this.createDiv('sponsor-banner'));
+  }
+
+  async loadSettings() {
+    try {
+      const settings = await this.fetchSettings();
+      this.applySettingsToComponents(settings);
+    } catch (error) {
+      console.error('Error loading settings:', error);
+      this.showError('Errore nel caricamento delle impostazioni');
+    }
+  }
+
+  async fetchSettings() {
+    return {
+      general: { autoSave: true, autoSaveInterval: 10, confirmActions: true, showTutorials: true, interfaceDensity: 'normal' },
+      appearance: { theme: 'auto', accentColor: 'blue', fontSize: 'medium', enableAnimations: true, animationSpeed: 'normal' },
+      gameplay: { difficulty: 'normal', matchSpeed: 'normal', autoAdvance: false, matchDetail: 'medium', realism: 'balanced' },
+      audio: { masterVolume: 80, musicVolume: 60, sfxVolume: 70, enableMusic: true, enableSfx: true },
+      notifications: { enableNotifications: true, matchNotifications: true, transferNotifications: true, injuryNotifications: true, newsNotifications: true },
+      accessibility: { highContrast: false, reduceMotion: false, textSize: 'normal', enhancedDescriptions: false, focusHighlight: true },
+      language: { language: 'it' }
+    };
+  }
+
+  applySettingsToComponents(settings) {
+    document.querySelectorAll('.settings-panel').forEach(panel => {
       const section = panel.dataset.section;
-      if (settings[section]) {
+      if (panel.settingsPanel && settings[section]) {
         panel.settingsPanel.setSettings(settings[section]);
       }
-    }
-  });
-  
-  // Apply theme settings
-  const themeSelector = document.querySelector('.theme-selector');
-  if (themeSelector && themeSelector.themeSelector) {
-    themeSelector.themeSelector.setTheme(settings.appearance.theme, settings.appearance.accentColor);
-  }
-  
-  // Apply language settings
-  const languageSelector = document.querySelector('.language-selector');
-  if (languageSelector && languageSelector.languageSelector) {
-    languageSelector.languageSelector.setLanguage(settings.language.language);
-  }
-  
-  // Apply accessibility settings
-  const accessibilityOptions = document.querySelector('.accessibility-options');
-  if (accessibilityOptions && accessibilityOptions.accessibilityOptions) {
-    accessibilityOptions.accessibilityOptions.setSettings(settings.accessibility);
-  }
-  
-  // Apply gameplay settings
-  const gameplaySettings = document.querySelector('.gameplay-settings');
-  if (gameplaySettings && gameplaySettings.gameplaySettings) {
-    gameplaySettings.gameplaySettings.setSettings(settings.gameplay);
-  }
-}
-
-function bindEvents() {
-  // Tab navigation
-  document.querySelector('.settings-tab-navigation').addEventListener('tabChange', (e) => {
-    switchSettingsTab(e.detail.tab);
-  });
-  
-  // Settings changes
-  document.querySelectorAll('.settings-panel').forEach(panel => {
-    panel.addEventListener('settingsChange', () => {
-      checkForUnsavedChanges();
     });
-  });
-  
-  // Save all button
-  document.querySelector('.save-all-btn').addEventListener('click', () => {
-    saveAllSettings();
-  });
-  
-  // Reset all button
-  document.querySelector('.reset-all-btn').addEventListener('click', () => {
-    resetAllSettings();
-  });
-  
-  // Cancel button
-  document.querySelector('.cancel-btn').addEventListener('click', () => {
-    cancelChanges();
-  });
-  
-  // Apply button
-  document.querySelector('.apply-btn').addEventListener('click', () => {
-    applySettings();
-  });
-}
 
-function switchSettingsTab(tab) {
-  // Hide all panels
-  document.querySelectorAll('.settings-panel-container').forEach(panel => {
-    panel.style.display = 'none';
-  });
-  
-  // Show selected panel
-  const selectedPanel = document.querySelector(`.settings-panel-container[data-section="${tab}"]`);
-  if (selectedPanel) {
-    selectedPanel.style.display = 'block';
+    this.safeSet('theme-selector', 'setTheme', [settings.appearance.theme, settings.appearance.accentColor]);
+    this.safeSet('language-selector', 'setLanguage', [settings.language.language]);
+    this.safeSet('accessibility-options', 'setSettings', [settings.accessibility]);
+    this.safeSet('gameplay-settings', 'setSettings', [settings.gameplay]);
   }
-}
 
-function checkForUnsavedChanges() {
-  let hasChanges = false;
-  
-  // Check each settings panel for changes
-  document.querySelectorAll('.settings-panel').forEach(panel => {
-    if (panel.settingsPanel && panel.settingsPanel.hasUnsavedChanges()) {
-      hasChanges = true;
-    }
-  });
-  
-  // Update UI
-  document.querySelector('.unsaved-changes-indicator').style.display = hasChanges ? 'flex' : 'none';
-}
+  bindEvents() {
+    document.querySelector('.settings-tab-navigation')?.addEventListener('tabChange', (e) => this.switchTab(e.detail.tab));
 
-async function saveAllSettings() {
-  try {
-    // Collect settings from all panels
-    const settings = collectAllSettings();
-    
-    // In a real app, this would call the UserSettings_Apply flow
-    await saveSettings(settings);
-    
-    // Update UI
-    document.querySelector('.unsaved-changes-indicator').style.display = 'none';
-    
-    showSuccess('Tutte le impostazioni salvate con successo');
-  } catch (error) {
-    console.error('Error saving settings:', error);
-    showError('Errore nel salvataggio delle impostazioni');
+    document.querySelectorAll('.settings-panel').forEach(panel =>
+      panel.addEventListener('settingsChange', () => this.checkForUnsavedChanges())
+    );
+
+    document.querySelector('.save-all-btn')?.addEventListener('click', () => this.saveAllSettings());
+    document.querySelector('.reset-all-btn')?.addEventListener('click', () => this.resetAllSettings());
+    document.querySelector('.cancel-btn')?.addEventListener('click', () => this.cancelChanges());
+    document.querySelector('.apply-btn')?.addEventListener('click', () => this.applySettings());
   }
-}
 
-function collectAllSettings() {
-  const settings = {};
-  
-  // Collect settings from each panel
-  document.querySelectorAll('.settings-panel').forEach(panel => {
-    if (panel.settingsPanel) {
-      const section = panel.dataset.section;
-      settings[section] = panel.settingsPanel.getSettings();
-    }
-  });
-  
-  return settings;
-}
+  switchTab(tab) {
+    document.querySelectorAll('.settings-panel-container').forEach(panel => {
+      panel.style.display = 'none';
+    });
+    document.querySelector(`.settings-panel-container[data-section="${tab}"]`)?.style.setProperty('display', 'block');
+  }
 
-async function saveSettings(settings) {
-  // In a real app, this would call the UserSettings_Apply flow
-  console.log('Saving settings:', settings);
-  
-  // Simulate API call
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ success: true });
-    }, 500);
-  });
-}
+  checkForUnsavedChanges() {
+    const hasChanges = [...document.querySelectorAll('.settings-panel')].some(panel =>
+      panel.settingsPanel?.hasUnsavedChanges?.()
+    );
+    document.querySelector('.unsaved-changes-indicator').style.display = hasChanges ? 'flex' : 'none';
+  }
 
-function resetAllSettings() {
-  if (confirm('Sei sicuro di voler ripristinare tutte le impostazioni ai valori predefiniti? Questa azione non può essere annullata.')) {
-    // Reset each settings panel
+  collectAllSettings() {
+    const settings = {};
     document.querySelectorAll('.settings-panel').forEach(panel => {
+      const section = panel.dataset.section;
       if (panel.settingsPanel) {
-        panel.settingsPanel.resetSettings();
+        settings[section] = panel.settingsPanel.getSettings();
       }
     });
-    
-    // Reset theme selector
-    const themeSelector = document.querySelector('.theme-selector');
-    if (themeSelector && themeSelector.themeSelector) {
-      themeSelector.themeSelector.setTheme('auto', 'blue');
+    return settings;
+  }
+
+  async saveAllSettings() {
+    try {
+      const settings = this.collectAllSettings();
+      await this.saveSettings(settings);
+      document.querySelector('.unsaved-changes-indicator').style.display = 'none';
+      this.showSuccess('Tutte le impostazioni salvate con successo');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      this.showError('Errore nel salvataggio delle impostazioni');
     }
-    
-    // Reset language selector
-    const languageSelector = document.querySelector('.language-selector');
-    if (languageSelector && languageSelector.languageSelector) {
-      languageSelector.languageSelector.setLanguage('it');
+  }
+
+  async applySettings() {
+    try {
+      const settings = this.collectAllSettings();
+      await this.saveSettings(settings);
+      this.applySettingsToComponents(settings);
+      document.querySelector('.unsaved-changes-indicator').style.display = 'none';
+      this.showSuccess('Impostazioni applicate con successo');
+    } catch (error) {
+      console.error('Error applying settings:', error);
+      this.showError('Errore nell\'applicazione delle impostazioni');
     }
-    
-    // Update UI
+  }
+
+  async saveSettings(settings) {
+    console.log('Saving settings:', settings);
+    return new Promise(resolve => setTimeout(() => resolve({ success: true }), 500));
+  }
+
+  resetAllSettings() {
+    if (!confirm('Sei sicuro di voler ripristinare tutte le impostazioni ai valori predefiniti?')) return;
+    document.querySelectorAll('.settings-panel').forEach(panel => {
+      panel.settingsPanel?.resetSettings();
+    });
+    this.safeSet('theme-selector', 'setTheme', ['auto', 'blue']);
+    this.safeSet('language-selector', 'setLanguage', ['it']);
     document.querySelector('.unsaved-changes-indicator').style.display = 'none';
-    
-    showSuccess('Tutte le impostazioni ripristinate ai valori predefiniti');
+    this.showSuccess('Tutte le impostazioni ripristinate ai valori predefiniti');
+  }
+
+  cancelChanges() {
+    if (!confirm('Sei sicuro di voler annullare tutte le modifiche non salvate?')) return;
+    this.loadSettings();
+    document.querySelector('.unsaved-changes-indicator').style.display = 'none';
+  }
+
+  safeSet(selectorClass, method, args) {
+    const el = document.querySelector(`.${selectorClass}`);
+    const instance = el?.[selectorClass.replace(/-([a-z])/g, (_, l) => l.toUpperCase())];
+    if (instance && typeof instance[method] === 'function') {
+      instance[method](...args);
+    }
+  }
+
+  createDiv(className) {
+    const div = document.createElement('div');
+    div.className = className;
+    return div;
+  }
+
+  showError(message) {
+    window.dispatchEvent(new CustomEvent('showToast', { detail: { message, type: 'error' } }));
+  }
+
+  showSuccess(message) {
+    window.dispatchEvent(new CustomEvent('showToast', { detail: { message, type: 'success' } }));
   }
 }
 
-function cancelChanges() {
-  if (confirm('Sei sicuro di voler annullare tutte le modifiche non salvate?')) {
-    // Reload settings
-    loadSettings();
-    
-    // Update UI
-    document.querySelector('.unsaved-changes-indicator').style.display = 'none';
-  }
-}
+document.addEventListener('DOMContentLoaded', () => {
+  new UserSettingsPage();
+});
 
-async function applySettings() {
-  try {
-    // Collect settings from all panels
-    const settings = collectAllSettings();
-    
-    // In a real app, this would call the UserSettings_Apply flow
-    await saveSettings(settings);
-    
-    // Apply settings immediately
-    applySettingsToComponents(settings);
-    
-    // Update UI
-    document.querySelector('.unsaved-changes-indicator').style.display = 'none';
-    
-    showSuccess('Impostazioni applicate con successo');
-  } catch (error) {
-    console.error('Error applying settings:', error);
-    showError('Errore nell\'applicazione delle impostazioni');
-  }
-}
-
-function showError(message) {
-  // Show error toast
-  window.dispatchEvent(new CustomEvent('showToast', {
-    detail: { message, type: 'error' }
-  }));
-}
-
-function showSuccess(message) {
-  // Show success toast
-  window.dispatchEvent(new CustomEvent('showToast', {
-    detail: { message, type: 'success' }
-  }));
-}
 </script>

@@ -2,10 +2,10 @@
   "name": "bolt-manager-01-02",
   "version": "1.0.0",
   "description": "Demo manageriale calcistica realizzata con Bolt.new",
-  "main": "index.html",
- "scripts": {
-  "build": "cp -r ./dist ./build"
-},
-  "author": "Your Name",
-  "license": "MIT"
+  "main": "src/index.html",
+  "scripts": {
+    "build": "mkdir -p build && cp src/index.html build/ && cp src/main.js build/ && cp src/style.css build/ && cp -r bolt_src build/bolt_src && mkdir -p build/pages && cp bolt_src/pages/*.page.js build/pages/"
+    },
+  "author": "Lavoro Sporco di Marcon Daniele",
+  "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati."
 }

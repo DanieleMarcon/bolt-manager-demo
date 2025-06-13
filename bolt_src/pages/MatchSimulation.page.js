@@ -138,8 +138,8 @@
 }
 </style>
 
-<script>
-class MatchSimulationPage {
+<script type="module">
+export default class MatchSimulationPage {
   constructor() {
     this.matchData = null;
     this.isPlaying = false;

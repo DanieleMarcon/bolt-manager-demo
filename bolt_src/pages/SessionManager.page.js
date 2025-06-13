@@ -159,8 +159,8 @@
 }
 </style>
 
-<script>
-class SessionManagerPage {
+<script type="module">
+export default class SessionManagerPage {
   constructor() {
     this.saveSlots = [];
     this.selectedSlot = null;
