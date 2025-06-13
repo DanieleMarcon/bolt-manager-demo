@@ -406,6 +406,116 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 **Moduli associati**: Impostazioni Utente
 
 ---
+### 16. **Finance_Update**
+**Trigger**: Evento economico (stipendio, sponsor, trasferimento)
+**Input richiesto**:
+- ID squadra coinvolta
+- Tipo transazione (entrata/uscita)
+- Categoria spesa/ricavo
+- Importo e descrizione
+- Logica step-by-step:
+- Identifica la squadra e recupera stato finanziario attuale
+- Aggiunge la transazione al bilancio mensile
+- Aggiorna budget corrente della squadra
+- Verifica soglie critiche (es. bilancio negativo)
+- Registra log nel dataset finances
+- Genera evento visivo se necessario (alert budget)
+
+**Dataset coinvolti**:
+- `finances` (scrittura - transazione e stato)
+- `teams` (scrittura - aggiornamento budget)
+- `game_events` (scrittura - avvisi finanziari)
+
+**Output**: Budget aggiornato, transazione loggata
+**Moduli associati**: Finanze, Trasferimenti, Direzione
+
+### 17. **Board_Evaluate**
+**Trigger**: Fine partita / richiesta utente / fine mese
+**Input richiesto**:
+- ID sessione attiva
+- Tipo valutazione (tecnica, economica, reputazionale)
+
+**Logica step-by-step**:
+
+1. Analizza risultati recenti, andamento economico e obiettivi
+2. Calcola punteggio fiducia aggregato
+3. Aggiorna stato board_feedback
+4. Determina rischio esonero e soglie di attenzione
+5. Risponde a eventuali richieste utente (fondi, upgrade)
+6. Genera comunicazione formale (opzionale: press_releases)
+
+**Dataset coinvolti**:
+- `board_feedback` (scrittura - fiducia e storico)
+- `matches`, `finances`, `transfers` (lettura - performance)
+- `game_events`, `press_releases` (scrittura - output comunicazioni)
+
+**Output**: Stato board aggiornato, rischio esonero calcolato
+**Moduli associati**: Direzione, Finanze
+
+### 18. **Scouting_Update**
+**Trigger**: Avanzamento giorno, completamento scouting
+**Input richiesto**:
+- ID scout e giocatore osservato
+- Stato attuale osservazione
+
+**Logica step-by-step**:
+1. Incrementa progresso osservazione nel dataset discovery_level
+2. Riduce mascheramento attributi nel dataset attribute_masking
+3. Aggiorna accuratezza valutazione scout
+4. Salva eventuali report generati
+5. Se completato → invia evento di scoperta
+
+**Dataset coinvolti**:
+- `discovery_level` (scrittura - progresso)
+- `attribute_masking` (scrittura - riduzione incertezza)
+- `scouting_accuracy` (scrittura - accuratezza stimata)
+- `shortlist`, `game_events` (scrittura - notifiche)
+
+**Output**: Stato osservazione aggiornato, attributi più chiari
+**Moduli associati**: Scout, Shortlist
+
+### 19. **Discovery_Complete**
+**Trigger**: Completamento osservazione giocatore
+**Input richiesto**:
+- ID giocatore osservato
+- ID scout
+
+**Logica step-by-step**:
+1. Verifica che tutti i parametri siano al 100%
+2. Sblocca completamente attributi tecnici/mentali/fisici
+3. Aggiorna attribute_masking a 0% per ogni attributo
+4. Marca livello scoperta come completo
+5. Invia comunicazione all’utente
+
+**Dataset coinvolti**:
+- `discovery_level` (scrittura - stato completato)
+- `attribute_masking` (scrittura - 0% su tutti gli attributi)
+- `game_events`, `press_releases` (scrittura - notifica scouting)
+
+**Output**: Giocatore completamente scoperto
+**Moduli associati**: Scout, Match Analysis
+
+### 20. **Press_Center_Display**
+**Trigger**: Apertura sezione “Notizie” o ricezione evento importante
+**Input richiesto**:
+- Data corrente
+- Categoria eventi da mostrare (tutti / recenti / importanti)
+
+**Logica step-by-step**:
+1. Filtra press_releases in base alla data e categoria
+2. Ordina per priorità e urgenza
+3. Applica formattazione dinamica contenuto
+4. Marca le notizie come lette una volta visualizzate
+5. Aggiorna badge “nuove notizie” se necessario
+
+**Dataset coinvolti**:
+- `press_releases` (lettura/scrittura - visualizzazione e stato)
+- `game_events` (opzionale - eventi correlati)
+
+**Output**: Lista notizie formattata visivamente
+**Moduli associati**: Notizie, Dashboard, Eventi
+
+---
 
 ## 📊 Tabella Riepilogativa Flow
 
@@ -426,50 +536,56 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 | **Report_CompileHistory** | Storico Giocatori | Richiesta storico | `attributes_history`, `matches`, `players` | Report storico compilato |
 | **Calendar_FetchUpcomingEvents** | Calendar Advance | Apertura calendario | `matches`, `trainings`, `transfers`, `game_events` | Eventi futuri elencati |
 | **UserSettings_Apply** | Impostazioni Utente | Salvataggio impostazioni | `user_settings` | Impostazioni applicate |
+| **Finance_Update** | Finanze | Evento economico | `finances`, `teams`, `game_events` | Budget aggiornato, log transazione |
+| **Board_Evaluate** | Direzione | Fine partita / richiesta / mese | `board_feedback`, `matches`, `finances`, `transfers`, `game_events`, `press_releases` | Stato board aggiornato |
+| **Scouting_Update** | Scout | Avanzamento scouting | `discovery_level`, `attribute_masking`, `scouting_accuracy`, `shortlist`, `game_events` | Progresso osservazione aggiornato |
+| **Discovery_Complete** | Scout | Completamento osservazione | `discovery_level`, `attribute_masking`, `game_events`, `press_releases` | Giocatore completamente scoperto |
+| **Press_Center_Display** | Notizie | Apertura Press Center | `press_releases`, `game_events` | Lista notizie formattata visivamente |
 
 ---
 
 ## 🔄 Dipendenze tra Flow
 
 ### Flow Principali (Core):
-- `GameFlow_StartNewGame` → Inizializza tutti gli altri flow
-- `GameFlow_AdvanceDay` → Può triggerare `Match_Simulate`, `Player_Train`, `Morale_Update`
-- `Match_Simulate` → Triggera automaticamente `Match_GenerateReport`
+- `GameFlow_StartNewGame` → Inizializza: `teams`, `players`, `staff`, `matches`, `tactics`, `user_sessions`, `morale_status`
+- `GameFlow_AdvanceDay` → Triggera: `Match_Simulate`, `Player_Train`, `Morale_Update`, `Calendar_FetchUpcomingEvents`, `Scouting_Update`
+- `Match_Simulate` → Triggera automaticamente: `Match_GenerateReport`, `Morale_Update`, `Finance_Update`, `Board_Evaluate`, `Press_Center_Display`
 
 ### Flow di Supporto:
-- `Morale_Update` → Triggerato da `Match_Simulate`, `Player_Train`, `Transfer_Process`
-- `Session_Save` → Può essere triggerato da qualsiasi flow significativo
-- `Calendar_FetchUpcomingEvents` → Utilizzato da `GameFlow_AdvanceDay`
+- `Morale_Update` → Triggerato da: `Match_Simulate`, `Player_Train`, `Transfer_Process`
+- `Board_Evaluate` → Dipende da: `Finance_Update`, `Match_Simulate`, `Transfer_Process`
+- `Finance_Update` → Attivato da: `Transfer_Process`, `Match_Simulate`, `GameFlow_AdvanceDay`
+- `Scouting_Update` → Avanzato da: `GameFlow_AdvanceDay`
+- `Discovery_Complete` → Dipende da: `Scouting_Update`
+- `Press_Center_Display` → Dipende da: `press_releases`, `game_events`
 
 ### Flow Indipendenti:
-- `UserSettings_Apply` → Non dipende da altri flow
+- `UserSettings_Apply` → Completamente autonomo
 - `Report_CompileHistory` → Legge solo dati storici
-- `Staff_AssignRole` → Indipendente ma impatta altri flow
+- `Staff_AssignRole` → Indipendente, ma può influire su `Player_Train`
 
 ---
 
 ## 🚀 Implementazione in Bolt.new
 
 ### Priorità di Sviluppo:
-1. **Fase 1**: `GameFlow_StartNewGame`, `Session_Save`, `Session_Load`
-2. **Fase 2**: `Match_Simulate`, `Match_GenerateReport`, `GameFlow_AdvanceDay`
-3. **Fase 3**: `Player_Train`, `Tactics_Update`, `Morale_Update`
-4. **Fase 4**: `Transfer_Offer`, `Transfer_Process`, flow di supporto
+1. **Fase 1**:  
+   `GameFlow_StartNewGame`, `Session_Save`, `Session_Load`
 
-### Testing Strategy:
-- Ogni flow deve essere testabile in isolamento
-- Mock data per testing rapido
-- Validazione input/output per ogni step
-- Logging dettagliato per debug
+2. **Fase 2**:  
+   `Match_Simulate`, `Match_GenerateReport`, `GameFlow_AdvanceDay`
 
-### Performance Considerations:
-- Flow pesanti (Match_Simulate) con progress indicator
-- Batch processing per operazioni multiple
-- Caching per dati frequentemente acceduti
-- Lazy loading per flow non critici
+3. **Fase 3**:  
+   `Player_Train`, `Tactics_Update`, `Morale_Update`, `Finance_Update`, `UserSettings_Apply`
+
+4. **Fase 4**:  
+   `Transfer_Offer`, `Transfer_Process`, `Board_Evaluate`, `Scouting_Update`, `Staff_AssignRole`
+
+5. **Fase 5** (estensione dinamica):  
+   `Discovery_Complete`, `Press_Center_Display`, `Calendar_FetchUpcomingEvents`, `Report_CompileHistory`
 
 ---
 
-*Documentazione aggiornata al: Gennaio 2025*
-*Versione flow: 1.0*
+*Documentazione aggiornata al: Giugno 2025*  
+*Versione flow: 1.1*  
 *Compatibilità Bolt.new: Tutte le versioni*
