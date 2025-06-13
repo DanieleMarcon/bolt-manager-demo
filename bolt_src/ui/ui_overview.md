@@ -134,20 +134,35 @@ Documentazione completa dell'interfaccia utente per la web app manageriale, ispi
    └── Contratti
 👥 Staff
 📈 Storico
+📊 Finanze
+   ├── Bilancio
+   └── Sponsor
+🏛️ Direzione
+   ├── Fiducia Board
+   └── Richieste
+🕵️ Scout
+   ├── Shortlist
+   ├── Osservazione
+   └── Progressi
 ⚙️ Impostazioni
 ```
 
 ### Breadcrumbs
 ```
 Home > Squadra > Rosa Giocatori > [Nome Giocatore]
+Home > Finanze > Sponsor
+Home > Direzione > Fiducia Board
+Home > Scout > Shortlist
 ```
 
 ### Navigazione Tastiera
-- **Tab**: Navigazione sequenziale
-- **Frecce**: Navigazione direzionale in griglie
-- **Enter/Space**: Attivazione elementi
-- **Esc**: Chiusura modal/overlay
-- **Ctrl+S**: Salvataggio rapido
+- **Tab / Shift+Tab**: Navigazione sequenziale avanti/indietro
+- **Frecce**: Navigazione direzionale (griglie, tabelle, calendari)
+- **Alt + Frecce**: Navigazione orizzontale tra tab
+- **Ctrl + S**: Salvataggio rapido
+- **Ctrl + [1–9]**: Accesso diretto alle macro-sezioni
+- **Enter / Space**: Attivazione elementi (bottoni, card, link)
+- **Esc**: Chiusura modali, overlay, menù contestuali
 
 ---
 
@@ -577,13 +592,13 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
 ┌─────────────────────────────────────────┐
 │ [Player Selector] [Time Range Filter]   │ ← Selezione giocatore
 ├─────────────────────────────────────────┤
-│ [Progress Charts]                      │ ← Grafici progressione
+│ [Progress Charts]                       │ ← Grafici progressione
 │ ┌─────────────────────────────────────┐ │
 │ │     Attributes Over Time            │ │
 │ │     📈 Chart                        │ │
 │ └─────────────────────────────────────┘ │
 ├─────────────────────────────────────────┤
-│ [Statistics Table] | [Timeline View]   │ ← Tabella + timeline
+│ [Statistics Table] | [Timeline View]    │ ← Tabella + timeline
 └─────────────────────────────────────────┘
 ```
 
@@ -622,17 +637,17 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
 **Layout Structure**:
 ```
 ┌─────────────────────────────────────────┐
-│ [Settings Categories Tabs]             │ ← Tab categorie
+│ [Settings Categories Tabs]              │ ← Tab categorie
 ├─────────────────────────────────────────┤
-│ [Settings Panel]                       │ ← Pannello impostazioni
+│ [Settings Panel]                        │ ← Pannello impostazioni
 │ ┌─────────────────────────────────────┐ │
 │ │ 🎨 Appearance                       │ │
-│ │ 🔊 Audio                           │ │
-│ │ ⚽ Gameplay                        │ │
-│ │ ♿ Accessibility                   │ │
+│ │ 🔊 Audio                            │ │
+│ │ ⚽ Gameplay                         │ │
+│ │ ♿ Accessibility                     │ │
 │ └─────────────────────────────────────┘ │
 ├─────────────────────────────────────────┤
-│ [Apply] [Reset] [Export Settings]      │ ← Azioni
+│ [Apply] [Reset] [Export Settings]       │ ← Azioni
 └─────────────────────────────────────────┘
 ```
 
@@ -665,11 +680,125 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
 **Flow Collegati**: `UserSettings_Apply`
 
 ---
+### 12. FinanceOverview.page
+
+**Layout Structure**:
+```
+┌─────────────────────────────────────────┐
+│ Breadcrumb: Home > Finanze              │
+├─────────────────────────────────────────┤
+│ [Budget Tracker]                        │ ← Bilancio economico
+├─────────────────────────────────────────┤
+│ [Sponsor Banner]                        │ ← Sponsor attivo
+├─────────────────────────────────────────┤
+│ [Request Board Button]                  │ ← Richiesta fondi
+└─────────────────────────────────────────┘
+```
+**Componenti UI**:
+- `BudgetTracker`: Riepilogo spese/entrate mensili
+- `SponsorBanner`: Visualizzazione dello sponsor attuale
+- `RequestBoardButton`: Invio richiesta alla dirigenza
+
+**Comportamento Dinamico**:
+- Variazione sponsor aggiorna il banner
+- Avvisi visivi in caso di superamento budget
+- Pulsante disabilitato in caso di richiesta recente
+
+**Responsività**:
+- Mobile: Stack verticale
+- Tablet/Desktop: Layout 2 colonne
+- TV: Vista semplificata con grandi indicatori
+
+**Accessibilità**:
+- Annunci screen reader per soglie superate
+- Focus visibile su budget negativo
+
+**Flow Collegati**: `Finance_Update`, `Board_Evaluate`
+
+---
+
+### 13. Board.page
+
+**Layout Structure**:
+```
+┌─────────────────────────────────────────┐
+│ Breadcrumb: Home > Direzione            │
+├─────────────────────────────────────────┤
+│ [Board Confidence Panel]                │ ← Fiducia dirigenza
+├─────────────────────────────────────────┤
+│ [Request Form]                          │ ← Richieste attive/inviate
+├─────────────────────────────────────────┤
+│ [Dismissal Status]                      │ ← Rischio esonero
+└─────────────────────────────────────────┘
+```
+**Componenti UI**:
+- `BoardConfidencePanel`: Indicatore fiducia dirigenza
+- `RequestForm`: Form per invio richieste (fondi, stadio, staff)
+- `DismissalStatus`: Notifica rischio esonero
+
+**Comportamento Dinamico**:
+- Grafico fiducia si aggiorna dopo partite/eventi
+- Richieste convalidabili solo se requisiti rispettati
+- Rischio esonero visibile in base a prestazioni
+
+**Responsività**:
+- Mobile: Pannelli impilati
+- Desktop: Grafico + form affiancati
+- TV: Informazioni ridotte ma ben leggibili
+
+**Accessibilità**:
+- Grafici leggibili da screen reader
+- Feedback immediato dopo invio richieste
+
+**Flow Collegati**: `Board_Evaluate`, `User_RequestFunds`
+
+---
+
+### 14. Scouting.page
+
+**Layout Structure**:
+```
+┌─────────────────────────────────────────┐
+│ Breadcrumb: Home > Scout                │
+├─────────────────────────────────────────┤
+│ [Scout Assignment Panel]                │ ← Assegna scout
+├─────────────────────────────────────────┤
+│ [Discovery Progress Bar]                │ ← Avanzamento scouting
+├─────────────────────────────────────────┤
+│ [Shortlist Grid]                        │ ← Giocatori osservati
+└─────────────────────────────────────────┘
+```
+**Componenti UI**:
+- `ScoutAssignmentPanel`: Selezione aree o profili da osservare
+- `DiscoveryProgressBar`: Stato avanzamento osservazione
+- `ShortlistGrid`: Tabella giocatori sotto osservazione
+- `ScoutingFilters`: Filtro attributi, nazionalità, ruolo
+
+**Comportamento Dinamico**:
+- Progresso visibile con animazione barra
+- Filtri avanzati per shortlist
+- Notifiche automatiche per nuove scoperte
+
+**Responsività**:
+- Mobile: Vista compatta con tab
+- Desktop: Pannelli affiancati
+- TV: Layout fullscreen con card grandi
+
+**Accessibilità**:
+- Filtri con etichette accessibili
+- Annunci vocali per aggiornamenti scout
+
+**Flow Collegati**: `Scouting_Update`, `Shortlist_Add`, `Discovery_Complete`
+
+---
 
 ## 🎛️ Componenti UI Riutilizzabili
 
 ### Cards
 - `PlayerCard`: Foto, nome, ruolo, rating, stato
+- `PlayerMarketCard`: Card giocatore mercato con valore e club
+- `SaveSlotCard`: Anteprima slot salvataggio con stato
+- `PlayerRatingCard`: Valutazione numerica 1–10 post-partita
 - `TeamCard`: Logo, nome, statistiche, posizione
 - `MatchCard`: Squadre, risultato, data
 - `StaffCard`: Nome, ruolo, competenze
@@ -679,12 +808,23 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
 - `SearchBar`: Ricerca con filtri
 - `FilterPanel`: Pannello filtri avanzati
 - `FormField`: Campo form con validazione
+- `ContractDetailsForm`: Dettagli contratto giocatore/staff
+- `RequestForm`: Form invio richieste al board
+- `LanguageSelector`: Selettore lingua interfaccia
+- `ThemeSelector`: Switch tema chiaro/scuro/auto
+- `TimeRangeFilter`: Filtro periodo per storico
+
 - `Slider`: Slider con valori
 - `Toggle`: Switch on/off
 
 ### Data Display
 - `StatChart`: Grafici statistiche
 - `ProgressBar`: Barra progresso
+- `BudgetTracker`: Bilancio mensile + visual indicator
+- `AttributeProgressChart`: Grafico crescita attributi
+- `DiscoveryProgressBar`: Stato avanzamento scouting
+- `StatsComparisonChart`: Grafico confronto squadre
+
 - `RatingStars`: Stelle valutazione
 - `Badge`: Badge stato/categoria
 - `Timeline`: Timeline eventi
@@ -693,6 +833,9 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
 - `Breadcrumb`: Navigazione gerarchica
 - `Pagination`: Paginazione risultati
 - `TabNavigation`: Navigazione tab
+- `SettingsTabNavigation`: Navigazione nelle Impostazioni
+- `ScoutAssignmentPanel`: Assegna scout a zona/target
+- `CalendarNavigation`: Navigazione mesi calendario
 - `Sidebar`: Menu laterale
 - `TopBar`: Barra superiore
 
@@ -701,6 +844,9 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
 - `Toast`: Notifiche temporanee
 - `LoadingSpinner`: Indicatore caricamento
 - `ConfirmDialog`: Dialog conferma
+- `RequestBoardButton`: Azione trigger richiesta fondi
+- `LoadConfirmModal`: Conferma caricamento sessione
+- `ExportReportButton`: Azione esportazione analisi
 - `ErrorMessage`: Messaggi errore
 
 ---
@@ -727,6 +873,10 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
   outline: 2px solid var(--primary);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
 }
 ```
 
@@ -760,6 +910,16 @@ Home > Squadra > Rosa Giocatori > [Nome Giocatore]
   opacity: 1;
   transform: translateY(0);
   transition: all 0.3s ease;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.tab-active {
+  border-bottom: 2px solid var(--primary);
+  font-weight: 600;
 }
 ```
 
@@ -842,6 +1002,7 @@ document.addEventListener('keydown', (e) => {
     case 'Escape': goBack(); break;
   }
 });
+
 ```
 
 ### TV UX Patterns
@@ -850,6 +1011,12 @@ document.addEventListener('keydown', (e) => {
 - **Large Targets**: Elementi grandi e spaziati
 - **Clear Hierarchy**: Struttura visiva forte
 
+```css
+.tv-focus:focus {
+  outline: 3px solid yellow;
+  transform: scale(1.05);
+}
+```
 ---
 
 ## 🎯 Linee Guida Globali
@@ -890,6 +1057,6 @@ document.addEventListener('keydown', (e) => {
 
 ---
 
-*Documentazione UI aggiornata al: Gennaio 2025*
-*Versione design system: 1.0*
+*Documentazione UI aggiornata al: Giugno 2025*  
+*Versione design system: 1.1*  
 *Compatibilità: Mobile, Tablet, Desktop, Smart TV*
