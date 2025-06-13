@@ -226,6 +226,121 @@ I dataset sono progettati per essere:
 
 ---
 
+---
+
+### 14. **finances** - Situazione Finanziaria del Club  
+**Scopo**: Tracciamento economico dettagliato della squadra  
+**Relazioni**:
+- `team_id` → `teams.id`
+- `sponsor_id` → `sponsors.id` (opzionale)
+
+**Campi chiave**:
+- Budget attuale e bilanci mensili
+- Entrate (sponsor, stadio, competizioni)
+- Uscite (ingaggi, trasferimenti, spese operative)
+- Grafico andamento economico e cashflow
+
+**Utilizzo nei Flow**: `Finance_Update`, `Transfer_Process`, `Board_Evaluate`
+
+---
+
+### 15. **board_feedback** - Feedback e Valutazioni del Board  
+**Scopo**: Stato fiducia della dirigenza e gestione richieste utente  
+**Relazioni**:
+- `team_id` → `teams.id`
+- `user_id` → `user_sessions.id`
+
+**Campi chiave**:
+- Fiducia tecnica, economica, reputazionale
+- Cronologia richieste (esito, tipo, data)
+- Stato rischio esonero
+- Obiettivi stagionali e valutazioni
+
+**Utilizzo nei Flow**: `Board_Evaluate`, `User_RequestFunds`
+
+---
+
+### 16. **scouting_accuracy** - Accuratezza degli Scout  
+**Scopo**: Tracciamento precisione delle valutazioni scouting  
+**Relazioni**:
+- `player_id` → `players.id`
+- `scout_id` → `staff.id`
+
+**Campi chiave**:
+- Differenza tra valutazione stimata e reale
+- Grado mascheramento residuo
+- Esperienza e competenza dello scout
+- Affidabilità area geografica
+
+**Utilizzo nei Flow**: `Scouting_Update`, `Discovery_Complete`
+
+---
+
+### 17. **shortlist** - Lista Giocatori Osservati  
+**Scopo**: Gestione personalizzata dei giocatori in osservazione  
+**Relazioni**:
+- `player_id` → `players.id`
+- `user_id` → `user_sessions.id`
+
+**Campi chiave**:
+- Priorità (alta, media, bassa)
+- Note scout o utente
+- Stato osservazione e accuratezza stimata
+- Data inserimento in lista
+
+**Utilizzo nei Flow**: `Shortlist_Add`, `Scouting_Update`
+
+---
+
+### 18. **attribute_masking** - Mascheramento Attributi  
+**Scopo**: Simulazione incertezza scouting  
+**Relazioni**:
+- `player_id` → `players.id`
+- `user_id` → `user_sessions.id`
+
+**Campi chiave**:
+- % mascheramento per attributo (0-100%)
+- Provenienza del dato (partita, osservazione, rumor)
+- Data ultimo aggiornamento
+- Attendibilità stimata
+
+**Utilizzo nei Flow**: `Scouting_Discover`, `AttributeReveal`, `Match_Scouting`
+
+---
+
+### 19. **discovery_level** - Stato di Scoperta del Giocatore  
+**Scopo**: Progresso osservazione individuale nel tempo  
+**Relazioni**:
+- `player_id` → `players.id`
+- `scout_id` → `staff.id`
+
+**Campi chiave**:
+- Stato: non visto / in osservazione / osservato completamente
+- Progresso % su attributi tecnici, mentali, fisici
+- Partite osservate e report generati
+- Area geografica e fonte dati
+
+**Utilizzo nei Flow**: `Discovery_Complete`, `Scouting_Update`, `Scout_Assignment`
+
+---
+
+### 20. **press_releases** - Comunicati Stampa di Gioco  
+**Scopo**: Archivio dei messaggi dinamici generati dagli eventi del mondo di gioco  
+**Relazioni**:
+- `team_id` → `teams.id` *(opzionale)*
+- `player_id` → `players.id` *(opzionale)*
+- `match_id` → `matches.id` *(opzionale)*
+
+**Campi chiave**:
+- Tipo comunicato (infortunio, dichiarazione, esonero, evento storico)
+- Contenuto testuale dinamico
+- Data generazione ed entità coinvolte
+- Letto/non letto, urgenza
+
+**Utilizzo nei Flow**: `Event_Generator`, `Notification_System`, `Press_Center_Display`
+
+---
+
 ## 🔄 Flussi di Popolazione Dati
 
 ### Inizializzazione Gioco
@@ -242,6 +357,14 @@ I dataset sono progettati per essere:
 - **match_reports**: Generati dopo ogni partita
 - **attributes_history**: Aggiornato dopo allenamenti/partite
 - **morale_status**: Aggiornato dopo eventi significativi
+- **finances**: Aggiornato a ogni evento economico (ingaggio, premio, spesa)
+- **board_feedback**: Aggiornato dopo partite, richieste e milestone
+- **scouting_accuracy**: Aggiornato ogni volta che uno scout osserva un giocatore
+- **discovery_level**: Progresso scout durante incarichi
+- **attribute_masking**: Ridotto con osservazione o prestazioni
+- **shortlist**: Modificato tramite interfaccia scouting
+- **press_releases**: Generato in automatico dopo eventi rilevanti
+
 
 ### Salvataggio/Caricamento
 - **user_sessions**: Aggiornato ad ogni salvataggio automatico/manuale
@@ -269,6 +392,11 @@ I dataset sono progettati per essere:
 - Progetta per supportare più stagioni/campionati
 - Usa campi `season` per partizionamento temporale
 - Implementa soft-delete tramite flag invece di cancellazioni
+
+### Naming
+- Usa nomi al singolare per oggetti (`player`, `team`)
+- Usa nomi al plurale per dataset (`players`, `teams`)
+- Prefissa campi temporali con `created_`, `updated_`, `completed_`
 
 ---
 
@@ -303,23 +431,30 @@ const recentTransfers = await bolt.data.transfers.filter({
 
 ## 📈 Roadmap Dataset
 
-### Versione 1.1
+### Versione 1.1 (completata)
+- [x] `finances`
+- [x] `board_feedback`
+- [x] `scouting_accuracy`
+- [x] `shortlist`
+- [x] `attribute_masking`
+- [x] `discovery_level`
+- [x] `press_releases`
+
+### Versione 1.2 (prossima)
 - [ ] `youth_academy` - Settore giovanile
 - [ ] `competitions` - Coppe e tornei
 - [ ] `media_coverage` - Copertura mediatica
-
-### Versione 1.2
-- [ ] `finances` - Gestione finanziaria dettagliata
-- [ ] `facilities` - Strutture e infrastrutture
 - [ ] `fan_base` - Base tifosi e marketing
+- [ ] `facilities` - Infrastrutture avanzate
 
 ### Versione 2.0
 - [ ] `multiplayer_sessions` - Modalità multiplayer
 - [ ] `custom_leagues` - Campionati personalizzati
 - [ ] `mod_support` - Supporto modifiche utente
 
+
 ---
 
-*Documentazione aggiornata al: Gennaio 2025*
-*Versione dataset: 1.0*
+*Documentazione aggiornata al: Giugno 2025*  
+*Versione dataset: 1.1*  
 *Compatibilità Bolt.new: Tutte le versioni*
