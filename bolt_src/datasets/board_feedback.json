@@ -1,0 +1,14 @@
+{
+  "name": "board_feedback",
+  "description": "Feedback e valutazioni della dirigenza sul manager e sulle performance del club",
+  "fields": [
+    { "name": "team_id",               "type": "Ref",      "ref": "teams.id",            "required": true,  "description": "ID della squadra" },
+    { "name": "session_id",            "type": "Ref",      "ref": "user_sessions.id",    "description": "ID della sessione di gioco" },
+    { "name": "date_recorded",         "type": "DateTime", "description": "Data di registrazione del feedback" },
+    { "name": "technical_trust",       "type": "Number",   "description": "Livello di fiducia tecnica (0-100)" },
+    { "name": "economic_trust",        "type": "Number",   "description": "Livello di fiducia economica (0-100)" },
+    { "name": "reputational_trust",    "type": "Number",   "description": "Livello di fiducia reputazionale (0-100)" },
+    { "name": "dismissal_risk",        "type": "Number",   "description": "Probabilità di esonero (0-100)" },
+    { "name": "requests",              "type": "JSON",     "description": "Storico delle richieste inviate al board" }
+  ]
+}

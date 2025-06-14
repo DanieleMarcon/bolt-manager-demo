@@ -1,0 +1,13 @@
+{
+  "name": "scouting_accuracy",
+  "description": "Tracciamento dell’accuratezza delle valutazioni scouting dei giocatori",
+  "fields": [
+    { "name": "player_id",         "type": "Ref",      "ref": "players.id",     "required": true,  "description": "ID del giocatore osservato" },
+    { "name": "scout_id",          "type": "Ref",      "ref": "staff.id",       "required": true,  "description": "ID dello scout che ha effettuato l’osservazione" },
+    { "name": "attribute_name",    "type": "String",   "required": true,  "description": "Nome dell’attributo valutato (es. shooting, pace)" },
+    { "name": "estimated_value",   "type": "Number",   "description": "Valore stimato dallo scout" },
+    { "name": "actual_value",      "type": "Number",   "description": "Valore reale dell’attributo" },
+    { "name": "accuracy_percent",  "type": "Number",   "description": "Accuratezza del confronto (%, calcolata come 100 - abs(estimated_value - actual_value) / actual_value * 100)" },
+    { "name": "observation_date",  "type": "DateTime", "description": "Data e ora dell’osservazione" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "shortlist",
+  "description": "Elenco dei giocatori osservati dall’utente con priorità e note personalizzate",
+  "fields": [
+    { "name": "user_id",           "type": "Ref",      "ref": "user_sessions.id", "required": true,  "description": "ID della sessione o utente che ha creato la shortlist" },
+    { "name": "player_id",         "type": "Ref",      "ref": "players.id",       "required": true,  "description": "ID del giocatore aggiunto alla shortlist" },
+    { "name": "priority",          "type": "String",   "description": "Priorità di osservazione (high, medium, low)" },
+    { "name": "notes",             "type": "Text",     "description": "Note o commenti dell’utente sul giocatore" },
+    { "name": "state",             "type": "String",   "description": "Stato osservazione (pending, scouted, ignored)" },
+    { "name": "date_added",        "type": "DateTime", "description": "Data di inserimento in shortlist" }
+  ]
+}

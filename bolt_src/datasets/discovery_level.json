@@ -1,0 +1,13 @@
+{
+  "name": "discovery_level",
+  "description": "Stato e avanzamento dell'osservazione dei giocatori da parte degli scout",
+  "fields": [
+    { "name": "player_id",          "type": "Ref",      "ref": "players.id",   "required": true,  "description": "ID del giocatore osservato" },
+    { "name": "scout_id",           "type": "Ref",      "ref": "staff.id",     "required": true,  "description": "ID dello scout assegnato" },
+    { "name": "status",             "type": "String",   "description": "Stato di osservazione (not_seen, observing, complete)" },
+    { "name": "progress_percent",   "type": "Number",   "description": "Percentuale di completamento dell'osservazione (0-100)" },
+    { "name": "matches_observed",    "type": "Number",   "description": "Numero di partite analizzate dallo scout" },
+    { "name": "region",             "type": "String",   "description": "Area geografica assegnata allo scout" },
+    { "name": "last_updated",       "type": "DateTime", "description": "Data dell'ultimo aggiornamento dell'avanzamento" }
+  ]
+}

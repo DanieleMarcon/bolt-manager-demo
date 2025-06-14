@@ -1,0 +1,17 @@
+{
+  "name": "finances",
+  "description": "Tracciamento economico dettagliato del club: bilanci, entrate, uscite e valore dell'attività",
+  "fields": [
+    { "name": "team_id", "type": "Ref", "ref": "teams.id", "required": true },
+    { "name": "date_recorded", "type": "DateTime", "description": "Data di registrazione del bilancio" },
+    { "name": "current_budget", "type": "Number", "description": "Budget disponibile corrente" },
+    { "name": "balance_month", "type": "Number", "description": "Saldo del mese specificato" },
+    { "name": "income_sponsor", "type": "Number", "description": "Entrate da sponsor" },
+    { "name": "income_stadium", "type": "Number", "description": "Entrate da biglietti e stadio" },
+    { "name": "income_competitions", "type": "Number", "description": "Entrate da premi competizioni" },
+    { "name": "expense_wages", "type": "Number", "description": "Uscite per stipendi giocatori e staff" },
+    { "name": "expense_transfers", "type": "Number", "description": "Uscite per acquisti giocatori" },
+    { "name": "expense_operational", "type": "Number", "description": "Uscite operative (manutenzione, tasse, ecc.)" },
+    { "name": "club_value", "type": "Number", "description": "Valore patrimoniale netto del club" }
+  ]
+}

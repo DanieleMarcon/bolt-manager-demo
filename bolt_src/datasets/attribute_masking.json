@@ -1,0 +1,11 @@
+{
+  "name": "attribute_masking",
+  "description": "Livello di mascheramento degli attributi per i giocatori non ancora completamente scoutati",
+  "fields": [
+    { "name": "player_id",       "type": "Ref",      "ref": "players.id",         "required": true,  "description": "ID del giocatore interessato" },
+    { "name": "user_id",         "type": "Ref",      "ref": "user_sessions.id",   "description": "ID dell'utente o sessione che vede il mascheramento" },
+    { "name": "masking_percent", "type": "Number",   "description": "Percentuale di mascheramento residua (0-100)" },
+    { "name": "source",          "type": "String",   "description": "Origine del dato mascherato (es. default, rumor, partial_scout)" },
+    { "name": "last_updated",    "type": "DateTime", "description": "Data dell'ultimo aggiornamento del mascheramento" }
+  ]
+}

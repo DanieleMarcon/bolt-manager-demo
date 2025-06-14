@@ -1,0 +1,14 @@
+{
+  "name": "press_releases",
+  "description": "Archivio dei comunicati stampa e notizie generate dagli eventi di gioco",
+  "fields": [
+    { "name": "team_id",         "type": "Ref",      "ref": "teams.id",     "description": "ID del club coinvolto (opzionale)" },
+    { "name": "player_id",       "type": "Ref",      "ref": "players.id",   "description": "ID del giocatore coinvolto (opzionale)" },
+    { "name": "match_id",        "type": "Ref",      "ref": "matches.id",   "description": "ID della partita correlata (opzionale)" },
+    { "name": "type",            "type": "String",   "description": "Categoria del comunicato (es. injury, transfer, statement)" },
+    { "name": "content",         "type": "Text",     "description": "Testo completo del comunicato" },
+    { "name": "date_generated",  "type": "DateTime", "description": "Data e ora di generazione del comunicato" },
+    { "name": "is_read",         "type": "Boolean",  "description": "Flag se il comunicato è stato letto dall'utente" },
+    { "name": "urgency",         "type": "String",   "description": "Livello di urgenza (low, medium, high)" }
+  ]
+}
