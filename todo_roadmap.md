@@ -31,18 +31,25 @@ Aggiornato dinamicamente durante la fase di audit dei file.
 - `SaveSlotManager` – Gestione slot salvataggio con preview e azioni
 - `SessionList` – Lista sessioni salvate con ordinamento e azioni
 
+### ✅ Batch Final Components (Completato)
+- `HistoryTimeline` – Timeline visuale eventi carriera giocatore
+- `PlayerRatings` – Valutazioni giocatori post-partita con breakdown
+- `RequestBoardButton` – Pulsante richieste dirigenza con modal avanzato
+
 ---
 
 ## 📄 PAGINE AGGIORNATE
 
 ### ✅ Pagine Completate
 - `MatchSimulation.page.js` – Integrato `LineupSelector` con simulazione live
-- `MatchAnalysis.page.js` – Integrati `MatchSummary`, `StatisticsChart`, `KeyMoments`
+- `MatchAnalysis.page.js` – Integrati `MatchSummary`, `StatisticsChart`, `KeyMoments`, `PlayerRatings`
 - `CalendarView.page.js` – Integrati `DayAdvancer`, `UpcomingEvents`
 - `TrainingManagement.page.js` – Integrati `PlayerTrainingCard`, `FitnessChart`
 - `StaffManagement.page.js` – Integrati `StaffCard`, `StaffList`, `CompetencyChart`
 - `TransferMarket.page.js` – Integrati `PlayerSearch`, `NegotiationPanel`, `ContractDetails`
 - `SessionManager.page.js` – Integrati `SaveSlotManager`, `SessionList`
+- `PlayerHistory.page.js` – Integrato `HistoryTimeline` con eventi carriera
+- `FinanceOverview.page.js` – Integrato `RequestBoardButton` con gestione eventi
 
 ---
 
@@ -81,15 +88,15 @@ Aggiornato dinamicamente durante la fase di audit dei file.
 | Componente           | Azione Necessaria                                            |
 | -------------------- | ------------------------------------------------------------ |
 | `ContractDetails`    | ✅ **COMPLETATO** - Gestione dettagli contrattuali          |
-| `HistoryTimeline`    | ❌ Creare timeline storico giocatore/squadra                  |
+| `HistoryTimeline`    | ✅ **COMPLETATO** - Timeline storico giocatore/squadra      |
 | `MatchSummary`       | ✅ **COMPLETATO** - Riepilogo completo match              |
 | `NegotiationPanel`   | ✅ **COMPLETATO** - Pannello avanzato negoziazione        |
-| `PlayerRatings`      | ❌ Creare tabella valutazioni giocatori                       |
+| `PlayerRatings`      | ✅ **COMPLETATO** - Tabella valutazioni giocatori         |
 | `PlayerSearch`       | ✅ **COMPLETATO** - Ricerca avanzata giocatori            |
 | `SessionList`        | ✅ **COMPLETATO** - Elenco sessioni salvate               |
 | `StatisticsChart`    | ✅ **COMPLETATO** - Grafico avanzato statistiche          |
 | `UpcomingEvents`     | ✅ **COMPLETATO** - Lista eventi imminenti                |
-| `RequestBoardButton` | ❌ Creare bottone interattivo per invio richiesta board       |
+| `RequestBoardButton` | ✅ **COMPLETATO** - Bottone richieste dirigenza           |
 
 ## 🧩 MODULI NON ANCORA IMPLEMENTATI MA PREVISTI
 
@@ -171,47 +178,47 @@ Aggiornato dinamicamente durante la fase di audit dei file.
 | `CalendarView.page`      | ✅ **COMPLETATO** - Integrati DayAdvancer e UpcomingEvents |
 | `TransferMarket.page`    | ✅ **COMPLETATO** - Integrati PlayerSearch, NegotiationPanel, ContractDetails |
 | `SessionManager.page`    | ✅ **COMPLETATO** - Integrati SaveSlotManager e SessionList |
+| `PlayerHistory.page`     | ✅ **COMPLETATO** - Integrato HistoryTimeline |
 
 ---
 
-## 🎯 STATO ATTUALE - FASE 8C COMPLETATA
+## 🎯 STATO ATTUALE - FASE 8D COMPLETATA
 
 ### ✅ Implementazioni Recenti:
 
-**Componenti Transfer/Session (5 nuovi componenti)**:
-- `PlayerSearch`: Ricerca avanzata con filtri multipli e quick filters
-- `NegotiationPanel`: Negoziazione a 3 step (offerta, contratto, revisione)
-- `ContractDetails`: Gestione completa dettagli contrattuali con edit mode
-- `SaveSlotManager`: Gestione slot con preview, modali e azioni complete
-- `SessionList`: Lista sessioni con ordinamento, filtri e azioni avanzate
+**Componenti Finali (3 nuovi componenti)**:
+- `HistoryTimeline`: Timeline visuale eventi carriera con filtri e export
+- `PlayerRatings`: Sistema valutazioni post-partita con breakdown dettagliato
+- `RequestBoardButton`: Pulsante richieste dirigenza con modal e gestione eventi
 
-**Pagine Aggiornate (2 pagine)**:
-- `TransferMarket.page.js`: Sistema completo mercato trasferimenti
-- `SessionManager.page.js`: Gestione avanzata salvataggi e sessioni
+**Pagine Aggiornate (3 pagine)**:
+- `PlayerHistory.page.js`: Integrato HistoryTimeline per visualizzazione eventi
+- `MatchAnalysis.page.js`: Sostituito sistema rating inline con PlayerRatings
+- `FinanceOverview.page.js`: Integrato RequestBoardButton con gestione eventi
 
 **Funzionalità Avanzate**:
-- Ricerca real-time con debouncing
-- Negoziazione step-by-step con validazione
-- Gestione contratti con edit mode e export
-- Sistema slot con preview e duplicazione
-- Lista sessioni con ordinamento e azioni multiple
-- Import/export dati completo
-- Backup e ripristino automatico
+- Timeline interattiva con filtri per tipo evento
+- Sistema valutazioni completo con ordinamento e visualizzazioni
+- Richieste dirigenza con modal avanzato e calcolo probabilità successo
+- Gestione eventi personalizzati e callback
+- Export dati completo per tutti i componenti
+- Cooldown system per richieste dirigenza
 
 ### 🏆 Risultati Raggiunti:
-- **Sistema Trasferimenti**: Ricerca, negoziazione e gestione contratti completa
-- **Gestione Sessioni**: Slot salvataggio e lista sessioni con funzionalità avanzate
-- **UX Avanzata**: Modali, conferme, feedback e validazioni complete
-- **Data Management**: Import/export, backup, duplicazione e pulizia
-- **Modularità**: Componenti riutilizzabili e ben strutturati
+- **Sistema Storico**: Timeline completa eventi carriera giocatori
+- **Analisi Post-Partita**: Valutazioni dettagliate con breakdown performance
+- **Gestione Dirigenza**: Sistema richieste avanzato con feedback real-time
+- **UX Completa**: Tutti i componenti principali implementati e integrati
+- **Modularità Finale**: Architettura componenti completa e riutilizzabile
 
-La **Fase 8C** è completamente implementata! Il sistema di trasferimenti e gestione sessioni è ora completo e funzionale.
+La **Fase 8D** è completamente implementata! Tutti i componenti principali sono ora creati e integrati nelle rispettive pagine.
 
 ---
 
 ## 🔜 PROSSIMI STEP
 
 - Completare documentazione componenti mancanti in `ui_overview.md`
-- Implementare componenti finanziari e board
+- Implementare componenti finanziari e board rimanenti
 - Validare integrazione completa sistema
 - Finalizzare esportazione `dist/` per deploy
+- Testing completo funzionalità e accessibilità
