@@ -1,6 +1,7 @@
 import MatchSummary from '../components/MatchSummary.component.js';
 import StatisticsChart from '../components/StatisticsChart.component.js';
 import KeyMoments from '../components/KeyMoments.component.js';
+import PlayerRatings from '../components/PlayerRatings.component.js';
 
 export default class MatchAnalysisPage {
   constructor() {
@@ -211,63 +212,13 @@ export default class MatchAnalysisPage {
     
     const playerRatings = this.generatePlayerRatings();
     
-    container.innerHTML = `
-      <div class="ratings-grid">
-        ${playerRatings.map(player => `
-          <div class="player-rating-card">
-            <div class="player-header">
-              <img src="${player.photo}" alt="${player.name}" class="player-photo">
-              <div class="player-info">
-                <h5 class="player-name">${player.name}</h5>
-                <span class="player-position">${player.position}</span>
-              </div>
-              <div class="overall-rating ${this.getRatingClass(player.rating)}">
-                ${player.rating.toFixed(1)}
-              </div>
-            </div>
-            
-            <div class="rating-breakdown">
-              <div class="rating-item">
-                <span class="rating-label">Attacco</span>
-                <div class="rating-bar">
-                  <div class="rating-fill" style="width: ${player.breakdown.attack * 10}%"></div>
-                </div>
-                <span class="rating-value">${player.breakdown.attack.toFixed(1)}</span>
-              </div>
-              <div class="rating-item">
-                <span class="rating-label">Difesa</span>
-                <div class="rating-bar">
-                  <div class="rating-fill" style="width: ${player.breakdown.defense * 10}%"></div>
-                </div>
-                <span class="rating-value">${player.breakdown.defense.toFixed(1)}</span>
-              </div>
-              <div class="rating-item">
-                <span class="rating-label">Passaggi</span>
-                <div class="rating-bar">
-                  <div class="rating-fill" style="width: ${player.breakdown.passing * 10}%"></div>
-                </div>
-                <span class="rating-value">${player.breakdown.passing.toFixed(1)}</span>
-              </div>
-            </div>
-            
-            <div class="player-stats">
-              <div class="stat-item">
-                <span class="stat-value">${player.stats.goals}</span>
-                <span class="stat-label">Gol</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-value">${player.stats.assists}</span>
-                <span class="stat-label">Assist</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-value">${player.stats.passes}</span>
-                <span class="stat-label">Passaggi</span>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+    new PlayerRatings(container, {
+      ratings: playerRatings,
+      sortBy: 'rating',
+      sortOrder: 'desc',
+      showStats: true,
+      onPlayerClick: (player) => this.handlePlayerClick(player)
+    });
   }
 
   renderTacticalAnalysis() {
@@ -364,47 +315,64 @@ export default class MatchAnalysisPage {
   generatePlayerRatings() {
     const players = [
       {
+        id: 1,
         name: 'Mario Rossi',
         position: 'FW',
         photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
         rating: 8.5,
         breakdown: { attack: 9.0, defense: 7.0, passing: 8.5 },
-        stats: { goals: 1, assists: 1, passes: 35 }
+        minutes: 90,
+        goals: 1,
+        assists: 1,
+        passes: 35,
+        captain: true,
+        motm: true
       },
       {
+        id: 2,
         name: 'Luigi Bianchi',
         position: 'MF',
         photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
         rating: 7.8,
         breakdown: { attack: 8.0, defense: 7.5, passing: 8.2 },
-        stats: { goals: 1, assists: 0, passes: 45 }
+        minutes: 90,
+        goals: 1,
+        assists: 0,
+        passes: 45
       },
       {
+        id: 3,
         name: 'Giuseppe Verdi',
         position: 'DF',
         photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
         rating: 7.2,
         breakdown: { attack: 6.0, defense: 8.5, passing: 7.0 },
-        stats: { goals: 0, assists: 0, passes: 52 }
+        minutes: 90,
+        goals: 0,
+        assists: 0,
+        passes: 52,
+        cards: { yellow: 1 }
       },
       {
+        id: 4,
         name: 'Antonio Neri',
         position: 'GK',
         photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
         rating: 7.5,
         breakdown: { attack: 5.0, defense: 9.0, passing: 6.5 },
-        stats: { goals: 0, assists: 0, passes: 28 }
+        minutes: 90,
+        goals: 0,
+        assists: 0,
+        passes: 28
       }
     ];
     
     return players;
   }
 
-  getRatingClass(rating) {
-    if (rating >= 8.5) return 'excellent';
-    if (rating >= 7.5) return 'good';
-    if (rating >= 6.5) return 'average';
-    return 'poor';
+  handlePlayerClick(player) {
+    console.log('Player clicked:', player);
+    this.showToast(`Visualizzazione dettagli di ${player.name}`, 'info');
   }
 
   exportReport() {

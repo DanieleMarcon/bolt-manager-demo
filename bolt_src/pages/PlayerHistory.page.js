@@ -170,6 +170,8 @@
 </style>
 
 <script type="module">
+import HistoryTimeline from '../components/HistoryTimeline.component.js';
+
 export default class PlayerHistoryPage {
   constructor() {
     this.initializePage();
@@ -201,7 +203,19 @@ export default class PlayerHistoryPage {
 
     document.querySelector('.attribute-progress-chart-container')?.appendChild(document.createElement('div')).className = 'attribute-progress-chart';
     document.querySelector('.statistics-table-container')?.appendChild(document.createElement('div')).className = 'statistics-table';
-    document.querySelector('.event-timeline-container')?.appendChild(document.createElement('div')).className = 'event-timeline';
+    
+    // Initialize HistoryTimeline component
+    const timelineContainer = document.querySelector('.event-timeline-container');
+    const timelineElement = document.createElement('div');
+    timelineElement.className = 'event-timeline';
+    timelineContainer.appendChild(timelineElement);
+    
+    // Create HistoryTimeline instance
+    timelineElement.historyTimeline = new HistoryTimeline(timelineElement, {
+      events: [],
+      onEventClick: (event) => this.handleEventClick(event)
+    });
+    
     document.querySelector('.comparison-tool-container')?.appendChild(document.createElement('div')).className = 'comparison-tool';
     document.querySelector('.sponsor-banner-container')?.appendChild(document.createElement('div')).className = 'sponsor-banner';
   }
@@ -290,26 +304,26 @@ export default class PlayerHistoryPage {
       date.setDate(today.getDate() - i * 15);
       const types = ['match', 'training', 'injury', 'transfer'];
       const type = types[Math.floor(Math.random() * types.length)];
-      let title = '', content = '';
+      let title = '', description = '';
       switch (type) {
         case 'match':
           title = `Partita vs ${['Juventus', 'Inter', 'Roma', 'Napoli', 'Lazio'][Math.floor(Math.random() * 5)]}`;
-          content = `Gol: ${Math.floor(Math.random() * 2)}, Assist: ${Math.floor(Math.random() * 2)}`;
+          description = `Gol: ${Math.floor(Math.random() * 2)}, Assist: ${Math.floor(Math.random() * 2)}`;
           break;
         case 'training':
           title = `Allenamento ${['Tattico', 'Fisico', 'Tecnico'][Math.floor(Math.random() * 3)]}`;
-          content = `Miglioramento: +${(Math.random() * 0.5).toFixed(1)} in ${['pace', 'shooting', 'passing'][Math.floor(Math.random() * 3)]}`;
+          description = `Miglioramento: +${(Math.random() * 0.5).toFixed(1)} in ${['pace', 'shooting', 'passing'][Math.floor(Math.random() * 3)]}`;
           break;
         case 'injury':
           title = 'Infortunio';
-          content = `${['Lieve', 'Moderato', 'Grave'][Math.floor(Math.random() * 3)]} - ${Math.floor(Math.random() * 14) + 1} giorni di recupero`;
+          description = `${['Lieve', 'Moderato', 'Grave'][Math.floor(Math.random() * 3)]} - ${Math.floor(Math.random() * 14) + 1} giorni di recupero`;
           break;
         case 'transfer':
           title = 'Trasferimento';
-          content = `Trasferito da ${['Juventus', 'Inter', 'Roma'][Math.floor(Math.random() * 3)]}`;
+          description = `Trasferito da ${['Juventus', 'Inter', 'Roma'][Math.floor(Math.random() * 3)]}`;
           break;
       }
-      events.push({ id: i + 1, type, title, content, date: date.toISOString(), importance: Math.floor(Math.random() * 10) + 1 });
+      events.push({ id: i + 1, type, title, description, date: date.toISOString(), importance: Math.floor(Math.random() * 10) + 1 });
     }
     return events;
   }
@@ -326,7 +340,14 @@ export default class PlayerHistoryPage {
 
   updateEventTimeline(data) {
     const timeline = document.querySelector('.event-timeline');
-    timeline?.eventTimeline?.setEvents(data);
+    if (timeline?.historyTimeline) {
+      timeline.historyTimeline.setEvents(data);
+    }
+  }
+
+  handleEventClick(event) {
+    console.log('Event clicked:', event);
+    this.showToast(`Evento selezionato: ${event.title}`, 'info');
   }
 
   bindEvents() {
@@ -357,6 +378,10 @@ export default class PlayerHistoryPage {
 
   showSuccess(message) {
     window.dispatchEvent(new CustomEvent('showToast', { detail: { message, type: 'success' } }));
+  }
+
+  showToast(message, type = 'info') {
+    window.dispatchEvent(new CustomEvent('showToast', { detail: { message, type } }));
   }
 }
 
