@@ -7,8 +7,8 @@ Questa documentazione descrive i moduli funzionali principali della web app mana
 ## 📋 Moduli Principali
 
 ### 1. **Squadra** (Team Management)
-**Descrizione**: Gestione completa della rosa, visualizzazione giocatori, stato fisico e morale
-**Page**: `TeamManagement.page`
+**Descrizione**: Gestione completa della rosa, visualizzazione giocatori, stato fisico e morale  
+**Page**: `TeamManagement.page`  
 **Dataset**: 
 - `players` (lettura/scrittura)
 - `teams` (lettura/scrittura)
@@ -18,249 +18,250 @@ Questa documentazione descrive i moduli funzionali principali della web app mana
 - `TeamOverview` - Panoramica squadra con statistiche
 - `PlayerList` - Lista filtrata giocatori
 - `MoraleIndicator` - Indicatore morale squadra/giocatore
-- `InjuryStatus` - Stato infortuni
-**Dipendenze**: Nessuna (modulo base)
+- `InjuryStatus` - Stato infortuni  
+**Dipendenze**: Nessuna
 
 ---
 
 ### 2. **Allenamento** (Training System)
-**Descrizione**: Pianificazione allenamenti settimanali, sviluppo giocatori, gestione fitness
-**Page**: `TrainingManagement.page`
+**Descrizione**: Pianificazione allenamenti settimanali, sviluppo giocatori, gestione fitness  
+**Page**: `TrainingManagement.page`  
 **Dataset**:
 - `trainings` (lettura/scrittura)
-- `players` (scrittura per aggiornamenti attributi)
-- `staff` (lettura per bonus allenatori)
+- `players` (scrittura per attributi)
+- `staff` (lettura per bonus)
 - `attributes_history` (scrittura per tracking)
 **Components**:
 - `TrainingScheduler` - Pianificazione settimanale
 - `TrainingTypeSelector` - Selezione tipo allenamento
 - `PlayerTrainingCard` - Progresso individuale
 - `FitnessChart` - Grafico forma fisica
-- `TrainingResults` - Risultati post-allenamento
-**Dipendenze**: Squadra (per selezione giocatori), Staff (per bonus)
+- `TrainingResults` - Risultati post-allenamento  
+**Dipendenze**: Squadra, Staff
 
 ---
 
 ### 3. **Tattiche** (Tactical Setup)
-**Descrizione**: Configurazione moduli, ruoli, mentalità e impostazioni strategiche
-**Page**: `TacticalSetup.page`
+**Descrizione**: Configurazione moduli, ruoli, mentalità e impostazioni strategiche  
+**Pages**:
+- `TacticalSetup.page`
+- `TacticalSchemes.page`
+- `TacticalRoles.page`  
 **Dataset**:
 - `tactics` (lettura/scrittura)
 - `players` (lettura per posizionamento)
-- `teams` (lettura per formazione default)
+- `teams` (lettura default)
 **Components**:
 - `FormationSelector` - Selezione modulo (4-4-2, 3-5-2, etc.)
 - `TacticalField` - Campo tattico interattivo
 - `PlayerPositioner` - Posizionamento giocatori
-- `MentalitySlider` - Cursori mentalità (difensiva/offensiva)
+- `MentalitySlider` - Cursori mentalità
 - `SetPieceManager` - Gestione calci piazzati
-- `TacticalPresets` - Preset tattici salvati
-**Dipendenze**: Squadra (per disponibilità giocatori)
+- `TacticalPresets` - Preset tattici salvati  
+**Dipendenze**: Squadra
 
 ---
 
 ### 4. **Partite** (Match Engine)
-**Descrizione**: Simulazione partite, eventi live, sostituzioni e risultati
-**Page**: `MatchSimulation.page`
+**Descrizione**: Simulazione partite, eventi live, sostituzioni e risultati  
+**Page**: `MatchSimulation.page`  
 **Dataset**:
 - `matches` (lettura/scrittura)
-- `players` (lettura per lineup, scrittura per statistiche)
-- `tactics` (lettura per impostazioni)
+- `players` (lettura lineup, scrittura statistiche)
+- `tactics` (lettura per strategia)
 - `match_reports` (scrittura)
-- `game_events` (scrittura per eventi partita)
+- `game_events` (scrittura)  
 **Components**:
-- `MatchLiveView` - Vista live della partita
-- `LineupSelector` - Selezione formazione pre-partita
-- `SubstitutionPanel` - Pannello sostituzioni
-- `MatchEvents` - Timeline eventi partita
-- `LiveStats` - Statistiche live (possesso, tiri, etc.)
-- `MatchResult` - Risultato finale
-**Dipendenze**: Squadra, Tattiche (per formazione e strategia)
+- `MatchLiveView` - Vista live
+- `LineupSelector` - Selezione formazione
+- `SubstitutionPanel` - Sostituzioni
+- `MatchEvents` - Timeline
+- `LiveStats` - Statistiche live
+- `MatchResult` - Risultato finale  
+**Dipendenze**: Squadra, Tattiche
 
 ---
 
 ### 5. **Avanzamento Giorno** (Calendar Advance)
-**Descrizione**: Progressione temporale, eventi automatici, aggiornamenti stato gioco
-**Page**: `CalendarView.page`
+**Descrizione**: Progressione temporale, eventi automatici, aggiornamenti stato gioco  
+**Page**: `CalendarView.page`  
 **Dataset**:
-- `matches` (lettura per prossime partite)
-- `players` (scrittura per recuperi/aging)
-- `trainings` (lettura per programmi)
-- `game_events` (scrittura per eventi automatici)
-- `user_sessions` (scrittura per salvataggio stato)
+- `matches` (lettura prossime partite)
+- `players` (scrittura recuperi/aging)
+- `trainings` (lettura programmi)
+- `game_events` (scrittura eventi automatici)
+- `user_sessions` (scrittura snapshot)  
 **Components**:
-- `CalendarGrid` - Griglia calendario mensile
+- `CalendarGrid` - Griglia mensile
 - `DayAdvancer` - Controlli avanzamento
 - `UpcomingEvents` - Eventi in programma
-- `AutoEvents` - Notifiche eventi automatici
-- `TimelineView` - Vista cronologica eventi
-**Dipendenze**: Tutti i moduli (coordina l'avanzamento globale)
+- `AutoEvents` - Notifiche automatiche
+- `TimelineView` - Vista cronologica  
+**Dipendenze**: Tutti i moduli
 
 ---
 
 ### 6. **Trasferimenti** (Transfer Market)
-**Descrizione**: Mercato giocatori, trattative, contratti e scouting
-**Page**: `TransferMarket.page`
+**Descrizione**: Mercato giocatori, trattative, contratti e scouting  
+**Page**: `TransferMarket.page`  
 **Dataset**:
 - `transfers` (lettura/scrittura)
-- `players` (lettura per ricerca, scrittura per trasferimenti)
-- `teams` (lettura/scrittura per budget)
-- `game_events` (scrittura per notifiche mercato)
+- `players` (lettura ricerca, scrittura trasferimenti)
+- `teams` (lettura/scrittura budget)
+- `game_events` (scrittura notifiche)  
 **Components**:
-- `PlayerSearch` - Ricerca giocatori disponibili
-- `TransferList` - Lista trasferimenti attivi
-- `NegotiationPanel` - Pannello trattative
+- `PlayerSearch` - Ricerca giocatori
+- `TransferList` - Lista trasferimenti
+- `NegotiationPanel` - Trattative
 - `ContractDetails` - Dettagli contrattuali
-- `ScoutingReport` - Report scouting giocatori
-- `BudgetTracker` - Monitoraggio budget
-**Dipendenze**: Squadra (per valutazione rosa)
+- `ScoutingReport` - Report scouting
+- `BudgetTracker` - Monitoraggio budget  
+**Dipendenze**: Squadra
 
 ---
 
 ### 7. **Report Partita** (Match Analysis)
-**Descrizione**: Analisi dettagliata post-partita, statistiche e valutazioni
-**Page**: `MatchAnalysis.page`
+**Descrizione**: Analisi dettagliata post-partita, statistiche e valutazioni  
+**Page**: `MatchAnalysis.page`  
 **Dataset**:
 - `match_reports` (lettura)
 - `matches` (lettura)
-- `players` (lettura per valutazioni)
+- `players` (lettura)  
 **Components**:
-- `MatchSummary` - Riassunto partita
-- `PlayerRatings` - Valutazioni individuali
-- `StatisticsChart` - Grafici statistiche
+- `MatchSummary` - Riassunto
+- `PlayerRatings` - Valutazioni
+- `StatisticsChart` - Grafici
 - `KeyMoments` - Momenti salienti
 - `TacticalAnalysis` - Analisi tattica
-- `ComparisonView` - Confronto squadre
-**Dipendenze**: Partite (per dati da analizzare)
+- `ComparisonView` - Confronto squadre  
+**Dipendenze**: Partite
 
 ---
 
 ### 8. **Salvataggio/Caricamento** (Session Manager)
-**Descrizione**: Gestione salvataggi multipli, backup e ripristino sessioni
-**Page**: `SessionManager.page`
+**Descrizione**: Gestione salvataggi multipli, backup e ripristino sessioni  
+**Page**: `SessionManager.page`  
 **Dataset**:
 - `user_sessions` (lettura/scrittura)
-- Tutti i dataset (per backup completo)
+- Tutti i dataset  
 **Components**:
-- `SaveSlotManager` - Gestione slot salvataggio
-- `SessionList` - Lista sessioni salvate
-- `BackupManager` - Backup e ripristino
-- `SessionDetails` - Dettagli sessione
+- `SaveSlotManager` - Gestione slot
+- `SessionList` - Lista sessioni
+- `BackupManager` - Backup/ripristino
+- `SessionDetails` - Dettagli
 - `QuickSave` - Salvataggio rapido
-- `LoadConfirm` - Conferma caricamento
-**Dipendenze**: Tutti i moduli (salva stato globale)
+- `LoadConfirm` - Conferma caricamento  
+**Dipendenze**: Tutti i moduli
 
 ---
 
 ### 9. **Staff** (Staff Management)
-**Descrizione**: Gestione staff tecnico, competenze e contratti
-**Page**: `StaffManagement.page`
+**Descrizione**: Gestione staff tecnico, competenze e contratti  
+**Page**: `StaffManagement.page`  
 **Dataset**:
 - `staff` (lettura/scrittura)
-- `teams` (lettura per budget)
-- `trainings` (lettura per assegnazioni)
+- `teams` (lettura budget)
+- `trainings` (lettura assegnazioni)  
 **Components**:
-- `StaffList` - Lista membri staff
-- `StaffCard` - Scheda membro staff
+- `StaffList` - Lista staff
+- `StaffCard` - Scheda staff
 - `CompetencyChart` - Grafico competenze
-- `StaffHiring` - Assunzione nuovo staff
-- `ContractManager` - Gestione contratti staff
-- `PerformanceTracker` - Tracking performance staff
-**Dipendenze**: Allenamento (per bonus e competenze)
+- `StaffHiring` - Assunzioni
+- `ContractManager` - Contratti staff
+- `PerformanceTracker` - Performance staff  
+**Dipendenze**: Allenamento
 
 ---
 
 ### 10. **Storico Giocatori** (Player History)
-**Descrizione**: Tracking evoluzione giocatori, progressi e statistiche temporali
-**Page**: `PlayerHistory.page`
+**Descrizione**: Tracking evoluzione giocatori, progressi e statistiche temporali  
+**Page**: `PlayerHistory.page`  
 **Dataset**:
 - `attributes_history` (lettura)
 - `players` (lettura)
-- `matches` (lettura per statistiche)
+- `matches` (lettura)  
 **Components**:
-- `ProgressChart` - Grafico progressione attributi
+- `ProgressChart` - Grafico progressione
 - `HistoryTimeline` - Timeline evoluzione
-- `StatisticsTable` - Tabella statistiche storiche
+- `StatisticsTable` - Tabella storica
 - `ComparisonTool` - Confronto periodi
 - `TrendAnalysis` - Analisi tendenze
-- `ExportData` - Esportazione dati
-**Dipendenze**: Squadra, Allenamento (per dati storici)
+- `ExportData` - Esportazione  
+**Dipendenze**: Squadra, Allenamento
 
 ---
 
 ### 11. **Impostazioni Utente** (User Settings)
-**Descrizione**: Personalizzazione interfaccia, preferenze gioco e configurazioni
-**Page**: `UserSettings.page`
+**Descrizione**: Personalizzazione interfaccia e preferenze  
+**Page**: `UserSettings.page`  
 **Dataset**:
-- `user_settings` (lettura/scrittura)
+- `user_settings` (lettura/scrittura)  
 **Components**:
-- `SettingsPanel` - Pannello impostazioni principale
-- `ThemeSelector` - Selezione tema
-- `LanguageSelector` - Selezione lingua
-- `GameplaySettings` - Impostazioni gameplay
-- `NotificationSettings` - Configurazione notifiche
-- `AccessibilityOptions` - Opzioni accessibilità
-- `DataManagement` - Gestione dati utente
-**Dipendenze**: Nessuna (modulo indipendente)
+- `SettingsPanel` - Pannello impostazioni
+- `ThemeSelector` - Tema
+- `LanguageSelector` - Lingua
+- `GameplaySettings` - Gameplay
+- `NotificationSettings` - Notifiche
+- `AccessibilityOptions` - Accessibilità
+- `DataManagement` - Dati utente  
+**Dipendenze**: Nessuna
+
+---
+
+### 12. **Finanze & Direzione** (Finance & Board)
+**Descrizione**: Gestione bilancio club, entrate/uscite e obiettivi board  
+**Pages**:
+- `FinanceOverview.page`
+- `Board.page`  
+**Dataset**:
+- `finances` (lettura/scrittura)
+- `board_feedback` (lettura/scrittura)
+- `teams` (lettura per contesto)  
+**Components**:
+- `BudgetTracker` - Monitoraggio budget
+- `FinanceOverviewPanel` - Panoramica finanziaria
+- `BoardGoals` - Obiettivi board
+- `BoardFeedbackPanel` - Feedback performance  
+**Dipendenze**: Trasferimenti, Partite
+
+---
+
+### 13. **Notizie** (Press Center)
+**Descrizione**: Visualizzazione comunicati stampa e news  
+**Page**: `PressCenter.page`  
+**Dataset**:
+- `press_releases` (lettura/scrittura)
+- `game_events` (lettura eventi correlati)  
+**Components**:
+- `NewsList` - Lista notizie
+- `NewsItem` - Singola news
+- `NewsFilter` - Filtri data/categoria
+- `NewsDetail` - Dettaglio articolo
+- `NewsBadge` - Indicatore nuove notizie  
+**Dipendenze**: Dashboard
 
 ---
 
 ## 📊 Tabella Riepilogativa
 
-| Modulo | Page | Dataset Principali | Components Chiave | Dipendenze |
-|--------|------|-------------------|-------------------|------------|
-| **Squadra** | `TeamManagement.page` | `players`, `teams`, `morale_status` | `PlayerCard`, `TeamOverview`, `PlayerList` | Nessuna |
-| **Allenamento** | `TrainingManagement.page` | `trainings`, `players`, `staff`, `attributes_history` | `TrainingScheduler`, `PlayerTrainingCard`, `FitnessChart` | Squadra, Staff |
-| **Tattiche** | `TacticalSetup.page` | `tactics`, `players`, `teams` | `FormationSelector`, `TacticalField`, `PlayerPositioner` | Squadra |
-| **Partite** | `MatchSimulation.page` | `matches`, `players`, `tactics`, `match_reports` | `MatchLiveView`, `LineupSelector`, `SubstitutionPanel` | Squadra, Tattiche |
-| **Avanzamento** | `CalendarView.page` | `matches`, `players`, `trainings`, `game_events` | `CalendarGrid`, `DayAdvancer`, `UpcomingEvents` | Tutti |
-| **Trasferimenti** | `TransferMarket.page` | `transfers`, `players`, `teams`, `game_events` | `PlayerSearch`, `NegotiationPanel`, `ContractDetails` | Squadra |
-| **Report Partita** | `MatchAnalysis.page` | `match_reports`, `matches`, `players` | `MatchSummary`, `PlayerRatings`, `StatisticsChart` | Partite |
-| **Sessioni** | `SessionManager.page` | `user_sessions`, tutti i dataset | `SaveSlotManager`, `SessionList`, `BackupManager` | Tutti |
-| **Staff** | `StaffManagement.page` | `staff`, `teams`, `trainings` | `StaffList`, `StaffCard`, `CompetencyChart` | Allenamento |
-| **Storico** | `PlayerHistory.page` | `attributes_history`, `players`, `matches` | `ProgressChart`, `HistoryTimeline`, `StatisticsTable` | Squadra, Allenamento |
-| **Impostazioni** | `UserSettings.page` | `user_settings` | `SettingsPanel`, `ThemeSelector`, `GameplaySettings` | Nessuna |
+| Modulo                   | Page(s)                                         | Dataset                            | Components Chiave                         | Dipendenze                |
+|--------------------------|-------------------------------------------------|------------------------------------|-------------------------------------------|---------------------------|
+| Squadra                  | `TeamManagement.page`                           | `players`, `teams`, `morale_status` | `PlayerCard`, `TeamOverview`, `PlayerList` | Nessuna                  |
+| Allenamento              | `TrainingManagement.page`                       | `trainings`, `players`, `staff`, `attributes_history` | `TrainingScheduler`, `PlayerTrainingCard`, `FitnessChart` | Squadra, Staff           |
+| Tattiche                 | `TacticalSetup.page`, `TacticalSchemes.page`, `TacticalRoles.page` | `tactics`, `players`, `teams`      | `FormationSelector`, `TacticalField`, `PlayerPositioner` | Squadra                  |
+| Partite                  | `MatchSimulation.page`                          | `matches`, `players`, `tactics`, `match_reports` | `MatchLiveView`, `LineupSelector`, `SubstitutionPanel` | Squadra, Tattiche        |
+| Avanzamento Giorno       | `CalendarView.page`                             | `matches`, `players`, `trainings`, `game_events`, `user_sessions` | `CalendarGrid`, `DayAdvancer`, `UpcomingEvents` | Tutti                    |
+| Trasferimenti            | `TransferMarket.page`                           | `transfers`, `players`, `teams`, `game_events` | `PlayerSearch`, `NegotiationPanel`, `ContractDetails` | Squadra                  |
+| Report Partita           | `MatchAnalysis.page`                            | `match_reports`, `matches`, `players` | `MatchSummary`, `PlayerRatings`, `StatisticsChart` | Partite                  |
+| Salvataggio/Caricamento  | `SessionManager.page`                           | `user_sessions`, tutti i dataset   | `SaveSlotManager`, `SessionList`, `BackupManager` | Tutti                    |
+| Staff                    | `StaffManagement.page`                          | `staff`, `teams`, `trainings`      | `StaffList`, `StaffCard`, `CompetencyChart` | Allenamento              |
+| Storico Giocatori        | `PlayerHistory.page`                            | `attributes_history`, `players`, `matches` | `ProgressChart`, `HistoryTimeline`, `StatisticsTable` | Squadra, Allenamento     |
+| Impostazioni Utente      | `UserSettings.page`                             | `user_settings`                    | `SettingsPanel`, `ThemeSelector`, `GameplaySettings` | Nessuna                  |
+| Finanze & Direzione      | `FinanceOverview.page`, `Board.page`            | `finances`, `board_feedback`, `teams` | `BudgetTracker`, `FinanceOverviewPanel`, `BoardGoals` | Trasferimenti, Partite   |
+| Notizie                  | `PressCenter.page`                              | `press_releases`, `game_events`    | `NewsList`, `NewsItem`, `NewsFilter`       | Dashboard                |
 
 ---
 
-## 🔄 Flusso di Interazione tra Moduli
-
-### Flusso Principale di Gioco:
-1. **Squadra** → Visualizzazione rosa e stato giocatori
-2. **Allenamento** → Pianificazione e sviluppo settimanale
-3. **Tattiche** → Preparazione strategica pre-partita
-4. **Partite** → Simulazione e gestione match
-5. **Report Partita** → Analisi post-partita
-6. **Avanzamento** → Progressione temporale
-7. **Trasferimenti** → Gestione mercato (periodica)
-
-### Flussi di Supporto:
-- **Staff** → Supporta Allenamento con bonus e competenze
-- **Storico** → Analisi dati per decisioni strategiche
-- **Sessioni** → Salvataggio stato in qualsiasi momento
-- **Impostazioni** → Personalizzazione esperienza utente
-
----
-
-## 🚀 Considerazioni per Sviluppo Futuro
-
-### Scalabilità:
-- Ogni modulo è indipendente e può essere potenziato singolarmente
-- Architettura pronta per funzionalità multiplayer
-- Supporto per API esterne (statistiche reali, social features)
-
-### Estensibilità:
-- Nuovi moduli possono essere aggiunti senza modificare l'esistente
-- Component riutilizzabili tra moduli diversi
-- Dataset modulari permettono espansioni (coppe, settore giovanile, etc.)
-
-### Performance:
-- Caricamento lazy dei moduli non utilizzati
-- Caching intelligente dei dati frequentemente acceduti
-- Ottimizzazione per dispositivi mobile
-
----
-
-*Documentazione aggiornata al: Gennaio 2025*
-*Versione moduli: 1.0*
+*Documentazione aggiornata al: Giugno 2025*  
+*Versione moduli: 1.0*  
 *Compatibilità Bolt.new: Tutte le versioni*

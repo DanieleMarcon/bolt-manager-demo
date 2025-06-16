@@ -319,9 +319,102 @@ button {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .request-board-btn:hover {
   background-color: #d97706;
   transform: scale(1.02);
+}
+
+/* ===========================
+   🆕 COMPONENTI AGGIUNTIVI
+=========================== */
+
+/* Sponsor Banner */
+.sponsor-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.sponsor-banner img {
+  height: 24px;
+  max-width: 100px;
+  margin-left: 8px;
+  object-fit: contain;
+}
+
+/* Request Board Button */
+.request-board-btn {
+  background-color: var(--warning);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.request-board-btn:hover {
+  background-color: #d97706;
+  transform: scale(1.02);
+}
+
+/* ← Inserisci qui, subito dopo `.request-board-btn:hover`: */
+
+/* Budget Tracker */
+.budget-tracker {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.budget-tracker .balance {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.budget-tracker .chart {
+  margin-top: 16px;
+}
+
+/* Contract Details Panel */
+.contract-details-panel {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.contract-details-panel h4 {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+.contract-details-panel p {
+  margin: 4px 0;
+}
+
+/* Settings Tab Navigation */
+.settings-tab-navigation {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.settings-tab-navigation .tab {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.settings-tab-navigation .tab.active {
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
 }
 
 /* ===========================

@@ -1,6 +1,6 @@
 import { GameFlow_StartNewGame } from "../bolt_src/flows/GameFlow_StartNewGame.js";
 import { Session_Load } from "../bolt_src/flows/Session_Load.js";
-
+import { Session_Save } from "../bolt_src/flows/Session_Save.js";
 // Import statici delle pagine
 import DashboardPage from "./pages/Dashboard.page.js";
 import TeamPage from "./pages/Team.page.js";
@@ -59,19 +59,47 @@ const routes = {
   reports: ScoutingReportsPage,
 };
 
-// Routing statico
-async function loadPageFromHash() {
-  const hash = window.location.hash.slice(1) || "dashboard";
+/**
+ * Carica dinamicamente la pagina corrispondente alla chiave in `routes`
+ */
+function loadPage(key) {
   const pageContainer = document.getElementById("pageContent");
   pageContainer.innerHTML = "";
-
-  const PageClass = routes[hash];
+  const PageClass = routes[key];
   if (PageClass) {
     new PageClass();
   } else {
-    pageContainer.innerHTML = `<p>Pagina non trovata: ${hash}</p>`;
+    pageContainer.innerHTML = `<p>Pagina non trovata: ${key}</p>`;
   }
 }
+  
+function loadPageFromHash() {
+  const hash = window.location.hash.slice(1) || "dashboard";
+  switch (hash) {
+    case "new":
+      startNewGame();
+      break;
+    case "load":
+      loadGame();
+      break;
+    case "quickSave":
+      saveGame();
+      break;
+    case "press-center":
+    case "press":
+      // comandi alias per PressCenter
+      loadPage("press");
+      break;
+    case "settings":
+      loadPage("settings");
+      break;
+    default:
+      // carica la pagina corrispondente a hash, o dashboard se non esiste
+      loadPage(hash);
+ }
+}
+
+
 
 // Eventi
 function setupEventListeners() {
@@ -80,6 +108,10 @@ function setupEventListeners() {
   document.getElementById("notificationsBtn")?.addEventListener("click", () => {
     window.location.hash = "press";
   });
+  document.getElementById("quickSaveBtn")?.addEventListener("click", () => {
+   window.location.hash = "quickSave";
+  });
+  document.getElementById("settingsBtn")?.addEventListener("click", () => window.location.hash = "settings");
   window.addEventListener("hashchange", loadPageFromHash);
 }
 
@@ -108,6 +140,17 @@ async function loadGame() {
     console.error("Errore caricamento:", error);
     showToast("Errore caricamento partita", true);
   }
+}
+
+/**
+ * Richiama il flow Bolt.new per salvare la sessione
+ */
+function saveGame() {
+  // se stai usando direttamente l'API Bolt.new:
+  Session_Save();
+
+  // oppure, se usi un wrapper:
+  // bolt.flow("Session_Save").run();
 }
 
 // Toast
