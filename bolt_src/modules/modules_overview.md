@@ -57,7 +57,8 @@ Questa documentazione descrive i moduli funzionali principali della web app mana
 - `PlayerPositioner` - Posizionamento giocatori
 - `MentalitySlider` - Cursori mentalità
 - `SetPieceManager` - Gestione calci piazzati
-- `TacticalPresets` - Preset tattici salvati  
+- `TacticalPresets` - Preset tattici salvati
+- `TacticalPreview` - Preview tattica
 **Dipendenze**: Squadra
 
 ---
@@ -168,7 +169,8 @@ Questa documentazione descrive i moduli funzionali principali della web app mana
 - `CompetencyChart` - Grafico competenze
 - `StaffHiring` - Assunzioni
 - `ContractManager` - Contratti staff
-- `PerformanceTracker` - Performance staff  
+- `PerformanceTracker` - Performance staff
+- `ContractDetailsPanel` - Dettaglio contrattuale
 **Dipendenze**: Allenamento
 
 ---
@@ -203,7 +205,8 @@ Questa documentazione descrive i moduli funzionali principali della web app mana
 - `GameplaySettings` - Gameplay
 - `NotificationSettings` - Notifiche
 - `AccessibilityOptions` - Accessibilità
-- `DataManagement` - Dati utente  
+- `DataManagement` - Dati utente
+- `SettingsTabNavigation` - Tab navigazione
 **Dipendenze**: Nessuna
 
 ---
@@ -221,7 +224,9 @@ Questa documentazione descrive i moduli funzionali principali della web app mana
 - `BudgetTracker` - Monitoraggio budget
 - `FinanceOverviewPanel` - Panoramica finanziaria
 - `BoardGoals` - Obiettivi board
-- `BoardFeedbackPanel` - Feedback performance  
+- `BoardFeedbackPanel` - Feedback performance
+- `RequestBoardButton` - Richieste board
+- `SponsorBanner` - Sponsor UI
 **Dipendenze**: Trasferimenti, Partite
 
 ---
