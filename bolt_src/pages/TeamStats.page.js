@@ -31,6 +31,8 @@ export default class TeamStatsPage {
           <div class="chart" aria-label="Possesso Palla">Chart 1</div>
           <div class="chart" aria-label="Tiri in Porta">Chart 2</div>
           <div class="chart" aria-label="Passaggi Riusciti">Chart 3</div>
+          <!-- Radar delle competenze -->
+          <div class="competency-radar-chart" data-competency-data='{}'></div>
         </div>
       </div>
     `;

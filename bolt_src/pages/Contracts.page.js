@@ -33,6 +33,8 @@ export default class ContractsPage {
             </tr>
           </tbody>
         </table>
+        <!-- Form dettagli contratto -->
+        <form class="contract-details-form" data-options='{"editable":true}'></form>
       </div>
     `;
   }

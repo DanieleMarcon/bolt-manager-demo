@@ -128,6 +128,8 @@ export default class SessionManagerPage {
               <button class="button button-secondary cleanup-btn">Avvia Pulizia</button>
             </div>
           </div>
+          <!-- Versione avanzata con componente riutilizzabile -->
+          <div class="export-import-tools"></div>
         </div>
 
         <!-- Sponsor Banner -->

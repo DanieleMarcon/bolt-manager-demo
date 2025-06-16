@@ -33,6 +33,8 @@ export default class CalendarViewPage {
             <button class="view-btn" data-view="week">📆 Settimana</button>
             <button class="view-btn" data-view="day">📋 Giorno</button>
           </div>
+          <!-- Componente avanzato di navigazione -->
+          <div class="calendar-navigation"></div>
         </div>
 
         <!-- Calendar Grid Section -->
@@ -43,6 +45,8 @@ export default class CalendarViewPage {
         <!-- Day Advancer Section -->
         <div class="day-advancer-section">
           <div id="dayAdvancer" class="day-advancer-container"></div>
+          <!-- Pulsante avanzato per cambio giorno -->
+          <div class="advance-day-button" data-options='{"confirmationRequired":false}'></div>
         </div>
 
         <!-- Upcoming Events Section -->
@@ -66,6 +70,8 @@ export default class CalendarViewPage {
             </div>
           </div>
         </div>
+        <!-- Modal dettagli giorno -->
+        <div class="day-detail-modal"></div>
 
         <!-- Sponsor Banner -->
         <div id="sponsorBanner" class="sponsor-banner"></div>

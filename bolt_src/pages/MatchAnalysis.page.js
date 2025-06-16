@@ -17,7 +17,7 @@ export default class MatchAnalysisPage {
         <div class="page-header">
           <h2 class="page-title">Analisi Partita</h2>
           <div class="page-actions">
-            <button class="button button-secondary export-btn">📊 Esporta Report</button>
+            <div class="export-report-button"></div>
             <button class="button button-secondary share-btn">🔗 Condividi</button>
             <button class="button button-primary back-to-calendar-btn">📅 Torna al Calendario</button>
           </div>
@@ -37,6 +37,7 @@ export default class MatchAnalysisPage {
         <!-- Key Moments Section -->
         <div class="key-moments-section">
           <div id="keyMoments" class="key-moments-container"></div>
+          <div class="key-moments-timeline"></div>
         </div>
 
         <!-- Player Ratings Section -->

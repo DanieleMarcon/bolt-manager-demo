@@ -117,6 +117,8 @@ export default class TransferMarketPage {
               <div id="activeDealsContainer" class="active-deals-container">
                 ${this.renderActiveDeals()}
               </div>
+              <!-- Integrazione componente avanzato -->
+              <div class="active-deals-panel" data-options='{"maxDeals":5}'></div>
             </div>
           </div>
         </div>
