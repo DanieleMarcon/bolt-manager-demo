@@ -1,698 +1,524 @@
-<div class="match-simulation-page">
-  <div class="page-header">
-    <h2 class="page-title">Simulazione Partita</h2>
-    <div class="page-actions">
-      <button class="button button-ghost settings-btn">
-        ⚙️ Impostazioni
-      </button>
-      <button class="button button-secondary exit-btn">
-        🚪 Esci
-      </button>
-    </div>
-  </div>
+import LineupSelector from '../components/LineupSelector.component.js';
 
-  <!-- Match Header Section -->
-  <div class="match-header-section">
-    <div id="matchHeaderContainer"></div>
-  </div>
-
-  <!-- Main Match Content -->
-  <div class="match-content">
-    <div class="match-main-panel">
-      <!-- Live Scoreboard -->
-      <div class="live-scoreboard-container">
-        <div id="liveScoreboardContainer"></div>
-      </div>
-      
-      <!-- Match Events Timeline -->
-      <div class="match-events-container">
-        <div id="matchEventsContainer"></div>
-      </div>
-      
-      <!-- Match Controls -->
-      <div class="match-controls">
-        <div id="matchSpeedContainer"></div>
-      </div>
-    </div>
-    
-    <div class="match-side-panel">
-      <!-- Live Stats Panel -->
-      <div class="live-stats-container">
-        <div id="liveStatsContainer"></div>
-      </div>
-      
-      <!-- Substitution Panel -->
-      <div class="substitution-container">
-        <div id="substitutionContainer"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Match Overlay for Goals and Key Events -->
-  <div id="matchOverlayContainer" class="match-overlay" style="display: none;"></div>
-
-  <!-- Sponsor Banner -->
-  <div id="sponsorBannerContainer" class="sponsor-banner-container"></div>
-</div>
-
-<style>
-.match-simulation-page {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--text);
-}
-
-.page-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.match-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-}
-
-.match-main-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.match-side-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.match-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.sponsor-banner-container {
-  margin-top: 24px;
-}
-
-/* Responsive styles */
-@media (max-width: 1024px) {
-  .match-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .match-side-panel {
-    order: -1;
-  }
-}
-
-@media (max-width: 768px) {
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  
-  .page-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-</style>
-
-<script type="module">
 export default class MatchSimulationPage {
   constructor() {
+    this.container = document.getElementById('pageContent');
     this.matchData = null;
-    this.isPlaying = false;
-    this.currentSpeed = 'normal';
-    this.currentTime = 0;
-    this.matchInterval = null;
-    this.events = [];
-    
-    this.init();
+    this.lineup = null;
+    this.isSimulating = false;
+    this.render();
   }
 
-  async init() {
+  render() {
+    this.container.innerHTML = `
+      <div class="match-simulation-page">
+        <div class="page-header">
+          <h2 class="page-title">Simulazione Partita</h2>
+          <div class="page-actions">
+            <button class="button button-secondary tactics-btn">⚙️ Tattiche</button>
+            <button class="button button-primary start-match-btn" ${this.isSimulating ? 'disabled' : ''}>
+              ▶️ Inizia Partita
+            </button>
+          </div>
+        </div>
+
+        <!-- Match Info Section -->
+        <div class="match-info-section">
+          <div id="matchInfo" class="match-info-card"></div>
+        </div>
+
+        <!-- Lineup Selection Section -->
+        <div class="lineup-section">
+          <h3 class="section-title">Selezione Formazione</h3>
+          <div id="lineupSelector" class="lineup-selector-container"></div>
+        </div>
+
+        <!-- Pre-Match Analysis Section -->
+        <div class="pre-match-analysis">
+          <h3 class="section-title">Analisi Pre-Partita</h3>
+          <div id="preMatchAnalysis" class="analysis-container"></div>
+        </div>
+
+        <!-- Simulation Controls (hidden initially) -->
+        <div class="simulation-controls" id="simulationControls" style="display: none;">
+          <div class="controls-header">
+            <h3>Controlli Simulazione</h3>
+            <div class="match-time">
+              <span class="time-display">0'</span>
+              <span class="match-status">In attesa</span>
+            </div>
+          </div>
+          
+          <div class="speed-controls">
+            <button class="speed-btn" data-speed="slow">🐌 Lento</button>
+            <button class="speed-btn active" data-speed="normal">⚡ Normale</button>
+            <button class="speed-btn" data-speed="fast">🚀 Veloce</button>
+            <button class="pause-btn">⏸️ Pausa</button>
+          </div>
+          
+          <div class="live-score">
+            <div class="score-display">
+              <span class="home-score">0</span>
+              <span class="score-separator">-</span>
+              <span class="away-score">0</span>
+            </div>
+          </div>
+          
+          <div class="match-events" id="matchEvents">
+            <!-- Live events will appear here -->
+          </div>
+        </div>
+
+        <!-- Sponsor Banner -->
+        <div id="sponsorBanner" class="sponsor-banner"></div>
+      </div>
+    `;
+    this.initComponents();
+  }
+
+  initComponents() {
+    this.loadMatchData();
+    this.renderMatchInfo();
+    this.renderLineupSelector();
+    this.renderPreMatchAnalysis();
+    this.renderSponsorBanner();
     this.bindEvents();
-    await this.loadMatchData();
-    this.renderComponents();
-    
-    // Auto-start match if specified in URL params
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('autostart') === 'true') {
-      this.startMatch();
-    }
   }
 
-  bindEvents() {
-    document.querySelector('.settings-btn')?.addEventListener('click', () => this.showSettings());
-    document.querySelector('.exit-btn')?.addEventListener('click', () => this.exitMatch());
-    
-    // Listen for events from components
-    document.addEventListener('speedChange', (e) => this.handleSpeedChange(e.detail.speed));
-    document.addEventListener('substitutionMade', (e) => this.handleSubstitution(e.detail));
-    document.addEventListener('matchEvent', (e) => this.handleMatchEvent(e.detail));
-  }
-
-  async loadMatchData() {
-    try {
-      // In a real app, this would fetch from the game state or API
-      this.matchData = await this.fetchMatchData();
-    } catch (error) {
-      console.error('Error loading match data:', error);
-      alert('Errore nel caricamento dei dati della partita');
-    }
-  }
-
-  async fetchMatchData() {
-    // Mock data - in a real app this would come from game state
-    return {
+  loadMatchData() {
+    // Mock match data - in a real app this would come from game state
+    this.matchData = {
       id: 1,
       competition: 'Serie A',
       matchday: 15,
-      date: '2025-01-15T15:00:00Z',
+      date: new Date().toISOString(),
       stadium: 'Stadio San Siro',
-      attendance: 75000,
       homeTeam: {
         id: 1,
         name: 'AC Milan',
         logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
-        position: 1,
-        form: 'VVVPV'
+        formation: '4-4-2',
+        rating: 82
       },
       awayTeam: {
         id: 2,
         name: 'Inter',
         logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
-        position: 2,
-        form: 'VVPVV'
+        formation: '4-3-3',
+        rating: 85
       },
-      homeScore: 0,
-      awayScore: 0,
-      status: 'scheduled',
-      minute: 0,
-      addedTime: 0,
       weather: {
         condition: 'sunny',
         temperature: 18
       },
-      referee: 'Marco Rossi',
-      tvChannel: 'Sky Sport 1',
-      stats: {
-        possession: { home: 50, away: 50 },
-        shots: { home: 0, away: 0 },
-        shotsOnTarget: { home: 0, away: 0 },
-        corners: { home: 0, away: 0 },
-        fouls: { home: 0, away: 0 },
-        yellowCards: { home: 0, away: 0 },
-        redCards: { home: 0, away: 0 },
-        offsides: { home: 0, away: 0 },
-        passes: { home: 0, away: 0 },
-        passAccuracy: { home: 0, away: 0 }
-      }
+      referee: 'Marco Rossi'
     };
   }
 
-  renderComponents() {
-    this.renderMatchHeader();
-    this.renderLiveScoreboard();
-    this.renderMatchEvents();
-    this.renderMatchSpeed();
-    this.renderLiveStats();
-    this.renderSubstitutionPanel();
-    this.renderSponsorBanner();
+  renderMatchInfo() {
+    const container = document.getElementById('matchInfo');
+    
+    container.innerHTML = `
+      <div class="match-header">
+        <div class="competition-info">
+          <span class="competition">${this.matchData.competition}</span>
+          <span class="matchday">Giornata ${this.matchData.matchday}</span>
+        </div>
+        <div class="match-date">${this.formatDate(this.matchData.date)}</div>
+      </div>
+      
+      <div class="teams-display">
+        <div class="team home-team">
+          <img src="${this.matchData.homeTeam.logo}" alt="${this.matchData.homeTeam.name}" class="team-logo">
+          <div class="team-info">
+            <h3 class="team-name">${this.matchData.homeTeam.name}</h3>
+            <span class="team-rating">Rating: ${this.matchData.homeTeam.rating}</span>
+            <span class="team-formation">${this.matchData.homeTeam.formation}</span>
+          </div>
+        </div>
+        
+        <div class="vs-section">
+          <span class="vs-text">VS</span>
+          <div class="match-details">
+            <span class="stadium">📍 ${this.matchData.stadium}</span>
+            <span class="weather">🌤️ ${this.matchData.weather.condition} ${this.matchData.weather.temperature}°C</span>
+            <span class="referee">👨‍⚖️ ${this.matchData.referee}</span>
+          </div>
+        </div>
+        
+        <div class="team away-team">
+          <div class="team-info">
+            <h3 class="team-name">${this.matchData.awayTeam.name}</h3>
+            <span class="team-rating">Rating: ${this.matchData.awayTeam.rating}</span>
+            <span class="team-formation">${this.matchData.awayTeam.formation}</span>
+          </div>
+          <img src="${this.matchData.awayTeam.logo}" alt="${this.matchData.awayTeam.name}" class="team-logo">
+        </div>
+      </div>
+    `;
   }
 
-  renderMatchHeader() {
-    const container = document.getElementById('matchHeaderContainer');
-    const el = document.createElement('div');
-    el.className = 'match-header';
-    container.appendChild(el);
-
-    if (typeof MatchHeader !== "undefined") {
-      new MatchHeader(el, this.matchData);
-    }
+  renderLineupSelector() {
+    const container = document.getElementById('lineupSelector');
+    
+    new LineupSelector(container, {
+      formation: this.matchData.homeTeam.formation,
+      availablePlayers: this.getMockPlayers(),
+      onLineupChange: (lineupData) => this.handleLineupChange(lineupData)
+    });
   }
 
-  renderLiveScoreboard() {
-    const container = document.getElementById('liveScoreboardContainer');
-    const el = document.createElement('div');
-    el.className = 'live-scoreboard';
-    container.appendChild(el);
-
-    if (typeof LiveScoreBoard !== "undefined") {
-      new LiveScoreBoard(el, {
-        autoUpdate: true,
-        updateInterval: 30000
-      });
-    }
-  }
-
-  renderMatchEvents() {
-    const container = document.getElementById('matchEventsContainer');
-    const el = document.createElement('div');
-    el.className = 'match-events-timeline';
-    container.appendChild(el);
-
-    if (typeof MatchEventsTimeline !== "undefined") {
-      new MatchEventsTimeline(el, {
-        autoUpdate: true,
-        showFilters: true
-      });
-    }
-  }
-
-  renderMatchSpeed() {
-    const container = document.getElementById('matchSpeedContainer');
-    const el = document.createElement('div');
-    el.className = 'match-speed-control';
-    container.appendChild(el);
-
-    if (typeof MatchSpeedControl !== "undefined") {
-      new MatchSpeedControl(el, {
-        defaultSpeed: 'slow',
-        allowPause: true,
-        showProgress: true
-      });
-    }
-  }
-
-  renderLiveStats() {
-    const container = document.getElementById('liveStatsContainer');
-    const el = document.createElement('div');
-    el.className = 'live-stats-panel';
-    container.appendChild(el);
-
-    if (typeof LiveStatsPanel !== "undefined") {
-      new LiveStatsPanel(el, {
-        autoUpdate: true,
-        updateInterval: 10000,
-        showAnimations: true
-      });
-    }
-  }
-
-  renderSubstitutionPanel() {
-    const container = document.getElementById('substitutionContainer');
-    const el = document.createElement('div');
-    el.className = 'substitution-panel';
-    container.appendChild(el);
-
-    if (typeof SubstitutionPanel !== "undefined") {
-      new SubstitutionPanel(el, {
-        maxSubstitutions: 5,
-        showSuggestions: true,
-        showFormationPreview: true
-      });
-    }
+  renderPreMatchAnalysis() {
+    const container = document.getElementById('preMatchAnalysis');
+    
+    container.innerHTML = `
+      <div class="analysis-grid">
+        <div class="analysis-item">
+          <h5>Probabilità Vittoria</h5>
+          <div class="probability-bars">
+            <div class="prob-bar home">
+              <span class="prob-label">${this.matchData.homeTeam.name}</span>
+              <div class="prob-fill" style="width: 45%"></div>
+              <span class="prob-value">45%</span>
+            </div>
+            <div class="prob-bar draw">
+              <span class="prob-label">Pareggio</span>
+              <div class="prob-fill" style="width: 25%"></div>
+              <span class="prob-value">25%</span>
+            </div>
+            <div class="prob-bar away">
+              <span class="prob-label">${this.matchData.awayTeam.name}</span>
+              <div class="prob-fill" style="width: 30%"></div>
+              <span class="prob-value">30%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="analysis-item">
+          <h5>Confronto Squadre</h5>
+          <div class="team-comparison">
+            <div class="comparison-stat">
+              <span class="stat-label">Attacco</span>
+              <div class="stat-bars">
+                <div class="stat-bar home" style="width: 80%">80</div>
+                <div class="stat-bar away" style="width: 85%">85</div>
+              </div>
+            </div>
+            <div class="comparison-stat">
+              <span class="stat-label">Difesa</span>
+              <div class="stat-bars">
+                <div class="stat-bar home" style="width: 75%">75</div>
+                <div class="stat-bar away" style="width: 78%">78</div>
+              </div>
+            </div>
+            <div class="comparison-stat">
+              <span class="stat-label">Centrocampo</span>
+              <div class="stat-bars">
+                <div class="stat-bar home" style="width: 82%">82</div>
+                <div class="stat-bar away" style="width: 80%">80</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="analysis-item">
+          <h5>Fattori Chiave</h5>
+          <div class="key-factors">
+            <div class="factor">
+              <span class="factor-icon">🏠</span>
+              <span class="factor-text">Vantaggio casa</span>
+            </div>
+            <div class="factor">
+              <span class="factor-icon">📈</span>
+              <span class="factor-text">Forma recente positiva</span>
+            </div>
+            <div class="factor">
+              <span class="factor-icon">⚡</span>
+              <span class="factor-text">Morale alto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   renderSponsorBanner() {
-    const container = document.getElementById('sponsorBannerContainer');
-    const el = document.createElement('div');
-    el.className = 'sponsor-banner';
-    container.appendChild(el);
+    const container = document.getElementById('sponsorBanner');
+    
+    container.innerHTML = `
+      <div class="sponsor-content">
+        <img src="https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=200&h=60" alt="Sponsor" class="sponsor-logo">
+        <span class="sponsor-text">SportTech Pro - La tecnologia al servizio del calcio</span>
+      </div>
+    `;
+  }
 
-    const sponsorData = {
-      id: 1,
-      name: 'SportTech Pro',
-      description: 'Attrezzature sportive di alta qualità per professionisti e appassionati',
-      logo: 'https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=200&h=200',
-      cta: 'Scopri di più',
-      url: 'https://example.com/sponsor1',
-      theme: 'premium'
-    };
+  bindEvents() {
+    // Action buttons
+    const tacticsBtn = this.container.querySelector('.tactics-btn');
+    const startMatchBtn = this.container.querySelector('.start-match-btn');
+    
+    tacticsBtn?.addEventListener('click', () => this.showTacticsPanel());
+    startMatchBtn?.addEventListener('click', () => this.startMatch());
 
-    if (typeof SponsorBanner !== "undefined") {
-      new SponsorBanner(el, { sponsorData, autoClose: true, duration: 10000 });
+    // Speed controls (initially hidden)
+    const speedBtns = this.container.querySelectorAll('.speed-btn');
+    const pauseBtn = this.container.querySelector('.pause-btn');
+    
+    speedBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        speedBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.setSimulationSpeed(btn.dataset.speed);
+      });
+    });
+    
+    pauseBtn?.addEventListener('click', () => this.togglePause());
+  }
+
+  handleLineupChange(lineupData) {
+    this.lineup = lineupData;
+    console.log('Lineup updated:', lineupData);
+    
+    // Update start button state
+    const startBtn = this.container.querySelector('.start-match-btn');
+    if (startBtn) {
+      startBtn.disabled = !lineupData.isComplete;
+      startBtn.textContent = lineupData.isComplete ? '▶️ Inizia Partita' : '⚠️ Completa Formazione';
     }
   }
 
+  showTacticsPanel() {
+    this.showToast('Apertura pannello tattiche', 'info');
+  }
+
   startMatch() {
-    if (this.isPlaying) return;
+    if (!this.lineup || !this.lineup.isComplete) {
+      this.showToast('Completa la formazione prima di iniziare', 'error');
+      return;
+    }
     
-    this.isPlaying = true;
-    this.currentTime = 0;
+    this.isSimulating = true;
     
-    // Update match status
-    this.updateMatchStatus('live');
+    // Show simulation controls
+    const simulationControls = this.container.querySelector('#simulationControls');
+    simulationControls.style.display = 'block';
     
-    // Start match interval
-    this.startMatchInterval();
+    // Hide lineup section
+    const lineupSection = this.container.querySelector('.lineup-section');
+    lineupSection.style.display = 'none';
     
-    // Dispatch match start event
-    document.dispatchEvent(new CustomEvent('matchStart', {
-      detail: { matchData: this.matchData }
-    }));
+    // Update page header
+    const startBtn = this.container.querySelector('.start-match-btn');
+    startBtn.textContent = '⏹️ Termina Partita';
+    startBtn.onclick = () => this.endMatch();
+    
+    // Start simulation
+    this.simulateMatch();
+    
+    this.showToast('Partita iniziata!', 'success');
   }
 
-  pauseMatch() {
-    if (!this.isPlaying) return;
+  simulateMatch() {
+    let currentMinute = 0;
+    const matchEvents = [];
     
-    this.isPlaying = false;
-    
-    // Clear match interval
-    this.clearMatchInterval();
-    
-    // Update match status
-    this.updateMatchStatus('paused');
-    
-    // Dispatch match pause event
-    document.dispatchEvent(new CustomEvent('matchPause', {
-      detail: { matchData: this.matchData, currentTime: this.currentTime }
-    }));
+    this.matchInterval = setInterval(() => {
+      currentMinute++;
+      
+      // Update time display
+      const timeDisplay = this.container.querySelector('.time-display');
+      const statusDisplay = this.container.querySelector('.match-status');
+      
+      if (timeDisplay) timeDisplay.textContent = `${currentMinute}'`;
+      if (statusDisplay) statusDisplay.textContent = 'In corso';
+      
+      // Generate random events
+      if (Math.random() < 0.05) { // 5% chance per minute
+        const event = this.generateRandomEvent(currentMinute);
+        matchEvents.push(event);
+        this.addMatchEvent(event);
+      }
+      
+      // End match at 90 minutes
+      if (currentMinute >= 90) {
+        this.endMatch();
+      }
+      
+    }, 1000); // 1 second = 1 minute of match time
   }
 
-  resumeMatch() {
-    if (this.isPlaying) return;
+  generateRandomEvent(minute) {
+    const eventTypes = ['goal', 'card', 'substitution', 'shot', 'corner'];
+    const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+    const team = Math.random() < 0.5 ? 'home' : 'away';
+    const players = ['Mario Rossi', 'Luigi Bianchi', 'Giuseppe Verdi', 'Antonio Neri'];
+    const player = players[Math.floor(Math.random() * players.length)];
     
-    this.isPlaying = true;
+    let description = '';
+    switch (type) {
+      case 'goal':
+        description = `Gol di ${player}!`;
+        this.updateScore(team);
+        break;
+      case 'card':
+        description = `Cartellino giallo per ${player}`;
+        break;
+      case 'substitution':
+        description = `Sostituzione: entra ${player}`;
+        break;
+      case 'shot':
+        description = `Tiro di ${player}`;
+        break;
+      case 'corner':
+        description = `Corner per ${team === 'home' ? this.matchData.homeTeam.name : this.matchData.awayTeam.name}`;
+        break;
+    }
     
-    // Start match interval
-    this.startMatchInterval();
+    return {
+      id: Date.now(),
+      minute,
+      type,
+      team,
+      player,
+      description
+    };
+  }
+
+  addMatchEvent(event) {
+    const eventsContainer = this.container.querySelector('#matchEvents');
     
-    // Update match status
-    this.updateMatchStatus('live');
+    const eventElement = document.createElement('div');
+    eventElement.className = `match-event ${event.type}`;
+    eventElement.innerHTML = `
+      <span class="event-time">${event.minute}'</span>
+      <span class="event-icon">${this.getEventIcon(event.type)}</span>
+      <span class="event-description">${event.description}</span>
+    `;
     
-    // Dispatch match resume event
-    document.dispatchEvent(new CustomEvent('matchResume', {
-      detail: { matchData: this.matchData, currentTime: this.currentTime }
-    }));
+    eventsContainer.insertBefore(eventElement, eventsContainer.firstChild);
+    
+    // Keep only last 10 events visible
+    const events = eventsContainer.querySelectorAll('.match-event');
+    if (events.length > 10) {
+      events[events.length - 1].remove();
+    }
+  }
+
+  updateScore(team) {
+    const scoreElement = this.container.querySelector(team === 'home' ? '.home-score' : '.away-score');
+    if (scoreElement) {
+      const currentScore = parseInt(scoreElement.textContent) || 0;
+      scoreElement.textContent = currentScore + 1;
+    }
+  }
+
+  getEventIcon(type) {
+    const icons = {
+      'goal': '⚽',
+      'card': '🟨',
+      'substitution': '🔄',
+      'shot': '🎯',
+      'corner': '📐'
+    };
+    return icons[type] || '📝';
+  }
+
+  setSimulationSpeed(speed) {
+    // Adjust simulation speed
+    console.log('Simulation speed set to:', speed);
+  }
+
+  togglePause() {
+    if (this.matchInterval) {
+      clearInterval(this.matchInterval);
+      this.matchInterval = null;
+      this.container.querySelector('.pause-btn').textContent = '▶️ Riprendi';
+      this.container.querySelector('.match-status').textContent = 'In pausa';
+    } else {
+      this.simulateMatch();
+      this.container.querySelector('.pause-btn').textContent = '⏸️ Pausa';
+      this.container.querySelector('.match-status').textContent = 'In corso';
+    }
   }
 
   endMatch() {
-    if (!this.isPlaying) return;
+    this.isSimulating = false;
     
-    this.isPlaying = false;
-    
-    // Clear match interval
-    this.clearMatchInterval();
-    
-    // Update match status
-    this.updateMatchStatus('finished');
-    
-    // Dispatch match end event
-    document.dispatchEvent(new CustomEvent('matchEnd', {
-      detail: { matchData: this.matchData }
-    }));
-  }
-
-  startMatchInterval() {
-    // Clear any existing interval
-    this.clearMatchInterval();
-    
-    // Set interval based on speed
-    const intervalTime = this.getIntervalTime();
-    
-    this.matchInterval = setInterval(() => {
-      this.updateMatchTime();
-    }, intervalTime);
-  }
-
-  clearMatchInterval() {
     if (this.matchInterval) {
       clearInterval(this.matchInterval);
       this.matchInterval = null;
     }
-  }
-
-  getIntervalTime() {
-    // Return interval time in milliseconds based on speed
-    const speedMap = {
-      slow: 1000, // 1 second = 1 minute of match time
-      normal: 500, // 0.5 seconds = 1 minute of match time
-      fast: 250, // 0.25 seconds = 1 minute of match time
-      instant: 50 // 0.05 seconds = 1 minute of match time
-    };
     
-    return speedMap[this.currentSpeed] || speedMap.normal;
-  }
-
-  updateMatchTime() {
-    this.currentTime++;
+    // Update status
+    const statusDisplay = this.container.querySelector('.match-status');
+    if (statusDisplay) statusDisplay.textContent = 'Finita';
     
-    // Check for half time
-    if (this.currentTime === 45) {
-      this.handleHalfTime();
-      return;
-    }
+    // Show final result
+    const homeScore = this.container.querySelector('.home-score').textContent;
+    const awayScore = this.container.querySelector('.away-score').textContent;
     
-    // Check for full time
-    if (this.currentTime === 90) {
-      this.handleFullTime();
-      return;
-    }
+    this.showToast(`Partita terminata! Risultato finale: ${homeScore}-${awayScore}`, 'success');
     
-    // Dispatch time update event
-    document.dispatchEvent(new CustomEvent('matchTimeUpdate', {
-      detail: { time: this.currentTime }
-    }));
-    
-    // Generate random events
-    this.generateRandomEvents();
-  }
-
-  handleHalfTime() {
-    // Pause match
-    this.pauseMatch();
-    
-    // Update match status
-    this.updateMatchStatus('halftime');
-    
-    // Dispatch half time event
-    document.dispatchEvent(new CustomEvent('matchHalfTime', {
-      detail: { matchData: this.matchData }
-    }));
-    
-    // Show half time overlay
-    this.showOverlay('INTERVALLO', 'Fine primo tempo', '45\'');
-  }
-
-  handleFullTime() {
-    // End match
-    this.endMatch();
-    
-    // Dispatch full time event
-    document.dispatchEvent(new CustomEvent('matchFullTime', {
-      detail: { matchData: this.matchData }
-    }));
-    
-    // Show full time overlay
-    this.showOverlay('FINE PARTITA', 'Partita terminata', '90\'');
-  }
-
-  updateMatchStatus(status) {
-    if (!this.matchData) return;
-    
-    this.matchData.status = status;
-    
-    // Dispatch status change event
-    document.dispatchEvent(new CustomEvent('matchStatusChange', {
-      detail: { status, matchData: this.matchData }
-    }));
-  }
-
-  handleSpeedChange(speed) {
-    this.currentSpeed = speed;
-    
-    if (this.isPlaying) {
-      // Restart interval with new speed
-      this.startMatchInterval();
-    }
-    
-    // Dispatch speed change event
-    document.dispatchEvent(new CustomEvent('matchSpeedChange', {
-      detail: { speed, matchData: this.matchData }
-    }));
-  }
-
-  handleSubstitution(substitution) {
-    console.log('Substitution made:', substitution);
-    
-    // Dispatch substitution event
-    document.dispatchEvent(new CustomEvent('matchEvent', {
-      detail: {
-        type: 'substitution',
-        time: this.currentTime,
-        team: 'home',
-        playerOut: substitution.playerOut,
-        playerIn: substitution.playerIn,
-        reason: substitution.reason
-      }
-    }));
-  }
-
-  handleMatchEvent(event) {
-    // Add event to events list
-    this.events.push(event);
-    
-    // Update match data based on event
-    this.updateMatchDataFromEvent(event);
-    
-    // Show overlay for important events
-    if (event.type === 'goal') {
-      this.showGoalOverlay(event);
-    }
-  }
-
-  updateMatchDataFromEvent(event) {
-    if (!this.matchData) return;
-    
-    // Update score for goals
-    if (event.type === 'goal') {
-      if (event.team === 'home') {
-        this.matchData.homeScore++;
-      } else {
-        this.matchData.awayScore++;
-      }
-    }
-    
-    // Update stats
-    if (event.type === 'shot') {
-      if (event.team === 'home') {
-        this.matchData.stats.shots.home++;
-        if (event.onTarget) this.matchData.stats.shotsOnTarget.home++;
-      } else {
-        this.matchData.stats.shots.away++;
-        if (event.onTarget) this.matchData.stats.shotsOnTarget.away++;
-      }
-    }
-    
-    // Update other stats as needed...
-  }
-
-  showGoalOverlay(goalEvent) {
-    const overlay = document.getElementById('matchOverlayContainer');
-    overlay.innerHTML = `
-      <div class="overlay-content">
-        <div class="overlay-icon">⚽</div>
-        <h2 class="overlay-title">GOL!</h2>
-        <div class="overlay-details">
-          <div class="goal-scorer">${goalEvent.player}</div>
-          <div class="goal-time">${goalEvent.time}'</div>
-        </div>
-      </div>
-    `;
-    
-    overlay.style.display = 'flex';
-    
-    // Hide overlay after 3 seconds
+    // Redirect to analysis after 3 seconds
     setTimeout(() => {
-      overlay.style.display = 'none';
+      window.location.hash = 'match-analysis';
     }, 3000);
   }
 
-  showOverlay(title, details, time) {
-    const overlay = document.getElementById('matchOverlayContainer');
-    overlay.innerHTML = `
-      <div class="overlay-content">
-        <div class="overlay-icon">⚽</div>
-        <h2 class="overlay-title">${title}</h2>
-        <div class="overlay-details">
-          <div class="goal-scorer">${details}</div>
-          <div class="goal-time">${time}</div>
-        </div>
-      </div>
-    `;
+  getMockPlayers() {
+    return [
+      {
+        id: 1,
+        name: 'Mario Rossi',
+        position: 'FW',
+        rating: 85,
+        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
+      },
+      {
+        id: 2,
+        name: 'Luigi Bianchi',
+        position: 'MF',
+        rating: 82,
+        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
+      },
+      {
+        id: 3,
+        name: 'Giuseppe Verdi',
+        position: 'DF',
+        rating: 78,
+        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
+      },
+      {
+        id: 4,
+        name: 'Antonio Neri',
+        position: 'GK',
+        rating: 80,
+        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
+      }
+    ];
+  }
+
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('it-IT', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
     
-    overlay.style.display = 'flex';
+    document.body.appendChild(toast);
     
-    // Hide overlay after 3 seconds
     setTimeout(() => {
-      overlay.style.display = 'none';
-    }, 3000);
-  }
-
-  generateRandomEvents() {
-    // In a real app, this would be based on match simulation logic
-    // For now, we'll just generate random events
-    
-    // Goal chance (1% per minute)
-    if (Math.random() < 0.01) {
-      const team = Math.random() < 0.5 ? 'home' : 'away';
-      const player = team === 'home' ? 'Mario Rossi' : 'Luigi Bianchi';
-      
-      // Dispatch goal event
-      document.dispatchEvent(new CustomEvent('matchEvent', {
-        detail: {
-          type: 'goal',
-          time: this.currentTime,
-          team,
-          player
-        }
-      }));
-    }
-    
-    // Card chance (0.5% per minute)
-    if (Math.random() < 0.005) {
-      const team = Math.random() < 0.5 ? 'home' : 'away';
-      const player = team === 'home' ? 'Giuseppe Verdi' : 'Antonio Neri';
-      const cardType = Math.random() < 0.2 ? 'red_card' : 'card';
-      
-      // Dispatch card event
-      document.dispatchEvent(new CustomEvent('matchEvent', {
-        detail: {
-          type: cardType,
-          time: this.currentTime,
-          team,
-          player
-        }
-      }));
-    }
-  }
-
-  showSettings() {
-    alert('Impostazioni partita');
-  }
-
-  exitMatch() {
-    if (confirm('Sei sicuro di voler uscire dalla partita?')) {
-      window.location.href = '#calendar';
-    }
-  }
-
-  // Simulate Match_Simulate flow
-  async simulateMatch() {
-    try {
-      // In a real app, this would call the Match_Simulate flow
-      console.log('Calling Match_Simulate flow...');
-      
-      // Start the match
-      this.startMatch();
-      
-      return { success: true };
-    } catch (error) {
-      console.error('Error simulating match:', error);
-      return { success: false, error: error.message };
-    }
+      toast.remove();
+    }, 4000);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const page = new MatchSimulationPage();
-  
-  // Auto-start simulation after a short delay
-  setTimeout(() => {
-    page.simulateMatch();
-  }, 1000);
-});
-</script>

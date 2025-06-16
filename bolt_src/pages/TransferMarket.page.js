@@ -1,287 +1,630 @@
-<div class="transfer-market-page">
-  <div class="page-header">
-    <h2 class="page-title">Mercato Trasferimenti</h2>
-    <div class="page-actions">
-      <button class="button button-secondary shortlist-btn">
-        ⭐ Osservati
-      </button>
-      <button class="button button-primary history-btn">
-        📜 Storico
-      </button>
-    </div>
-  </div>
+import PlayerSearch from '../components/PlayerSearch.component.js';
+import NegotiationPanel from '../components/NegotiationPanel.component.js';
+import ContractDetails from '../components/ContractDetails.component.js';
 
-  <!-- Market Overview Section -->
-  <div class="market-overview">
-    <div class="overview-cards">
-      <div class="budget-tracker-container" id="budgetTrackerContainer"></div>
-      <div class="active-deals-container" id="activeDealsContainer"></div>
-    </div>
-  </div>
-
-  <!-- Player Search Section -->
-  <div class="player-search-section">
-    <div id="playerSearchContainer"></div>
-  </div>
-
-  <!-- Search Results Section -->
-  <div class="search-results-section">
-    <div class="section-header">
-      <h3 class="section-title">Risultati Ricerca</h3>
-      <div class="section-controls">
-        <select class="sort-select" aria-label="Ordina risultati">
-          <option value="value">Valore</option>
-          <option value="name">Nome</option>
-          <option value="age">Età</option>
-          <option value="rating">Rating</option>
-        </select>
-        <button class="button button-ghost refresh-btn">
-          ↻ Aggiorna
-        </button>
-      </div>
-    </div>
-    
-    <div class="player-results-grid" id="playerResultsContainer">
-      <!-- Player cards will be rendered here -->
-    </div>
-    
-    <div class="empty-results" style="display: none;">
-      <div class="empty-icon">🔍</div>
-      <h4>Nessun Giocatore Trovato</h4>
-      <p>Prova a modificare i filtri di ricerca</p>
-    </div>
-    
-    <div class="loading-results" style="display: none;">
-      <div class="loading-spinner"></div>
-      <span>Ricerca giocatori in corso...</span>
-    </div>
-  </div>
-
-  <!-- Negotiation Modal Container -->
-  <div id="negotiationModalContainer"></div>
-
-  <!-- Contract Details Container -->
-  <div id="contractDetailsContainer"></div>
-
-  <!-- Sponsor Banner -->
-  <div id="sponsorBannerContainer" class="sponsor-banner-container"></div>
-</div>
-
-<style>
-.transfer-market-page {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--text);
-}
-
-.page-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.market-overview {
-  margin-bottom: 16px;
-}
-
-.overview-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.section-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--text);
-}
-
-.section-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.sort-select {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  font-size: 14px;
-}
-
-.player-results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.empty-results,
-.loading-results {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-  color: var(--text-muted);
-}
-
-.empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-  opacity: 0.5;
-}
-
-.empty-results h4 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: var(--text);
-}
-
-.empty-results p {
-  font-size: 14px;
-  margin: 0;
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border);
-  border-top: 3px solid var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 12px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.sponsor-banner-container {
-  margin-top: 24px;
-}
-
-/* Responsive styles */
-@media (max-width: 1024px) {
-  .overview-cards {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  
-  .player-results-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  
-  .page-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .section-controls {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .player-results-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
-<script type="module">
 export default class TransferMarketPage {
   constructor() {
+    this.container = document.getElementById('pageContent');
     this.players = [];
     this.filteredPlayers = [];
+    this.selectedPlayer = null;
     this.activeDeals = [];
     this.budget = {
       available: 50000000,
       spent: 0,
       pending: 0
     };
-    
-    this.init();
+    this.render();
   }
 
-  async init() {
+  render() {
+    this.container.innerHTML = `
+      <div class="transfer-market-page">
+        <div class="page-header">
+          <h2 class="page-title">Mercato Trasferimenti</h2>
+          <div class="page-actions">
+            <button class="button button-secondary shortlist-btn">⭐ Lista Osservati</button>
+            <button class="button button-secondary history-btn">📜 Storico Trasferimenti</button>
+            <button class="button button-primary refresh-btn">🔄 Aggiorna Mercato</button>
+          </div>
+        </div>
+
+        <!-- Market Overview Section -->
+        <div class="market-overview-section">
+          <div class="overview-cards">
+            <div class="budget-card">
+              <h4>Budget Disponibile</h4>
+              <div class="budget-amount">€${this.formatCurrency(this.budget.available)}</div>
+              <div class="budget-details">
+                <span>Speso: €${this.formatCurrency(this.budget.spent)}</span>
+                <span>In sospeso: €${this.formatCurrency(this.budget.pending)}</span>
+              </div>
+            </div>
+            
+            <div class="deals-card">
+              <h4>Trattative Attive</h4>
+              <div class="deals-count">${this.activeDeals.length}</div>
+              <div class="deals-status">
+                <span>${this.getDealsInProgress()} in corso</span>
+                <span>${this.getDealsAccepted()} accettate</span>
+              </div>
+            </div>
+            
+            <div class="market-stats-card">
+              <h4>Statistiche Mercato</h4>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-value">${this.players.length}</span>
+                  <span class="stat-label">Giocatori</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value">${this.getAvailablePlayersCount()}</span>
+                  <span class="stat-label">Disponibili</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Search Section -->
+        <div class="player-search-section">
+          <div id="playerSearch" class="player-search-container"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="market-main-content">
+          <div class="market-left-panel">
+            <!-- Search Results -->
+            <div class="search-results-section">
+              <div class="results-header">
+                <h3 class="section-title">Risultati Ricerca</h3>
+                <div class="results-info">
+                  <span class="results-count" id="resultsCount">0 giocatori trovati</span>
+                </div>
+              </div>
+              
+              <div class="player-results-grid" id="playerResultsGrid">
+                <!-- Player cards will be rendered here -->
+              </div>
+              
+              <div class="empty-results" id="emptyResults" style="display: none;">
+                <div class="empty-icon">🔍</div>
+                <h4>Nessun Giocatore Trovato</h4>
+                <p>Prova a modificare i filtri di ricerca per trovare giocatori</p>
+              </div>
+              
+              <div class="loading-results" id="loadingResults" style="display: none;">
+                <div class="loading-spinner"></div>
+                <span>Ricerca giocatori in corso...</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="market-right-panel">
+            <!-- Negotiation Panel -->
+            <div class="negotiation-section">
+              <div id="negotiationPanel" class="negotiation-panel-container"></div>
+            </div>
+            
+            <!-- Contract Details -->
+            <div class="contract-section">
+              <div id="contractDetails" class="contract-details-container"></div>
+            </div>
+            
+            <!-- Active Deals -->
+            <div class="active-deals-section">
+              <h4>Trattative in Corso</h4>
+              <div id="activeDealsContainer" class="active-deals-container">
+                ${this.renderActiveDeals()}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sponsor Banner -->
+        <div id="sponsorBanner" class="sponsor-banner"></div>
+      </div>
+    `;
+    this.initComponents();
+  }
+
+  initComponents() {
+    this.loadMarketData();
+    this.renderPlayerSearch();
+    this.renderNegotiationPanel();
+    this.renderContractDetails();
+    this.renderSponsorBanner();
     this.bindEvents();
-    await this.loadData();
-    this.renderComponents();
+  }
+
+  loadMarketData() {
+    // Mock data - in a real app this would fetch from game state or API
+    this.players = this.generateMockPlayers();
+    this.activeDeals = this.generateMockDeals();
+    this.filteredPlayers = [...this.players];
+  }
+
+  renderPlayerSearch() {
+    const container = document.getElementById('playerSearch');
+    
+    new PlayerSearch(container, {
+      onSearch: (searchParams) => this.handlePlayerSearch(searchParams),
+      onFilterChange: (filters) => this.handleFilterChange(filters),
+      autoSearch: true,
+      searchDelay: 300
+    });
+  }
+
+  renderNegotiationPanel() {
+    const container = document.getElementById('negotiationPanel');
+    
+    new NegotiationPanel(container,{
+      
+      player: this.selectedPlayer,
+      maxBudget: this.budget.available,
+      onOfferSubmit: (offerData) => this.handleOfferSubmit(offerData),
+      onDraftSave: (draftData) => this.handleDraftSave(draftData),
+      onCancel: () => this.handleNegotiationCancel()
+    });
+  }
+
+  renderContractDetails() {
+    const container = document.getElementById('contractDetails');
+    
+    new ContractDetails(container, {
+      contract: null,
+      player: this.selectedPlayer,
+      club: { name: 'AC Milan', logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=60&h=60' },
+      editable: false,
+      showActions: false
+    });
+  }
+
+  renderPlayerResults() {
+    const container = document.getElementById('playerResultsGrid');
+    const emptyResults = document.getElementById('emptyResults');
+    const resultsCount = document.getElementById('resultsCount');
+    
+    // Update results count
+    resultsCount.textContent = `${this.filteredPlayers.length} giocatori trovati`;
+    
+    if (this.filteredPlayers.length === 0) {
+      container.style.display = 'none';
+      emptyResults.style.display = 'flex';
+      return;
+    }
+    
+    container.style.display = 'grid';
+    emptyResults.style.display = 'none';
+    container.innerHTML = '';
+    
+    this.filteredPlayers.forEach(player => {
+      const playerCard = this.createPlayerCard(player);
+      container.appendChild(playerCard);
+    });
+  }
+
+  createPlayerCard(player) {
+    const card = document.createElement('div');
+    card.className = 'player-market-card';
+    card.dataset.playerId = player.id;
+    
+    card.innerHTML = `
+      <div class="player-card-header">
+        <img src="${player.photo}" alt="${player.name}" class="player-photo">
+        <div class="player-basic-info">
+          <h5 class="player-name">${player.name}</h5>
+          <span class="player-position">${player.position}</span>
+          <span class="player-age">${player.age} anni</span>
+        </div>
+        <div class="player-rating">
+          <span class="rating-value">${player.overall_rating}</span>
+        </div>
+      </div>
+      
+      <div class="player-card-body">
+        <div class="player-details">
+          <div class="detail-item">
+            <span class="detail-label">Squadra:</span>
+            <span class="detail-value">${player.team}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Nazionalità:</span>
+            <span class="detail-value">${player.nationality}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Valore:</span>
+            <span class="detail-value">€${this.formatCurrency(player.marketValue)}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Stipendio:</span>
+            <span class="detail-value">€${this.formatCurrency(player.currentWage)}/sett</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Contratto:</span>
+            <span class="detail-value">${this.formatContractExpiry(player.contractExpiry)}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="player-card-actions">
+        <button class="button button-ghost view-details-btn">👁️ Dettagli</button>
+        <button class="button button-primary make-offer-btn">💰 Fai Offerta</button>
+      </div>
+    `;
+    
+    // Bind events
+    const viewDetailsBtn = card.querySelector('.view-details-btn');
+    const makeOfferBtn = card.querySelector('.make-offer-btn');
+    
+    viewDetailsBtn?.addEventListener('click', () => this.viewPlayerDetails(player));
+    makeOfferBtn?.addEventListener('click', () => this.makeOffer(player));
+    
+    card.addEventListener('click', (e) => {
+      if (!e.target.closest('button')) {
+        this.selectPlayer(player);
+      }
+    });
+    
+    return card;
+  }
+
+  renderActiveDeals() {
+    if (this.activeDeals.length === 0) {
+      return `
+        <div class="no-deals">
+          <div class="no-deals-icon">📋</div>
+          <p>Nessuna trattativa in corso</p>
+        </div>
+      `;
+    }
+    
+    return this.activeDeals.map(deal => `
+      <div class="deal-item ${deal.status}">
+        <div class="deal-player">
+          <img src="${deal.player.photo}" alt="${deal.player.name}" class="deal-player-photo">
+          <div class="deal-player-info">
+            <h6>${deal.player.name}</h6>
+            <span>${deal.player.position} - ${deal.player.team}</span>
+          </div>
+        </div>
+        
+        <div class="deal-details">
+          <div class="deal-amount">€${this.formatCurrency(deal.offerAmount)}</div>
+          <div class="deal-status">${this.getDealStatusText(deal.status)}</div>
+          <div class="deal-deadline">${this.formatDeadline(deal.responseDeadline)}</div>
+        </div>
+        
+        <div class="deal-actions">
+          <button class="deal-action-btn view-btn" data-deal-id="${deal.id}">👁️</button>
+          <button class="deal-action-btn cancel-btn" data-deal-id="${deal.id}">❌</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderSponsorBanner() {
+    const container = document.getElementById('sponsorBanner');
+    
+    container.innerHTML = `
+      <div class="sponsor-content">
+        <img src="https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=200&h=60" alt="Sponsor" class="sponsor-logo">
+        <span class="sponsor-text">SportTech Pro - Il mercato dei campioni</span>
+      </div>
+    `;
   }
 
   bindEvents() {
-    document.querySelector('.shortlist-btn')?.addEventListener('click', () => this.showShortlist());
-    document.querySelector('.history-btn')?.addEventListener('click', () => this.showTransferHistory());
-    document.querySelector('.refresh-btn')?.addEventListener('click', () => this.refreshPlayers());
-    document.querySelector('.sort-select')?.addEventListener('change', (e) => this.sortPlayers(e.target.value));
+    // Page action buttons
+    const shortlistBtn = this.container.querySelector('.shortlist-btn');
+    const historyBtn = this.container.querySelector('.history-btn');
+    const refreshBtn = this.container.querySelector('.refresh-btn');
     
-    // Listen for events from components
-    document.addEventListener('playerSearch', (e) => this.handleSearch(e.detail));
-    document.addEventListener('dealAdded', (e) => this.handleNewDeal(e.detail));
-    document.addEventListener('contractSubmit', (e) => this.handleContractSubmit(e.detail));
+    shortlistBtn?.addEventListener('click', () => this.showShortlist());
+    historyBtn?.addEventListener('click', () => this.showTransferHistory());
+    refreshBtn?.addEventListener('click', () => this.refreshMarket());
+
+    // Deal action buttons
+    this.bindDealActions();
   }
 
-  async loadData() {
-    try {
-      // In a real app, these would fetch from the game state or API
-      this.players = await this.fetchPlayers();
-      this.activeDeals = await this.fetchActiveDeals();
-      this.budget = await this.fetchBudget();
+  bindDealActions() {
+    const dealViewBtns = this.container.querySelectorAll('.deal-action-btn.view-btn');
+    const dealCancelBtns = this.container.querySelectorAll('.deal-action-btn.cancel-btn');
+    
+    dealViewBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const dealId = parseInt(btn.dataset.dealId);
+        this.viewDeal(dealId);
+      });
+    });
+    
+    dealCancelBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const dealId = parseInt(btn.dataset.dealId);
+        this.cancelDeal(dealId);
+      });
+    });
+  }
+
+  handlePlayerSearch(searchParams) {
+    this.showLoading(true);
+    
+    // Simulate search delay
+    setTimeout(() => {
+      this.filteredPlayers = this.players.filter(player => {
+        return this.matchesSearchCriteria(player, searchParams.filters);
+      });
       
-      this.filteredPlayers = [...this.players];
-    } catch (error) {
-      console.error('Error loading data:', error);
-      alert('Errore nel caricamento dei dati');
+      // Sort results
+      this.sortPlayers(searchParams.sortBy || 'name');
+      
+      this.renderPlayerResults();
+      this.showLoading(false);
+    }, 500);
+  }
+
+  handleFilterChange(filters) {
+    // Update search component with results count
+    const playerSearch = document.querySelector('.player-search');
+    if (playerSearch?.setResultsCount) {
+      playerSearch.setResultsCount(this.filteredPlayers.length);
     }
   }
 
-  async fetchPlayers() {
-    // Mock data - in a real app this would come from game state
-    const players = [];
+  matchesSearchCriteria(player, filters) {
+    // Search term filter
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      if (!player.name.toLowerCase().includes(searchTerm) &&
+          !player.team.toLowerCase().includes(searchTerm) &&
+          !player.nationality.toLowerCase().includes(searchTerm)) {
+        return false;
+      }
+    }
     
-    // Generate sample players
-    for (let i = 1; i <= 50; i++) {
-      const positions = ['GK', 'DF', 'MF', 'FW'];
+    // Position filter
+    if (filters.position && player.position !== filters.position) {
+      return false;
+    }
+    
+    // Age filter
+    if (filters.age) {
+      if (player.age < filters.age.min || player.age > filters.age.max) {
+        return false;
+      }
+    }
+    
+    // Rating filter
+    if (filters.rating) {
+      if (player.overall_rating < filters.rating.min || player.overall_rating > filters.rating.max) {
+        return false;
+      }
+    }
+    
+    // Value filter
+    if (filters.value) {
+      if (player.marketValue < filters.value.min || player.marketValue > filters.value.max) {
+        return false;
+      }
+    }
+    
+    // Nationality filter
+    if (filters.nationality && player.nationality !== filters.nationality) {
+      return false;
+    }
+    
+    // Contract filter
+    if (filters.contract) {
+      const now = new Date();
+      const expiry = new Date(player.contractExpiry);
+      const monthsRemaining = (expiry.getFullYear() - now.getFullYear()) * 12 + (expiry.getMonth() - now.getMonth());
+      
+      switch (filters.contract) {
+        case 'expiring':
+          if (monthsRemaining > 6) return false;
+          break;
+        case 'short':
+          if (monthsRemaining > 12) return false;
+          break;
+        case 'long':
+          if (monthsRemaining <= 24) return false;
+          break;
+        case 'free':
+          if (monthsRemaining > 0) return false;
+          break;
+      }
+    }
+    
+    return true;
+  }
+
+  sortPlayers(sortBy) {
+    this.filteredPlayers.sort((a, b) => {
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'rating':
+          return b.overall_rating - a.overall_rating;
+        case 'age':
+          return a.age - b.age;
+        case 'value':
+          return b.marketValue - a.marketValue;
+        case 'position':
+          return a.position.localeCompare(b.position);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  selectPlayer(player) {
+    this.selectedPlayer = player;
+    
+    // Update visual selection
+    const playerCards = this.container.querySelectorAll('.player-market-card');
+    playerCards.forEach(card => {
+      card.classList.toggle('selected', parseInt(card.dataset.playerId) === player.id);
+    });
+    
+    // Update negotiation panel
+    const negotiationPanel = document.getElementById('negotiationPanel');
+    if (negotiationPanel?.negotiationPanel) {
+      negotiationPanel.negotiationPanel.setPlayer(player);
+    }
+    
+    // Update contract details
+    const contractDetails = document.getElementById('contractDetails');
+    if (contractDetails?.contractDetails) {
+      const mockContract = this.generateMockContract(player);
+      contractDetails.contractDetails.setContract(mockContract);
+      contractDetails.contractDetails.setPlayer(player);
+    }
+  }
+
+  viewPlayerDetails(player) {
+    this.selectPlayer(player);
+    this.showToast(`Visualizzazione dettagli di ${player.name}`, 'info');
+  }
+
+  makeOffer(player) {
+    this.selectPlayer(player);
+    
+    // Scroll to negotiation panel
+    const negotiationPanel = document.getElementById('negotiationPanel');
+    negotiationPanel?.scrollIntoView({ behavior: 'smooth' });
+    
+    this.showToast(`Inizia negoziazione per ${player.name}`, 'info');
+  }
+
+  handleOfferSubmit(offerData) {
+    console.log('Offer submitted:', offerData);
+    
+    // Create new deal
+    const newDeal = {
+      id: Date.now(),
+      player: offerData.player,
+      status: 'negotiating',
+      offerAmount: offerData.offer.transferFee,
+      proposedWages: offerData.offer.weeklyWage,
+      responseDeadline: new Date(Date.now() + 86400000).toISOString() // 24 hours from now
+    };
+    
+    this.activeDeals.push(newDeal);
+    
+    // Update budget
+    this.budget.pending += offerData.offer.transferFee;
+    this.budget.available -= offerData.offer.transferFee;
+    
+    // Re-render active deals
+    const activeDealsContainer = document.getElementById('activeDealsContainer');
+    activeDealsContainer.innerHTML = this.renderActiveDeals();
+    this.bindDealActions();
+    
+    // Update budget display
+    this.updateBudgetDisplay();
+    
+    this.showToast(`Offerta inviata per ${offerData.player.name}`, 'success');
+  }
+
+  handleDraftSave(draftData) {
+    console.log('Draft saved:', draftData);
+    this.showToast('Bozza salvata', 'success');
+  }
+
+  handleNegotiationCancel() {
+    this.selectedPlayer = null;
+    
+    // Clear visual selection
+    const playerCards = this.container.querySelectorAll('.player-market-card');
+    playerCards.forEach(card => card.classList.remove('selected'));
+    
+    this.showToast('Negoziazione annullata', 'info');
+  }
+
+  viewDeal(dealId) {
+    const deal = this.activeDeals.find(d => d.id === dealId);
+    if (deal) {
+      this.showToast(`Visualizzazione trattativa per ${deal.player.name}`, 'info');
+    }
+  }
+
+  cancelDeal(dealId) {
+    const deal = this.activeDeals.find(d => d.id === dealId);
+    if (deal && confirm(`Sei sicuro di voler annullare la trattativa per ${deal.player.name}?`)) {
+      // Remove deal
+      this.activeDeals = this.activeDeals.filter(d => d.id !== dealId);
+      
+      // Update budget
+      this.budget.pending -= deal.offerAmount;
+      this.budget.available += deal.offerAmount;
+      
+      // Re-render
+      const activeDealsContainer = document.getElementById('activeDealsContainer');
+      activeDealsContainer.innerHTML = this.renderActiveDeals();
+      this.bindDealActions();
+      this.updateBudgetDisplay();
+      
+      this.showToast(`Trattativa per ${deal.player.name} annullata`, 'success');
+    }
+  }
+
+  showShortlist() {
+    this.showToast('Apertura lista osservati', 'info');
+  }
+
+  showTransferHistory() {
+    this.showToast('Apertura storico trasferimenti', 'info');
+  }
+
+  refreshMarket() {
+    this.showLoading(true);
+    
+    setTimeout(() => {
+      this.loadMarketData();
+      this.renderPlayerResults();
+      this.updateBudgetDisplay();
+      this.showLoading(false);
+      this.showToast('Mercato aggiornato', 'success');
+    }, 1000);
+  }
+
+  showLoading(show) {
+    const loadingResults = document.getElementById('loadingResults');
+    const playerResultsGrid = document.getElementById('playerResultsGrid');
+    const emptyResults = document.getElementById('emptyResults');
+    
+    loadingResults.style.display = show ? 'flex' : 'none';
+    playerResultsGrid.style.display = show ? 'none' : 'grid';
+    emptyResults.style.display = 'none';
+  }
+
+  updateBudgetDisplay() {
+    const budgetAmount = this.container.querySelector('.budget-amount');
+    const budgetDetails = this.container.querySelector('.budget-details');
+    
+    if (budgetAmount) {
+      budgetAmount.textContent = `€${this.formatCurrency(this.budget.available)}`;
+    }
+    
+    if (budgetDetails) {
+      budgetDetails.innerHTML = `
+        <span>Speso: €${this.formatCurrency(this.budget.spent)}</span>
+        <span>In sospeso: €${this.formatCurrency(this.budget.pending)}</span>
+      `;
+    }
+  }
+
+  generateMockPlayers() {
+    const players = [];
+    const positions = ['GK', 'DF', 'MF', 'FW'];
+    const teams = ['Juventus', 'Inter', 'Roma', 'Napoli', 'Lazio', 'Fiorentina', 'Atalanta', 'Torino'];
+    const nationalities = ['Italy', 'Spain', 'France', 'Germany', 'Brazil', 'Argentina', 'England', 'Portugal'];
+    
+    for (let i = 1; i <= 100; i++) {
       const position = positions[Math.floor(Math.random() * positions.length)];
       const age = Math.floor(Math.random() * 15) + 18; // 18-32
+      const rating = Math.floor(Math.random() * 30) + 70; // 70-99
       const value = Math.floor(Math.random() * 50 + 1) * 1000000; // 1M-50M
       
       players.push({
@@ -289,12 +632,12 @@ export default class TransferMarketPage {
         name: `Player ${i}`,
         position,
         age,
-        team: `Team ${Math.floor(i / 5) + 1}`,
-        nationality: `Country ${Math.floor(i / 10) + 1}`,
+        team: teams[Math.floor(Math.random() * teams.length)],
+        nationality: nationalities[Math.floor(Math.random() * nationalities.length)],
         marketValue: value,
         currentWage: Math.floor(value / 100),
         contractExpiry: new Date(2025 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 12), 1).toISOString(),
-        overall_rating: Math.floor(Math.random() * 30) + 70, // 70-99
+        overall_rating: rating,
         photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=120&h=120'
       });
     }
@@ -302,8 +645,7 @@ export default class TransferMarketPage {
     return players;
   }
 
-  async fetchActiveDeals() {
-    // Mock data - in a real app this would come from game state
+  generateMockDeals() {
     return [
       {
         id: 1,
@@ -311,420 +653,95 @@ export default class TransferMarketPage {
           id: 101,
           name: 'Mario Rossi',
           position: 'FW',
-          age: 25,
-          team: 'AC Milan',
-          photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=96&h=96'
+          team: 'Juventus',
+          photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
         },
         status: 'negotiating',
-        offerAmount: 5000000,
-        proposedWages: 50000,
-        responseDeadline: new Date(Date.now() + 86400000).toISOString() // 24 hours from now
-      },
-      {
-        id: 2,
-        player: {
-          id: 102,
-          name: 'Luigi Bianchi',
-          position: 'MF',
-          age: 28,
-          team: 'Juventus',
-          photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=96&h=96'
-        },
-        status: 'accepted',
-        offerAmount: 3500000,
-        proposedWages: 40000,
-        responseDeadline: new Date(Date.now() + 43200000).toISOString() // 12 hours from now
+        offerAmount: 15000000,
+        proposedWages: 75000,
+        responseDeadline: new Date(Date.now() + 86400000).toISOString()
       }
     ];
   }
 
-  async fetchBudget() {
-    // Mock data - in a real app this would come from game state
+  generateMockContract(player) {
     return {
-      available: 50000000,
-      spent: 10000000,
-      pending: 8500000
+      duration: 3,
+      startDate: '2024-07-01',
+      endDate: player.contractExpiry,
+      weeklyWage: player.currentWage,
+      signingBonus: 0,
+      releaseClause: player.marketValue * 1.5,
+      status: 'active'
     };
   }
 
-  renderComponents() {
-    this.renderBudgetTracker();
-    this.renderActiveDeals();
-    this.renderPlayerSearch();
-    this.renderPlayerResults();
-    this.renderNegotiationModal();
-    this.renderContractDetails();
-    this.renderSponsorBanner();
+  getDealsInProgress() {
+    return this.activeDeals.filter(d => d.status === 'negotiating').length;
   }
 
-  renderBudgetTracker() {
-    const container = document.getElementById('budgetTrackerContainer');
-    const el = document.createElement('div');
-    el.className = 'budget-tracker';
-    container.appendChild(el);
-
-    if (typeof BudgetTracker !== "undefined") {
-      new BudgetTracker(el, this.budget);
-    }
+  getDealsAccepted() {
+    return this.activeDeals.filter(d => d.status === 'accepted').length;
   }
 
-  renderActiveDeals() {
-    const container = document.getElementById('activeDealsContainer');
-    const el = document.createElement('div');
-    el.className = 'active-deals-panel';
-    container.appendChild(el);
-
-    if (typeof ActiveDealsPanel !== "undefined") {
-      const panel = new ActiveDealsPanel(el, {
-        maxDeals: 10,
-        autoRefresh: true
-      });
-      
-      // Add active deals
-      if (panel.setDeals) {
-        panel.setDeals(this.activeDeals);
-      }
-    }
+  getAvailablePlayersCount() {
+    return this.players.filter(p => {
+      const expiry = new Date(p.contractExpiry);
+      const now = new Date();
+      const monthsRemaining = (expiry.getFullYear() - now.getFullYear()) * 12 + (expiry.getMonth() - now.getMonth());
+      return monthsRemaining <= 12; // Available if contract expires within a year
+    }).length;
   }
 
-  renderPlayerSearch() {
-    const container = document.getElementById('playerSearchContainer');
-    const el = document.createElement('div');
-    el.className = 'player-search-bar';
-    container.appendChild(el);
-
-    if (typeof PlayerSearchBar !== "undefined") {
-      new PlayerSearchBar(el, {
-        autoSearch: true,
-        searchDelay: 300
-      });
-    }
-  }
-
-  renderPlayerResults() {
-    const container = document.getElementById('playerResultsContainer');
-    container.innerHTML = '';
-    
-    if (this.filteredPlayers.length === 0) {
-      document.querySelector('.empty-results').style.display = 'flex';
-      return;
-    }
-    
-    document.querySelector('.empty-results').style.display = 'none';
-    
-    this.filteredPlayers.forEach(player => {
-      const el = document.createElement('div');
-      el.className = 'player-card';
-      container.appendChild(el);
-
-      // Create a player card with market-specific data
-      const playerData = {
-        player: {
-          ...player,
-          marketValue: player.marketValue,
-          currentWage: player.currentWage,
-          contractExpiry: player.contractExpiry
-        }
-      };
-
-      if (typeof PlayerCard !== "undefined") {
-        const card = new PlayerCard(el, playerData);
-        
-        // Override default actions for market context
-        el.querySelector('.view-details-btn').textContent = '👁️ Dettagli';
-        el.querySelector('.train-player-btn').textContent = '💰 Offerta';
-        
-        // Change event listener for the offer button
-        const offerBtn = el.querySelector('.train-player-btn');
-        if (offerBtn) {
-          offerBtn.removeEventListener('click', offerBtn.clickHandler);
-          offerBtn.clickHandler = () => this.showNegotiationModal(player);
-          offerBtn.addEventListener('click', offerBtn.clickHandler);
-        }
-      }
-    });
-  }
-
-  renderNegotiationModal() {
-    const container = document.getElementById('negotiationModalContainer');
-    const el = document.createElement('div');
-    el.className = 'negotiation-modal modal';
-    container.appendChild(el);
-
-    if (typeof NegotiationModal !== "undefined") {
-      this.negotiationModal = new NegotiationModal(el, {
-        onSave: (data) => this.handleDraftSave(data),
-        onSubmit: (data) => this.handleOfferSubmit(data)
-      });
-    }
-  }
-
-  renderContractDetails() {
-    const container = document.getElementById('contractDetailsContainer');
-    const el = document.createElement('div');
-    el.className = 'contract-details-form';
-    container.appendChild(el);
-
-    if (typeof ContractDetailsForm !== "undefined") {
-      this.contractForm = new ContractDetailsForm(el, {
-        autoSave: false
-      });
-    }
-  }
-
-  renderSponsorBanner() {
-    const container = document.getElementById('sponsorBannerContainer');
-    const el = document.createElement('div');
-    el.className = 'sponsor-banner';
-    container.appendChild(el);
-
-    const sponsorData = {
-      id: 2,
-      name: 'Energy Boost',
-      description: 'La bevanda energetica ufficiale dei campioni di calcio',
-      logo: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=200&h=200',
-      cta: 'Prova ora',
-      url: 'https://example.com/sponsor2',
-      theme: 'featured'
+  getDealStatusText(status) {
+    const statusMap = {
+      'negotiating': 'In negoziazione',
+      'accepted': 'Accettata',
+      'rejected': 'Rifiutata',
+      'completed': 'Completata'
     };
-
-    if (typeof SponsorBanner !== "undefined") {
-      new SponsorBanner(el, { sponsorData, autoClose: true, duration: 10000 });
-    }
+    return statusMap[status] || status;
   }
 
-  handleSearch(searchParams) {
-    this.showLoading(true);
-    
-    // Filter players based on search parameters
-    this.filteredPlayers = this.players.filter(player => {
-      // Search term filter
-      if (searchParams.filters.search) {
-        const searchTerm = searchParams.filters.search.toLowerCase();
-        if (!player.name.toLowerCase().includes(searchTerm) &&
-            !player.team.toLowerCase().includes(searchTerm) &&
-            !player.position.toLowerCase().includes(searchTerm)) {
-          return false;
-        }
-      }
-      
-      // Position filter
-      if (searchParams.filters.position && player.position !== searchParams.filters.position) {
-        return false;
-      }
-      
-      // Age filter
-      if (searchParams.filters.age) {
-        const { min, max } = searchParams.filters.age;
-        if (player.age < min || player.age > max) {
-          return false;
-        }
-      }
-      
-      // Rating filter
-      if (searchParams.filters.rating) {
-        const { min, max } = searchParams.filters.rating;
-        if (player.overall_rating < min || player.overall_rating > max) {
-          return false;
-        }
-      }
-      
-      // Team filter
-      if (searchParams.filters.team && player.team !== searchParams.filters.team) {
-        return false;
-      }
-      
-      // Nationality filter
-      if (searchParams.filters.nationality && player.nationality !== searchParams.filters.nationality) {
-        return false;
-      }
-      
-      // Contract filter
-      if (searchParams.filters.contract) {
-        const now = new Date();
-        const expiry = new Date(player.contractExpiry);
-        const monthsRemaining = (expiry.getFullYear() - now.getFullYear()) * 12 + (expiry.getMonth() - now.getMonth());
-        
-        if (searchParams.filters.contract === 'expiring' && monthsRemaining > 6) {
-          return false;
-        } else if (searchParams.filters.contract === 'long' && monthsRemaining <= 12) {
-          return false;
-        }
-      }
-      
-      return true;
-    });
-    
-    // Update search results count
-    const searchBar = document.querySelector('.player-search-bar');
-    if (searchBar?.setResultsCount) {
-      searchBar.setResultsCount(this.filteredPlayers.length);
+  formatCurrency(amount) {
+    if (amount >= 1000000) {
+      return (amount / 1000000).toFixed(1) + 'M';
+    } else if (amount >= 1000) {
+      return (amount / 1000).toFixed(0) + 'k';
     }
+    return amount.toLocaleString();
+  }
+
+  formatContractExpiry(dateString) {
+    const expiry = new Date(dateString);
+    const now = new Date();
+    const monthsRemaining = (expiry.getFullYear() - now.getFullYear()) * 12 + (expiry.getMonth() - now.getMonth());
+    
+    if (monthsRemaining <= 0) return 'Scaduto';
+    if (monthsRemaining <= 6) return 'In scadenza';
+    return expiry.getFullYear().toString();
+  }
+
+  formatDeadline(dateString) {
+    const deadline = new Date(dateString);
+    const now = new Date();
+    const diffHours = Math.ceil((deadline - now) / (1000 * 60 * 60));
+    
+    if (diffHours <= 0) return 'Scaduta';
+    if (diffHours <= 24) return `${diffHours}h rimanenti`;
+    const diffDays = Math.ceil(diffHours / 24);
+    return `${diffDays}g rimanenti`;
+  }
+
+  showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
     
     setTimeout(() => {
-      this.renderPlayerResults();
-      this.showLoading(false);
-    }, 500);
-  }
-
-  sortPlayers(sortBy) {
-    this.filteredPlayers.sort((a, b) => {
-      switch (sortBy) {
-        case 'value':
-          return b.marketValue - a.marketValue;
-        case 'name':
-          return a.name.localeCompare(b.name);
-        case 'age':
-          return a.age - b.age;
-        case 'rating':
-          return b.overall_rating - a.overall_rating;
-        default:
-          return 0;
-      }
-    });
-    
-    this.renderPlayerResults();
-  }
-
-  showNegotiationModal(player) {
-    if (this.negotiationModal?.show) {
-      this.negotiationModal.show(player);
-    } else {
-      window?.showNegotiationModal?.(player);
-    }
-  }
-
-  handleDraftSave(data) {
-    console.log('Draft saved:', data);
-    // In a real app, this would save the draft to the game state
-  }
-
-  handleOfferSubmit(data) {
-    console.log('Offer submitted:', data);
-    // In a real app, this would call the Transfer_Offer flow
-    this.makeTransferOffer(data);
-  }
-
-  handleNewDeal(deal) {
-    this.activeDeals.push(deal);
-    
-    // Update active deals panel
-    const dealsPanel = document.querySelector('.active-deals-panel');
-    if (dealsPanel?.setDeals) {
-      dealsPanel.setDeals(this.activeDeals);
-    }
-    
-    // Update budget
-    this.budget.pending += deal.offerAmount;
-    this.budget.available -= deal.offerAmount;
-    
-    // Update budget tracker
-    const budgetTracker = document.querySelector('.budget-tracker');
-    if (budgetTracker?.updateBudget) {
-      budgetTracker.updateBudget(this.budget);
-    }
-  }
-
-  handleContractSubmit(data) {
-    console.log('Contract submitted:', data);
-    // In a real app, this would finalize the transfer
-    this.finalizeTransfer(data);
-  }
-
-  showShortlist() {
-    alert('Funzione lista osservati');
-  }
-
-  showTransferHistory() {
-    alert('Funzione storico trasferimenti');
-  }
-
-  refreshPlayers() {
-    this.showLoading(true);
-    
-    // Simulate refresh
-    setTimeout(() => {
-      this.loadData().then(() => {
-        this.renderPlayerResults();
-        this.showLoading(false);
-      });
-    }, 1000);
-  }
-
-  showLoading(show) {
-    document.querySelector('.loading-results').style.display = show ? 'flex' : 'none';
-    document.querySelector('.player-results-grid').style.display = show ? 'none' : 'grid';
-    document.querySelector('.empty-results').style.display = 'none';
-  }
-
-  // Simulate Transfer_Offer flow
-  async makeTransferOffer(offerData) {
-    try {
-      // In a real app, this would call the Transfer_Offer flow
-      console.log('Calling Transfer_Offer flow...', offerData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Add to active deals
-      const newDeal = {
-        id: Date.now(),
-        player: offerData.player,
-        status: 'negotiating',
-        offerAmount: offerData.offerAmount,
-        proposedWages: offerData.wageAmount,
-        responseDeadline: new Date(Date.now() + 86400000).toISOString() // 24 hours from now
-      };
-      
-      this.handleNewDeal(newDeal);
-      
-      return { success: true, deal: newDeal };
-    } catch (error) {
-      console.error('Error making transfer offer:', error);
-      return { success: false, error: error.message };
-    }
-  }
-
-  // Simulate Transfer_Process flow
-  async finalizeTransfer(contractData) {
-    try {
-      // In a real app, this would call the Transfer_Process flow
-      console.log('Calling Transfer_Process flow...', contractData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Update budget
-      const deal = this.activeDeals.find(d => d.player.id === contractData.playerId);
-      if (deal) {
-        this.budget.spent += deal.offerAmount;
-        this.budget.pending -= deal.offerAmount;
-        
-        // Update deal status
-        deal.status = 'completed';
-        
-        // Update budget tracker
-        const budgetTracker = document.querySelector('.budget-tracker');
-        if (budgetTracker?.updateBudget) {
-          budgetTracker.updateBudget(this.budget);
-        }
-        
-        // Update active deals panel
-        const dealsPanel = document.querySelector('.active-deals-panel');
-        if (dealsPanel?.setDeals) {
-          dealsPanel.setDeals(this.activeDeals);
-        }
-      }
-      
-      return { success: true };
-    } catch (error) {
-      console.error('Error finalizing transfer:', error);
-      return { success: false, error: error.message };
-    }
+      toast.remove();
+    }, 4000);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  new TransferMarketPage();
-});
-</script>
