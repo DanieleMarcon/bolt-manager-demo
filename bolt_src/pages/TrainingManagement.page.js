@@ -1,5 +1,5 @@
-import PlayerTrainingCard from '../components/PlayerTrainingCard.component.js';
-import FitnessChart from '../components/FitnessChart.component.js';
+import PlayerTrainingCard from '../components/PlayerTrainingCard.js';
+import FitnessChart from '../components/FitnessChart.js';
 
 export default class TrainingManagementPage {
   constructor() {

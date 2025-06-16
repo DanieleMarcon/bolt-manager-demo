@@ -1,7 +1,7 @@
-import MatchSummary from '../components/MatchSummary.component.js';
-import StatisticsChart from '../components/StatisticsChart.component.js';
-import KeyMoments from '../components/KeyMoments.component.js';
-import PlayerRatings from '../components/PlayerRatings.component.js';
+import MatchSummary from '../components/MatchSummary.js';
+import StatisticsChart from '../components/StatisticsChart.js';
+import KeyMoments from '../components/KeyMoments.js';
+import PlayerRatings from '../components/PlayerRatings.js';
 
 export default class MatchAnalysisPage {
   constructor() {

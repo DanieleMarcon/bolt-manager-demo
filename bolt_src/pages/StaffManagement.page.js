@@ -1,6 +1,6 @@
-import StaffCard from '../components/StaffCard.component.js';
-import StaffList from '../components/StaffList.component.js';
-import CompetencyChart from '../components/CompetencyChart.component.js';
+import StaffCard from '../components/StaffCard.js';
+import StaffList from '../components/StaffList.js';
+import CompetencyChart from '../components/CompetencyChart.js';
 
 export default class StaffManagementPage {
   constructor() {

@@ -39,10 +39,6 @@ deploy/
 ├── README_DEPLOY.md → Istruzioni deploy (es. SiteGround)
 ├── deploy.sh → Automazione futura (es. CI/CD)
 
-yaml
-Copia
-Modifica
-
 ---
 
 ## 🧱 Moduli principali

@@ -483,4 +483,10 @@ export class SessionLoadFlow {
 
         this.gameManager.gameData.gameEvents.push(event);
     }
+    }
+
+// Wrapper function for compatibility with existing API
+export async function Session_Load(params, gameManager = { gameData: {} }) {
+    const flow = new SessionLoadFlow(gameManager);
+    return await flow.execute(params);
 }

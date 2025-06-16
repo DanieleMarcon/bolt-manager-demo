@@ -466,4 +466,10 @@ export class SessionSaveFlow {
 
         this.gameManager.gameData.gameEvents.push(event);
     }
+    }
+
+// Wrapper function for compatibility with existing API
+export async function Session_Save(params, gameManager = { gameData: {} }) {
+    const flow = new SessionSaveFlow(gameManager);
+    return await flow.execute(params);
 }

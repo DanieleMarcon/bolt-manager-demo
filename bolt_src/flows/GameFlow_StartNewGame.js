@@ -661,3 +661,9 @@ export class GameFlowStartNewGameFlow {
         };
     }
 }
+
+// Simple wrapper to preserve existing API used by main.js
+export async function GameFlow_StartNewGame(params, gameManager = { gameData: {} }) {
+    const flow = new GameFlowStartNewGameFlow(gameManager);
+    return await flow.execute(params);
+    }

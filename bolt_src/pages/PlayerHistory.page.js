@@ -1,180 +1,182 @@
-<div class="player-history-page">
-  <div class="page-header">
-    <h2 class="page-title">Storico Giocatore</h2>
-    <div class="page-actions">
-      <button class="button button-secondary export-history-btn">
-        📊 Esporta Storico
-      </button>
-    </div>
-  </div>
-
-  <div class="player-selection-section">
-    <div class="selection-container">
-      <div class="player-selector-wrapper">
-        <div class="player-selector-dropdown"></div>
-      </div>
-      <div class="time-range-wrapper">
-        <div class="time-range-filter-container"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="history-content">
-    <div class="history-main">
-      <div class="attribute-progress-section">
-        <div class="section-header">
-          <h3>Evoluzione Attributi</h3>
-        </div>
-        <div class="attribute-progress-chart-container"></div>
-      </div>
-
-      <div class="statistics-section">
-        <div class="section-header">
-          <h3>Statistiche Dettagliate</h3>
-        </div>
-        <div class="statistics-table-container"></div>
-      </div>
-    </div>
-
-    <div class="history-sidebar">
-      <div class="events-timeline-section">
-        <div class="section-header">
-          <h3>Timeline Eventi</h3>
-        </div>
-        <div class="event-timeline-container"></div>
-      </div>
-
-      <div class="comparison-section">
-        <div class="section-header">
-          <h3>Confronto Periodi</h3>
-        </div>
-        <div class="comparison-tool-container"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sponsor banner -->
-  <div class="sponsor-banner-container"></div>
-</div>
-
-<style>
-.player-history-page {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-}
-
-.player-selection-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-}
-
-.selection-container {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.player-selector-wrapper {
-  flex: 1;
-  min-width: 300px;
-}
-
-.time-range-wrapper {
-  flex: 2;
-  min-width: 400px;
-}
-
-.history-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-}
-
-.history-main {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.history-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.section-header {
-  margin-bottom: 16px;
-}
-
-.section-header h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0;
-}
-
-.attribute-progress-section,
-.statistics-section,
-.events-timeline-section,
-.comparison-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-}
-
-.sponsor-banner-container {
-  margin-top: 16px;
-}
-
-/* Responsive styles */
-@media (max-width: 1200px) {
-  .history-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .history-sidebar {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .selection-container {
-    flex-direction: column;
-  }
-  
-  .history-sidebar {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
-<script type="module">
 import HistoryTimeline from '../components/HistoryTimeline.component.js';
 
 export default class PlayerHistoryPage {
   constructor() {
-    this.initializePage();
+    this.container = document.getElementById('pageContent');
+    this.render();
+  }
+
+async render() {
+    this.container.innerHTML = `
+      <div class="player-history-page">
+        <div class="page-header">
+          <h2 class="page-title">Storico Giocatore</h2>
+          <div class="page-actions">
+            <button class="button button-secondary export-history-btn">📊 Esporta Storico</button>
+          </div>
+        </div>
+      
+        <div class="player-selection-section">
+          <div class="selection-container">
+            <div class="player-selector-wrapper">
+              <div class="player-selector-dropdown"></div>
+            </div>
+            <div class="time-range-wrapper">
+              <div class="time-range-filter-container"></div>
+            </div>
+          </div>
+        </div>
+      
+          <div class="history-content">
+          <div class="history-main">
+            <div class="attribute-progress-section">
+              <div class="section-header">
+                <h3>Evoluzione Attributi</h3>
+              </div>
+              <div class="attribute-progress-chart-container"></div>
+            </div>
+
+            <div class="statistics-section">
+              <div class="section-header">
+                <h3>Statistiche Dettagliate</h3>
+              </div>
+              <div class="statistics-table-container"></div>
+            </div>
+          </div>
+
+          <div class="history-sidebar">
+            <div class="events-timeline-section">
+              <div class="section-header">
+                <h3>Timeline Eventi</h3>
+              </div>
+              <div class="event-timeline-container"></div>
+            </div>
+
+            <div class="comparison-section">
+              <div class="section-header">
+                <h3>Confronto Periodi</h3>
+              </div>
+              <div class="comparison-tool-container"></div>
+            </div>
+          </div>
+        </div>
+
+            <div class="sponsor-banner-container"></div>
+      </div>
+
+            <style>
+        .player-history-page {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        .page-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+
+        .page-title {
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--text);
+          margin: 0;
+        }
+
+        .player-selection-section {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 20px;
+        }
+
+        .selection-container {
+          display: flex;
+          gap: 24px;
+          flex-wrap: wrap;
+        }
+
+        .player-selector-wrapper {
+          flex: 1;
+          min-width: 300px;
+        }
+
+        .time-range-wrapper {
+          flex: 2;
+          min-width: 400px;
+        }
+
+        .history-content {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 24px;
+        }
+
+        .history-main {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+
+        .history-sidebar {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+
+        .section-header {
+          margin-bottom: 16px;
+        }
+
+        .section-header h3 {
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--text);
+          margin: 0;
+        }
+
+        .attribute-progress-section,
+        .statistics-section,
+        .events-timeline-section,
+        .comparison-section {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 20px;
+        }
+
+        .sponsor-banner-container {
+          margin-top: 16px;
+        }
+
+        @media (max-width: 1200px) {
+          .history-content {
+            grid-template-columns: 1fr;
+          }
+
+          .history-sidebar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .selection-container {
+            flex-direction: column;
+          }
+
+          .history-sidebar {
+            grid-template-columns: 1fr;
+          }
+        }
+      </style>
+    `;
+
+    await this.initializePage();
   }
 
   async initializePage() {
@@ -384,10 +386,3 @@ export default class PlayerHistoryPage {
     window.dispatchEvent(new CustomEvent('showToast', { detail: { message, type } }));
   }
 }
-
-// Bootstrap automatico
-document.addEventListener('DOMContentLoaded', () => {
-  new PlayerHistoryPage();
-});
-
-</script>

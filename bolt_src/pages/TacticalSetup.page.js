@@ -1,5 +1,5 @@
-import FormationVisualizer from '../components/FormationVisualizer.component.js';
-import TacticsForm from '../components/TacticsForm.component.js';
+import FormationVisualizer from '../components/FormationVisualizer.js';
+import TacticsForm from '../components/TacticsForm.js';
 
 export default class TacticalSetupPage {
   constructor() {

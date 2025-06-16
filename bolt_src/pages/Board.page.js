@@ -1,5 +1,5 @@
-import BoardStats from '../components/BoardStats.component.js';
-import FinancialHighlights from '../components/FinancialHighlights.component.js';
+import BoardStats from '../components/BoardStats.js';
+import FinancialHighlights from '../components/FinancialHighlights.js';
 
 export default class BoardPage {
   constructor() {

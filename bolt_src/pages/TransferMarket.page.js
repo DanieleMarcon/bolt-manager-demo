@@ -1,6 +1,6 @@
-import PlayerSearch from '../components/PlayerSearch.component.js';
-import NegotiationPanel from '../components/NegotiationPanel.component.js';
-import ContractDetails from '../components/ContractDetails.component.js';
+import PlayerSearch from '../components/PlayerSearch.js';
+import NegotiationPanel from '../components/NegotiationPanel.js';
+import ContractDetails from '../components/ContractDetails.js';
 
 export default class TransferMarketPage {
   constructor() {

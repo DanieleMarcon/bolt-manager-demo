@@ -1,4 +1,4 @@
-import LineupSelector from '../components/LineupSelector.component.js';
+import LineupSelector from '../components/LineupSelector.js';
 
 export default class MatchSimulationPage {
   constructor() {

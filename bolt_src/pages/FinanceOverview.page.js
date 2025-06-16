@@ -1,6 +1,6 @@
-import BudgetTracker from '../components/BudgetTracker.component.js';
-import SponsorBanner from '../components/SponsorBanner.component.js';
-import RequestBoardButton from '../components/RequestBoardButton.component.js';
+import BudgetTracker from '../components/BudgetTracker.js';
+import SponsorBanner from '../components/SponsorBanner.js';
+import RequestBoardButton from '../components/RequestBoardButton.js';
 
 export default class FinanceOverviewPage {
   constructor() {

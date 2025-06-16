@@ -1,5 +1,5 @@
-import PlayerSearch from '../components/PlayerSearch.component.js';
-import PlayerList from '../components/PlayerList.component.js';
+import PlayerSearch from '../components/PlayerSearch.js';
+import PlayerList from '../components/PlayerList.js';
 
 export default class ScoutingPage {
   constructor() {

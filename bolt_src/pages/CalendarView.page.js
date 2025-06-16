@@ -1,5 +1,5 @@
-import DayAdvancer from '../components/DayAdvancer.component.js';
-import UpcomingEvents from '../components/UpcomingEvents.component.js';
+import DayAdvancer from '../components/DayAdvancer.js';
+import UpcomingEvents from '../components/UpcomingEvents.js';
 
 export default class CalendarViewPage {
   constructor() {

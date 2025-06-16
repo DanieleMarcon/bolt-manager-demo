@@ -1,168 +1,164 @@
-<div class="user-settings-page">
-  <div class="page-header">
-    <h2 class="page-title">Impostazioni</h2>
-    <div class="page-actions">
-      <button class="button button-ghost reset-all-btn">
-        ↻ Reset Globale
-      </button>
-      <button class="button button-primary save-all-btn">
-        💾 Salva Tutto
-      </button>
-    </div>
-  </div>
-
-  <div class="settings-layout">
-    <div class="settings-sidebar">
-      <div class="settings-tab-navigation-container"></div>
-    </div>
-    
-    <div class="settings-content">
-      <div class="settings-panel-container" data-section="general"></div>
-      <div class="settings-panel-container" data-section="appearance" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="gameplay" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="audio" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="notifications" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="accessibility" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="language" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="data" style="display: none;"></div>
-      <div class="settings-panel-container" data-section="about" style="display: none;"></div>
-    </div>
-  </div>
-
-  <div class="settings-footer">
-    <div class="unsaved-changes-indicator" style="display: none;">
-      <span class="changes-icon">⚠️</span>
-      <span class="changes-text">Modifiche non salvate</span>
-    </div>
-    
-    <div class="settings-actions">
-      <button class="button button-ghost cancel-btn">
-        Annulla
-      </button>
-      <button class="button button-primary apply-btn">
-        Applica Impostazioni
-      </button>
-    </div>
-  </div>
-
-  <!-- Sponsor banner -->
-  <div class="sponsor-banner-container"></div>
-</div>
-
-<style>
-.user-settings-page {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-}
-
-.settings-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
-  min-height: 600px;
-}
-
-.settings-sidebar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.settings-content {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.settings-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-}
-
-.unsaved-changes-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid var(--warning);
-  border-radius: 8px;
-  color: var(--warning);
-}
-
-.changes-icon {
-  font-size: 16px;
-}
-
-.changes-text {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.settings-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.sponsor-banner-container {
-  margin-top: 16px;
-}
-
-/* Responsive styles */
-@media (max-width: 1024px) {
-  .settings-layout {
-    grid-template-columns: 220px 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .settings-layout {
-    grid-template-columns: 1fr;
-  }
-  
-  .page-header {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  
-  .settings-footer {
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .settings-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-</style>
-
-<script type="module">
 export default class UserSettingsPage {
   constructor() {
-    this.init();
+    this.container = document.getElementById('pageContent');
+    this.render();
+  }
+
+  async render() {
+    this.container.innerHTML = `
+      <div class="user-settings-page">
+        <div class="page-header">
+          <h2 class="page-title">Impostazioni</h2>
+          <div class="page-actions">
+            <button class="button button-ghost reset-all-btn">↻ Reset Globale</button>
+            <button class="button button-primary save-all-btn">💾 Salva Tutto</button>
+          </div>
+        </div>
+
+        <div class="settings-layout">
+          <div class="settings-sidebar">
+            <div class="settings-tab-navigation-container"></div>
+          </div>
+
+          <div class="settings-content">
+            <div class="settings-panel-container" data-section="general"></div>
+            <div class="settings-panel-container" data-section="appearance" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="gameplay" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="audio" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="notifications" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="accessibility" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="language" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="data" style="display: none;"></div>
+            <div class="settings-panel-container" data-section="about" style="display: none;"></div>
+          </div>
+        </div>
+
+        <div class="settings-footer">
+          <div class="unsaved-changes-indicator" style="display: none;">
+            <span class="changes-icon">⚠️</span>
+            <span class="changes-text">Modifiche non salvate</span>
+          </div>
+
+          <div class="settings-actions">
+            <button class="button button-ghost cancel-btn">Annulla</button>
+            <button class="button button-primary apply-btn">Applica Impostazioni</button>
+          </div>
+        </div>
+
+        <div class="sponsor-banner-container"></div>
+      </div>
+
+      <style>
+        .user-settings-page {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        .page-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+
+        .page-title {
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--text);
+          margin: 0;
+        }
+
+        .settings-layout {
+          display: grid;
+          grid-template-columns: 280px 1fr;
+          gap: 24px;
+          min-height: 600px;
+        }
+
+        .settings-sidebar {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          overflow: hidden;
+        }
+
+        .settings-content {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 24px;
+        }
+
+        .settings-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 0;
+        }
+
+        .unsaved-changes-indicator {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          background: rgba(245, 158, 11, 0.1);
+          border: 1px solid var(--warning);
+          border-radius: 8px;
+          color: var(--warning);
+        }
+
+        .changes-icon {
+          font-size: 16px;
+        }
+
+        .changes-text {
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .settings-actions {
+          display: flex;
+          gap: 12px;
+        }
+
+        .sponsor-banner-container {
+          margin-top: 16px;
+        }
+
+        @media (max-width: 1024px) {
+          .settings-layout {
+            grid-template-columns: 220px 1fr;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .settings-layout {
+            grid-template-columns: 1fr;
+          }
+
+          .page-header {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+          }
+
+          .settings-footer {
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .settings-actions {
+            width: 100%;
+            justify-content: space-between;
+          }
+        }
+      </style>
+    `;
+
+    await this.init();
   }
 
   async init() {
@@ -342,9 +338,3 @@ export default class UserSettingsPage {
     window.dispatchEvent(new CustomEvent('showToast', { detail: { message, type: 'success' } }));
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  new UserSettingsPage();
-});
-
-</script>

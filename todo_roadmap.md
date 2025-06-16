@@ -222,3 +222,25 @@ La **Fase 8D** è completamente implementata! Tutti i componenti principali sono
 - Validare integrazione completa sistema
 - Finalizzare esportazione `dist/` per deploy
 - Testing completo funzionalità e accessibilità
+
+## 🔧 Audit Mancanze Post-Revision
+
+Le analisi hanno evidenziato incongruenze tra i file documentati e quelli presenti in `bolt_src`. Seguire la checklist per riallineare il progetto:
+
+1. **Flow**
+   - Creare i file `Discovery_Complete.js`, `Press_Center_Display.js` e `Scouting_Update.js` in `bolt_src/flows` perché presenti in `flows_overview.md` ma mancanti.
+   - Aggiungere a `flows_overview.md` i flussi esistenti non documentati: `Event_Generator`, `Notification_System`, `Game_Timeline`, `Calendar_AdvanceDay`, `Match_StartSimulation`, `Staff_Hire`, `Training_ApplyPlan`, `Transfer_Complete`, `Transfer_StartNegotiation`.
+   - Controllare (tramite `flow_refs.txt`) che ogni flow sia effettivamente richiamato; rimuovere o integrare quelli inutilizzati.
+
+2. **Pagine**
+   - `src/main.js` importa diverse pagine assenti (`Dashboard.page.js`, `Team.page.js`, `PressCenter.page.js`, ecc.). Creare i file in `bolt_src/pages` o aggiornare le route rimuovendo gli import non necessari.
+
+3. **Componenti**
+   - Uniformare i nomi dei componenti: gli import con suffisso `.component.js` vanno corretti oppure i file rinominati di conseguenza. Verificare componenti come `DayAdvancer`, `UpcomingEvents`, `MatchSummary`, `PlayerRatings`.
+   - Implementare `BoardStats`, `FinancialHighlights`, `FormationVisualizer`, `TacticsForm` e inserirli nelle relative pagine.
+   - Rivedere l'elenco di `unused_components.txt` (se presente) per eliminare o integrare i componenti non utilizzati.
+
+4. **Dataset**
+   - I flussi importano moduli dataset `.js` inesistenti. Creare wrapper `.js` che esportino i JSON presenti in `bolt_src/datasets` oppure modificare i flussi per usare direttamente i file `.json`.
+
+Questa sezione serve da guida per allineare documentazione e codice e garantire la piena funzionalità dell'app.

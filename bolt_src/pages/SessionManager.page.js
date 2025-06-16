@@ -1,5 +1,5 @@
-import SaveSlotManager from '../components/SaveSlotManager.component.js';
-import SessionList from '../components/SessionList.component.js';
+import SaveSlotManager from '../components/SaveSlotManager.js';
+import SessionList from '../components/SessionList.js';
 
 export default class SessionManagerPage {
   constructor() {
