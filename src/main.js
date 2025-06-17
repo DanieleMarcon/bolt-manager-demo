@@ -1,3 +1,4 @@
+import initializeComponents from './componentLoader.js';
 import { GameFlow_StartNewGame } from "../bolt_src/flows/GameFlow_StartNewGame.js";
 import { Session_Load } from "../bolt_src/flows/Session_Load.js";
 import { Session_Save } from "../bolt_src/flows/Session_Save.js";
@@ -164,6 +165,7 @@ function showToast(message, isError = false) {
 
 // Init
 window.addEventListener("DOMContentLoaded", () => {
+  initializeComponents();
   setupEventListeners();
   loadPageFromHash();
 });

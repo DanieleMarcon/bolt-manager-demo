@@ -241,24 +241,6 @@
   justify-content: flex-end;
 }
 
-.button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.button-primary {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: white;
-}
-
-.button-primary:hover {
-  background: var(--primary-dark);
-}
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -430,14 +412,4 @@ class LanguageSelector {
   }
 }
 
-// Auto-initialize language selectors
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.language-selector').forEach(selector => {
-    if (!selector.dataset.initialized) {
-      const options = JSON.parse(selector.dataset.options || '{}');
-      new LanguageSelector(selector, options);
-      selector.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

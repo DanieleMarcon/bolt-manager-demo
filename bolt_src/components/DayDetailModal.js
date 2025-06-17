@@ -101,62 +101,14 @@
   display: flex;
 }
 
-.modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-}
 
 .modal-content {
-  position: relative;
-  background: var(--surface);
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.modal-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--text);
-}
-
-.modal-close-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.modal-close-btn:hover {
-  background: var(--border);
-  color: var(--text);
-}
-
-.modal-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-}
 
 .day-overview {
   display: flex;
@@ -383,11 +335,6 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.modal-footer {
-  padding: 16px 24px;
-  border-top: 1px solid var(--border);
-  background: var(--background);
-}
 
 .footer-actions {
   display: flex;
@@ -863,17 +810,6 @@ class DayDetailModal {
     }
   }
 }
-
-// Auto-initialize day detail modals
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.day-detail-modal').forEach(modal => {
-    if (!modal.dataset.initialized) {
-      const options = JSON.parse(modal.dataset.options || '{}');
-      new DayDetailModal(modal, options);
-      modal.dataset.initialized = 'true';
-    }
-  });
-});
 
 // Global function to show day detail modal
 window.showDayDetail = function(date, events = [], notes = '') {

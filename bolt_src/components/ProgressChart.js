@@ -1068,14 +1068,4 @@ class ProgressChart {
   }
 }
 
-// Auto-initialize progress charts
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.progress-chart').forEach(chart => {
-    if (!chart.dataset.initialized) {
-      const options = JSON.parse(chart.dataset.options || '{}');
-      new ProgressChart(chart, options);
-      chart.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

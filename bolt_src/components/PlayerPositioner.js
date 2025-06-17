@@ -954,14 +954,4 @@ class PlayerPositioner {
   }
 }
 
-// Auto-initialize player positioners
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.player-positioner').forEach(positioner => {
-    if (!positioner.dataset.initialized) {
-      const options = JSON.parse(positioner.dataset.options || '{}');
-      new PlayerPositioner(positioner, options);
-      positioner.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

@@ -423,14 +423,4 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Auto-initialize sponsor banners
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.sponsor-banner').forEach(banner => {
-    if (!banner.dataset.initialized) {
-      const options = JSON.parse(banner.dataset.options || '{}');
-      new SponsorBanner(banner, options);
-      banner.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

@@ -570,14 +570,4 @@ class CalendarGrid {
   }
 }
 
-// Auto-initialize calendar grids
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.calendar-grid').forEach(grid => {
-    if (!grid.dataset.initialized) {
-      const options = JSON.parse(grid.dataset.options || '{}');
-      new CalendarGrid(grid, options);
-      grid.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

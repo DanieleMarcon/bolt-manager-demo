@@ -338,14 +338,4 @@ class CalendarNavigation {
   }
 }
 
-// Auto-initialize calendar navigation
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.calendar-navigation').forEach(nav => {
-    if (!nav.dataset.initialized) {
-      const options = JSON.parse(nav.dataset.options || '{}');
-      new CalendarNavigation(nav, options);
-      nav.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

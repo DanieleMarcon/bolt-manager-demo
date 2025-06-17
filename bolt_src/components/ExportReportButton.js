@@ -598,14 +598,4 @@ class ExportReportButton {
   }
 }
 
-// Auto-initialize export report buttons
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.export-report-button').forEach(button => {
-    if (!button.dataset.initialized) {
-      const options = JSON.parse(button.dataset.options || '{}');
-      new ExportReportButton(button, options);
-      button.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

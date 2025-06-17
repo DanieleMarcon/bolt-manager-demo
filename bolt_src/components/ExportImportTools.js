@@ -805,14 +805,4 @@ class ExportImportTools {
   }
 }
 
-// Auto-initialize export import tools
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.export-import-tools').forEach(tools => {
-    if (!tools.dataset.initialized) {
-      const options = JSON.parse(tools.dataset.options || '{}');
-      new ExportImportTools(tools, options);
-      tools.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

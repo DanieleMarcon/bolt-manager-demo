@@ -463,14 +463,4 @@ class TeamOverview {
   }
 }
 
-// Auto-initialize team overview
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.team-overview').forEach(overview => {
-    if (!overview.dataset.initialized) {
-      const teamData = JSON.parse(overview.dataset.teamData || '{}');
-      new TeamOverview(overview, teamData);
-      overview.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

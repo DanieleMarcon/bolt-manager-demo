@@ -619,14 +619,4 @@ class StatsComparisonChart {
   }
 }
 
-// Auto-initialize stats comparison charts
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.stats-comparison-chart').forEach(chart => {
-    if (!chart.dataset.initialized) {
-      const matchData = JSON.parse(chart.dataset.matchData || '{}');
-      new StatsComparisonChart(chart, matchData);
-      chart.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

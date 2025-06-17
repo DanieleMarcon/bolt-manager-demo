@@ -1197,14 +1197,4 @@ class SetPieceManager {
   }
 }
 
-// Auto-initialize set piece managers
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.set-piece-manager').forEach(manager => {
-    if (!manager.dataset.initialized) {
-      const options = JSON.parse(manager.dataset.options || '{}');
-      new SetPieceManager(manager, options);
-      manager.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

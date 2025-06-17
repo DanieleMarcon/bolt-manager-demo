@@ -1,4 +1,4 @@
-<div class="accessibility-options">
+const template = `\n<div class="accessibility-options">
   <div class="options-header">
     <h4 class="options-title">Accessibilità</h4>
     <div class="options-actions">
@@ -336,35 +336,6 @@ input:checked + .toggle-slider:before {
   margin-top: 24px;
 }
 
-.button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.button-ghost {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.button-ghost:hover {
-  background: var(--background);
-}
-
-.button-primary {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: white;
-}
-
-.button-primary:hover {
-  background: var(--primary-dark);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .option-item {
@@ -384,12 +355,15 @@ input:checked + .toggle-slider:before {
     width: 100%;
   }
 }
-</style>
+</style>`;
 
-<script>
-class AccessibilityOptions {
-  constructor(element, options = {}) {
-    this.element = element;
+class AccessibilityOptions extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode:'open'});
+    this.shadowRoot.innerHTML = template;
+    this.element = this.shadowRoot.querySelector('.accessibility-options');
+    const options = this.dataset.options ? JSON.parse(this.dataset.options) : {};
     this.options = {
       onChange: null,
       defaultSettings: {
@@ -622,14 +596,4 @@ class AccessibilityOptions {
   }
 }
 
-// Auto-initialize accessibility options
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.accessibility-options').forEach(options => {
-    if (!options.dataset.initialized) {
-      const config = JSON.parse(options.dataset.options || '{}');
-      new AccessibilityOptions(options, config);
-      options.dataset.initialized = 'true';
-    }
-  });
-});
-</script>
+customElements.define('accessibility-options', AccessibilityOptions);

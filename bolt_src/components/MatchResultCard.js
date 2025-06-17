@@ -358,14 +358,4 @@ class MatchResultCard {
   }
 }
 
-// Auto-initialize match result cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.match-result-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const matchData = JSON.parse(card.dataset.matchData || '{}');
-      new MatchResultCard(card, matchData);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

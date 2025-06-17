@@ -505,14 +505,4 @@ class StaffOverviewCard {
   }
 }
 
-// Auto-initialize staff overview cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.staff-overview-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const staffData = JSON.parse(card.dataset.staffData || '{}');
-      new StaffOverviewCard(card, staffData);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

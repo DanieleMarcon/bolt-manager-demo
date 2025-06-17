@@ -890,14 +890,4 @@ class LiveScoreBoard {
   }
 }
 
-// Auto-initialize live scoreboards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.live-scoreboard').forEach(scoreboard => {
-    if (!scoreboard.dataset.initialized) {
-      const options = JSON.parse(scoreboard.dataset.options || '{}');
-      new LiveScoreBoard(scoreboard, options);
-      scoreboard.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

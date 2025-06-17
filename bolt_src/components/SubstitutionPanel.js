@@ -956,14 +956,4 @@ class SubstitutionPanel {
   }
 }
 
-// Auto-initialize substitution panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.substitution-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const options = JSON.parse(panel.dataset.options || '{}');
-      new SubstitutionPanel(panel, options);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

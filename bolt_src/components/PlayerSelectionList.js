@@ -1028,14 +1028,4 @@ class PlayerSelectionList {
   }
 }
 
-// Auto-initialize player selection lists
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.player-selection-list').forEach(list => {
-    if (!list.dataset.initialized) {
-      const options = JSON.parse(list.dataset.options || '{}');
-      new PlayerSelectionList(list, options);
-      list.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

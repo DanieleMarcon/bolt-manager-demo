@@ -316,24 +316,6 @@
   justify-content: flex-end;
 }
 
-.button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.button-primary {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: white;
-}
-
-.button-primary:hover {
-  background: var(--primary-dark);
-}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -584,14 +566,4 @@ class ThemeSelector {
   }
 }
 
-// Auto-initialize theme selectors
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.theme-selector').forEach(selector => {
-    if (!selector.dataset.initialized) {
-      const options = JSON.parse(selector.dataset.options || '{}');
-      new ThemeSelector(selector, options);
-      selector.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

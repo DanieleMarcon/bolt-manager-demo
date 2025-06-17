@@ -640,16 +640,4 @@ class SaveSlotCard {
   }
 }
 
-// Auto-initialize save slot cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.save-slot-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const options = {
-        slotId: parseInt(card.dataset.slotId) || 1
-      };
-      new SaveSlotCard(card, options);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

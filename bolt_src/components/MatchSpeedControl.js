@@ -703,14 +703,4 @@ class MatchSpeedControl {
   }
 }
 
-// Auto-initialize match speed controls
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.match-speed-control').forEach(control => {
-    if (!control.dataset.initialized) {
-      const options = JSON.parse(control.dataset.options || '{}');
-      new MatchSpeedControl(control, options);
-      control.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

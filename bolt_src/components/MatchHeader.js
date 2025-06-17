@@ -747,17 +747,6 @@ class MatchHeader {
   }
 }
 
-// Auto-initialize match headers
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.match-header').forEach(header => {
-    if (!header.dataset.initialized) {
-      const matchData = JSON.parse(header.dataset.matchData || '{}');
-      new MatchHeader(header, matchData);
-      header.dataset.initialized = 'true';
-    }
-  });
-});
-
 // Sample match data structure
 const SAMPLE_MATCH_DATA = {
   id: 1,

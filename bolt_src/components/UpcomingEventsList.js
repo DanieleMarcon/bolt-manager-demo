@@ -640,14 +640,4 @@ class UpcomingEventsList {
   }
 }
 
-// Auto-initialize upcoming events lists
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.upcoming-events-list').forEach(list => {
-    if (!list.dataset.initialized) {
-      const options = JSON.parse(list.dataset.options || '{}');
-      new UpcomingEventsList(list, options);
-      list.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

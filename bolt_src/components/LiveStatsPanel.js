@@ -924,14 +924,4 @@ class LiveStatsPanel {
   }
 }
 
-// Auto-initialize live stats panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.live-stats-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const options = JSON.parse(panel.dataset.options || '{}');
-      new LiveStatsPanel(panel, options);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

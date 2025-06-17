@@ -271,23 +271,6 @@ class EventIcon {
   }
 }
 
-// Auto-initialize event icons
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.event-icon').forEach(icon => {
-    if (!icon.dataset.initialized) {
-      const options = {
-        type: icon.dataset.eventType || '',
-        tooltip: icon.querySelector('.event-tooltip')?.textContent || '',
-        size: icon.classList.contains('size-small') ? 'small' : 
-              icon.classList.contains('size-large') ? 'large' : 'normal'
-      };
-      
-      new EventIcon(icon, options);
-      icon.dataset.initialized = 'true';
-    }
-  });
-});
-
 // Add CSS for pulse animation
 const style = document.createElement('style');
 style.textContent = `

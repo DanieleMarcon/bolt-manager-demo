@@ -878,14 +878,4 @@ class AttributeProgressChart {
   }
 }
 
-// Auto-initialize attribute progress charts
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.attribute-progress-chart').forEach(chart => {
-    if (!chart.dataset.initialized) {
-      const options = JSON.parse(chart.dataset.options || '{}');
-      new AttributeProgressChart(chart, options);
-      chart.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

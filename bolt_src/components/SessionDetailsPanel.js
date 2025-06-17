@@ -508,14 +508,4 @@ class SessionDetailsPanel {
   }
 }
 
-// Auto-initialize session details panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.session-details-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const sessionData = JSON.parse(panel.dataset.sessionData || '{}');
-      new SessionDetailsPanel(panel, sessionData);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

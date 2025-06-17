@@ -1305,14 +1305,4 @@ class TrainingScheduler {
   }
 }
 
-// Auto-initialize training schedulers
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.training-scheduler').forEach(scheduler => {
-    if (!scheduler.dataset.initialized) {
-      const options = JSON.parse(scheduler.dataset.options || '{}');
-      new TrainingScheduler(scheduler, options);
-      scheduler.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

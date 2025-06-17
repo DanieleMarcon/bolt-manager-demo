@@ -602,14 +602,4 @@ class MatchLiveView {
   }
 }
 
-// Auto-initialize match live views
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.match-live-view').forEach(view => {
-    if (!view.dataset.initialized) {
-      const options = JSON.parse(view.dataset.options || '{}');
-      new MatchLiveView(view, options);
-      view.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

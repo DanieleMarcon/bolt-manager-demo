@@ -574,14 +574,4 @@ class CompetencyRadarChart {
   }
 }
 
-// Auto-initialize competency radar charts
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.competency-radar-chart').forEach(chart => {
-    if (!chart.dataset.initialized) {
-      const competencyData = JSON.parse(chart.dataset.competencyData || '{}');
-      new CompetencyRadarChart(chart, competencyData);
-      chart.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

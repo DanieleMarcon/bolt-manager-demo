@@ -275,14 +275,4 @@ class SettingsTabNavigation {
   }
 }
 
-// Auto-initialize settings tab navigations
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.settings-tab-navigation').forEach(nav => {
-    if (!nav.dataset.initialized) {
-      const options = JSON.parse(nav.dataset.options || '{}');
-      new SettingsTabNavigation(nav, options);
-      nav.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

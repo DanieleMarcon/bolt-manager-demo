@@ -797,14 +797,4 @@ class MatchEventsTimeline {
   }
 }
 
-// Auto-initialize match events timelines
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.match-events-timeline').forEach(timeline => {
-    if (!timeline.dataset.initialized) {
-      const options = JSON.parse(timeline.dataset.options || '{}');
-      new MatchEventsTimeline(timeline, options);
-      timeline.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

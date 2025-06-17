@@ -495,17 +495,6 @@ class MoraleIndicator {
   }
 }
 
-// Auto-initialize morale indicators
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.morale-indicator').forEach(indicator => {
-    if (!indicator.dataset.initialized) {
-      const options = JSON.parse(indicator.dataset.options || '{}');
-      new MoraleIndicator(indicator, options);
-      indicator.dataset.initialized = 'true';
-    }
-  });
-});
-
 // CSS for tooltip
 const tooltipStyles = `
 .morale-tooltip {

@@ -918,14 +918,4 @@ class MentalitySliders {
   }
 }
 
-// Auto-initialize mentality sliders
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.mentality-sliders').forEach(sliders => {
-    if (!sliders.dataset.initialized) {
-      const options = JSON.parse(sliders.dataset.options || '{}');
-      new MentalitySliders(sliders, options);
-      sliders.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

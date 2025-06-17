@@ -753,17 +753,6 @@ class TrainingTypeCard {
   }
 }
 
-// Auto-initialize training type cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.training-type-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const trainingType = JSON.parse(card.dataset.trainingType || '{}');
-      new TrainingTypeCard(card, trainingType);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
-
 // Sample training types data
 const SAMPLE_TRAINING_TYPES = {
   fitness: {

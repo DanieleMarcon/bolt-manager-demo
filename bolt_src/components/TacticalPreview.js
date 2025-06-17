@@ -1134,14 +1134,4 @@ class TacticalPreview {
   }
 }
 
-// Auto-initialize tactical previews
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.tactical-preview').forEach(preview => {
-    if (!preview.dataset.initialized) {
-      const options = JSON.parse(preview.dataset.options || '{}');
-      new TacticalPreview(preview, options);
-      preview.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

@@ -792,14 +792,4 @@ class EventTimeline {
   }
 }
 
-// Auto-initialize event timelines
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.event-timeline').forEach(timeline => {
-    if (!timeline.dataset.initialized) {
-      const options = JSON.parse(timeline.dataset.options || '{}');
-      new EventTimeline(timeline, options);
-      timeline.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

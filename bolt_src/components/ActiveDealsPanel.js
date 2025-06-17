@@ -683,14 +683,4 @@ class ActiveDealsPanel {
   }
 }
 
-// Auto-initialize active deals panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.active-deals-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const options = JSON.parse(panel.dataset.options || '{}');
-      new ActiveDealsPanel(panel, options);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

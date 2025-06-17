@@ -4,8 +4,12 @@
   "description": "Demo manageriale calcistica realizzata con Bolt.new",
   "main": "src/index.html",
   "scripts": {
-    "build": "mkdir -p build && cp src/index.html build/ && cp src/main.js build/ && cp src/style.css build/ && cp -r bolt_src build/bolt_src && mkdir -p build/pages && cp bolt_src/pages/*.page.js build/pages/ && mkdir -p build/components && cp bolt_src/components/*.js build/components/"
+    "build": "rollup -c && mkdir -p dist && cp src/index.html dist/index.html && cp src/style.css dist/style.css && mkdir -p dist/assets && cp -r assets/* dist/assets/ && cp -r bolt_src/datasets dist/datasets"
   },
   "author": "Lavoro Sporco di Marcon Daniele",
-  "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati."
+  "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati.",
+  "devDependencies": {
+    "rollup": "^4.3.0",
+    "@rollup/plugin-node-resolve": "^15.2.3"
+  }
 }

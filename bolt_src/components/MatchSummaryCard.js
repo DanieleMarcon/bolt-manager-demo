@@ -379,14 +379,4 @@ class MatchSummaryCard {
   }
 }
 
-// Auto-initialize match summary cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.match-summary-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const matchData = JSON.parse(card.dataset.matchData || '{}');
-      new MatchSummaryCard(card, matchData);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

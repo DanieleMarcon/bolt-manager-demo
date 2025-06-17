@@ -1024,14 +1024,4 @@ class TacticalField {
   }
 }
 
-// Auto-initialize tactical fields
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.tactical-field').forEach(field => {
-    if (!field.dataset.initialized) {
-      const options = JSON.parse(field.dataset.options || '{}');
-      new TacticalField(field, options);
-      field.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

@@ -1209,14 +1209,4 @@ class BackupManager {
   }
 }
 
-// Auto-initialize backup managers
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.backup-manager').forEach(manager => {
-    if (!manager.dataset.initialized) {
-      const options = JSON.parse(manager.dataset.options || '{}');
-      new BackupManager(manager, options);
-      manager.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

@@ -461,14 +461,4 @@ class StaffMemberCard {
   }
 }
 
-// Auto-initialize staff member cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.staff-member-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const staffData = JSON.parse(card.dataset.staffData || '{}');
-      new StaffMemberCard(card, staffData);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

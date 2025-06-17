@@ -190,7 +190,7 @@ export default class UserSettingsPage {
 
     document.querySelector('.settings-panel-container[data-section="appearance"]')?.appendChild(this.createDiv('theme-selector'));
     document.querySelector('.settings-panel-container[data-section="language"]')?.appendChild(this.createDiv('language-selector'));
-    document.querySelector('.settings-panel-container[data-section="accessibility"]')?.appendChild(this.createDiv('accessibility-options'));
+    document.querySelector('.settings-panel-container[data-section="accessibility"]')?.appendChild(document.createElement('accessibility-options'));
     document.querySelector('.settings-panel-container[data-section="gameplay"]')?.appendChild(this.createDiv('gameplay-settings'));
     document.querySelector('.sponsor-banner-container')?.appendChild(this.createDiv('sponsor-banner'));
   }
@@ -227,7 +227,7 @@ export default class UserSettingsPage {
 
     this.safeSet('theme-selector', 'setTheme', [settings.appearance.theme, settings.appearance.accentColor]);
     this.safeSet('language-selector', 'setLanguage', [settings.language.language]);
-    this.safeSet('accessibility-options', 'setSettings', [settings.accessibility]);
+    document.querySelector('accessibility-options')?.setSettings(settings.accessibility);
     this.safeSet('gameplay-settings', 'setSettings', [settings.gameplay]);
   }
 

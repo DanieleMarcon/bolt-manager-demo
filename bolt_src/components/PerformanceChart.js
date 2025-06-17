@@ -968,14 +968,4 @@ class PerformanceChart {
   }
 }
 
-// Auto-initialize performance charts
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.performance-chart').forEach(chart => {
-    if (!chart.dataset.initialized) {
-      const options = JSON.parse(chart.dataset.options || '{}');
-      new PerformanceChart(chart, options);
-      chart.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

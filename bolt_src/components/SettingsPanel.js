@@ -857,59 +857,6 @@ input:checked + .toggle-slider:before {
   font-size: 14px;
 }
 
-.footer-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.button-ghost {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.button-ghost:hover {
-  background: var(--background);
-}
-
-.button-primary {
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  color: white;
-}
-
-.button-primary:hover {
-  background: var(--primary-dark);
-}
-
-.button-secondary {
-  background: var(--secondary);
-  border: 1px solid var(--secondary);
-  color: white;
-}
-
-.button-secondary:hover {
-  background: #059669;
-}
-
-.button-warning {
-  background: var(--warning);
-  border: 1px solid var(--warning);
-  color: white;
-}
-
-.button-warning:hover {
-  background: #d97706;
-}
 
 .sponsor-slot-settings {
   position: absolute;
@@ -1319,14 +1266,4 @@ class SettingsPanel {
   }
 }
 
-// Auto-initialize settings panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.settings-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const options = JSON.parse(panel.dataset.options || '{}');
-      new SettingsPanel(panel, options);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

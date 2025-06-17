@@ -1165,14 +1165,4 @@ class ComparisonTool {
   }
 }
 
-// Auto-initialize comparison tools
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.comparison-tool').forEach(tool => {
-    if (!tool.dataset.initialized) {
-      const options = JSON.parse(tool.dataset.options || '{}');
-      new ComparisonTool(tool, options);
-      tool.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

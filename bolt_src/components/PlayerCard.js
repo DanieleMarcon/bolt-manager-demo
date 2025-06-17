@@ -314,15 +314,4 @@ class PlayerCard {
   }
 }
 
-// Auto-initialize player cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.player-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      // Player data would be passed from the parent component
-      const playerData = JSON.parse(card.dataset.playerData || '{}');
-      new PlayerCard(card, playerData);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

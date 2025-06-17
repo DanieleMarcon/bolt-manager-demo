@@ -670,14 +670,4 @@ class PlayerList {
   }
 }
 
-// Auto-initialize player lists
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.player-list').forEach(list => {
-    if (!list.dataset.initialized) {
-      const options = JSON.parse(list.dataset.options || '{}');
-      new PlayerList(list, options);
-      list.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

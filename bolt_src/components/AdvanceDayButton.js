@@ -508,14 +508,4 @@ class AdvanceDayButton {
   }
 }
 
-// Auto-initialize advance day buttons
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.advance-day-button').forEach(button => {
-    if (!button.dataset.initialized) {
-      const options = JSON.parse(button.dataset.options || '{}');
-      new AdvanceDayButton(button, options);
-      button.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

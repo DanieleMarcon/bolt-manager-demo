@@ -703,14 +703,4 @@ class PlayerSearchBar {
   }
 }
 
-// Auto-initialize player search bars
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.player-search-bar').forEach(searchBar => {
-    if (!searchBar.dataset.initialized) {
-      const options = JSON.parse(searchBar.dataset.options || '{}');
-      new PlayerSearchBar(searchBar, options);
-      searchBar.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

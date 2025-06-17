@@ -394,14 +394,4 @@ class IntensitySlider {
   }
 }
 
-// Auto-initialize intensity sliders
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.intensity-slider').forEach(slider => {
-    if (!slider.dataset.initialized) {
-      const options = JSON.parse(slider.dataset.options || '{}');
-      new IntensitySlider(slider, options);
-      slider.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

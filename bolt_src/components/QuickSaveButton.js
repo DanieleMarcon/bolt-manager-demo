@@ -623,14 +623,4 @@ class QuickSaveButton {
   }
 }
 
-// Auto-initialize quick save buttons
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.quick-save-button').forEach(button => {
-    if (!button.dataset.initialized) {
-      const options = JSON.parse(button.dataset.options || '{}');
-      new QuickSaveButton(button, options);
-      button.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

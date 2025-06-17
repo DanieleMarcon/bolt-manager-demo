@@ -564,14 +564,4 @@ class PlayerRatingCard {
   }
 }
 
-// Auto-initialize player rating cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.player-rating-card').forEach(card => {
-    if (!card.dataset.initialized) {
-      const playerData = JSON.parse(card.dataset.playerData || '{}');
-      new PlayerRatingCard(card, playerData);
-      card.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

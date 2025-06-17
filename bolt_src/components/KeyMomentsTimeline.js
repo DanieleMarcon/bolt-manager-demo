@@ -815,14 +815,4 @@ class KeyMomentsTimeline {
   }
 }
 
-// Auto-initialize key moments timelines
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.key-moments-timeline').forEach(timeline => {
-    if (!timeline.dataset.initialized) {
-      const options = JSON.parse(timeline.dataset.options || '{}');
-      new KeyMomentsTimeline(timeline, options);
-      timeline.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

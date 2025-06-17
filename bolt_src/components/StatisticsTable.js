@@ -842,14 +842,4 @@ class StatisticsTable {
   }
 }
 
-// Auto-initialize statistics tables
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.statistics-table').forEach(table => {
-    if (!table.dataset.initialized) {
-      const options = JSON.parse(table.dataset.options || '{}');
-      new StatisticsTable(table, options);
-      table.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

@@ -632,14 +632,4 @@ class ContractDetailsPanel {
   }
 }
 
-// Auto-initialize contract details panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.contract-details-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const contractData = JSON.parse(panel.dataset.contractData || '{}');
-      new ContractDetailsPanel(panel, contractData);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

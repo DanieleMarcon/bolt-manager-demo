@@ -554,17 +554,6 @@ class InjuryStatusBadge {
   }
 }
 
-// Auto-initialize injury status badges
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.injury-status-badge').forEach(badge => {
-    if (!badge.dataset.initialized) {
-      const options = JSON.parse(badge.dataset.options || '{}');
-      new InjuryStatusBadge(badge, options);
-      badge.dataset.initialized = 'true';
-    }
-  });
-});
-
 // CSS for tooltip
 const tooltipStyles = `
 .injury-tooltip {

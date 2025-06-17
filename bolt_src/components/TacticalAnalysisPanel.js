@@ -1078,14 +1078,4 @@ class TacticalAnalysisPanel {
   }
 }
 
-// Auto-initialize tactical analysis panels
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.tactical-analysis-panel').forEach(panel => {
-    if (!panel.dataset.initialized) {
-      const matchData = JSON.parse(panel.dataset.matchData || '{}');
-      new TacticalAnalysisPanel(panel, matchData);
-      panel.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

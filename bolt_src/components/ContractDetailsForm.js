@@ -801,14 +801,4 @@ class ContractDetailsForm {
   }
 }
 
-// Auto-initialize contract details forms
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.contract-details-form').forEach(form => {
-    if (!form.dataset.initialized) {
-      const options = JSON.parse(form.dataset.options || '{}');
-      new ContractDetailsForm(form, options);
-      form.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

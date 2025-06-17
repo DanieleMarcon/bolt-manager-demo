@@ -483,14 +483,4 @@ class TimeRangeFilter {
   }
 }
 
-// Auto-initialize time range filters
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.time-range-filter').forEach(filter => {
-    if (!filter.dataset.initialized) {
-      const options = JSON.parse(filter.dataset.options || '{}');
-      new TimeRangeFilter(filter, options);
-      filter.dataset.initialized = 'true';
-    }
-  });
-});
 </script>

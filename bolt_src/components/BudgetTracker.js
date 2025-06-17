@@ -554,14 +554,4 @@ class BudgetTracker {
   }
 }
 
-// Auto-initialize budget trackers
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.budget-tracker').forEach(tracker => {
-    if (!tracker.dataset.initialized) {
-      const budgetData = JSON.parse(tracker.dataset.budgetData || '{}');
-      new BudgetTracker(tracker, budgetData);
-      tracker.dataset.initialized = 'true';
-    }
-  });
-});
 </script>
