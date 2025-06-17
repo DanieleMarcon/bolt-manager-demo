@@ -1,4 +1,4 @@
-import HistoryTimeline from '../components/HistoryTimeline.component.js';
+import HistoryTimeline from '../components/HistoryTimeline.js';
 
 export default class PlayerHistoryPage {
   constructor() {
