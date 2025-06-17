@@ -1,3 +1,4 @@
+const template = `
 <div class="active-deals-panel">
   <div class="panel-header">
     <h3 class="panel-title">Trattative in Corso</h3>
@@ -337,11 +338,12 @@
   }
 }
 </style>
+;
 
-<script>
 class ActiveDealsPanel {
   constructor(element, options = {}) {
     this.element = element;
+    this.element.innerHTML = template;
     this.options = {
       maxDeals: 10,
       autoRefresh: true,
