@@ -203,8 +203,19 @@ async render() {
     timeRangeFilter.className = 'time-range-filter';
     timeRangeContainer.appendChild(timeRangeFilter);
 
-    document.querySelector('.attribute-progress-chart-container')?.appendChild(document.createElement('div')).className = 'attribute-progress-chart';
-    document.querySelector('.statistics-table-container')?.appendChild(document.createElement('div')).className = 'statistics-table';
+    const attrContainer = document.querySelector('.attribute-progress-chart-container');
+    if (attrContainer) {
+      const el = document.createElement('div');
+      el.className = 'attribute-progress-chart';
+      attrContainer.appendChild(el);
+    }
+
+    const statsContainer = document.querySelector('.statistics-table-container');
+    if (statsContainer) {
+      const el = document.createElement('div');
+      el.className = 'statistics-table';
+      statsContainer.appendChild(el);
+    }
     
     // Initialize HistoryTimeline component
     const timelineContainer = document.querySelector('.event-timeline-container');
@@ -218,8 +229,19 @@ async render() {
       onEventClick: (event) => this.handleEventClick(event)
     });
     
-    document.querySelector('.comparison-tool-container')?.appendChild(document.createElement('div')).className = 'comparison-tool';
-    document.querySelector('.sponsor-banner-container')?.appendChild(document.createElement('div')).className = 'sponsor-banner';
+    const comparisonContainer = document.querySelector('.comparison-tool-container');
+    if (comparisonContainer) {
+      const el = document.createElement('div');
+      el.className = 'comparison-tool';
+      comparisonContainer.appendChild(el);
+    }
+
+    const sponsorContainer = document.querySelector('.sponsor-banner-container');
+    if (sponsorContainer) {
+      const el = document.createElement('div');
+      el.className = 'sponsor-banner';
+      sponsorContainer.appendChild(el);
+    }
   }
 
   async loadInitialData() {
