@@ -4,8 +4,9 @@
   "description": "Demo manageriale calcistica realizzata con Bolt.new",
   "main": "src/index.html",
   "scripts": {
-    "build": "rollup -c && mkdir -p dist && cp src/index.html dist/index.html && cp src/style.css dist/style.css && mkdir -p dist/assets && cp -r assets/* dist/assets/ && cp -r bolt_src/datasets dist/datasets"
-  },
+    "build": "rollup -c && mkdir -p dist && cp src/index.html dist/index.html && cp src/style.css dist/style.css && mkdir -p dist/assets && cp -r assets/* dist/assets/ && cp -r bolt_src/datasets dist/datasets",
+    "test": "node tests/memoryDataset.test.js"
+    },
   "author": "Lavoro Sporco di Marcon Daniele",
   "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati.",
   "dependencies": {

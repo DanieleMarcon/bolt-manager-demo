@@ -7,6 +7,7 @@ Questa guida spiega come pubblicare il progetto Bolt Manager su un server tradiz
 2. Esporta il progetto in formato web (`index.html`, `main.js`, `style.css`, assets...)
 3. Salva tutto il contenuto nella cartella `dist/` del repository
 4. Da terminale lancia `./deploy/deploy.sh` per generare la cartella `build/` con l'archivio pronto al caricamento
+   L'archivio contiene direttamente i file della `dist/`, senza la cartella di livello superiore.
 
 ## 2. Upload su SiteGround
 - Accedi al **File Manager** o via **FTP/SFTP**
