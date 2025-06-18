@@ -1,3 +1,4 @@
+export const template = `
 <div class="player-positioner">
   <div class="positioner-header">
     <div class="formation-info">
@@ -101,7 +102,6 @@
          alt="Tactical Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .player-positioner {
   background: var(--surface);
@@ -475,8 +475,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class PlayerPositioner {
   constructor(element, options = {}) {
     this.element = element;
@@ -954,4 +954,4 @@ class PlayerPositioner {
   }
 }
 
-</script>
+export default PlayerPositioner;

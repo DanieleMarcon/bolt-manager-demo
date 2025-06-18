@@ -1,3 +1,4 @@
+export const template = `
 <div class="save-slot-card" data-slot-id="" data-slot-status="empty">
   <div class="slot-header">
     <div class="slot-number"></div>
@@ -55,7 +56,6 @@
     </div>
   </div>
 </div>
-
 <style>
 .save-slot-card {
   background: var(--surface);
@@ -263,8 +263,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class SaveSlotCard {
   constructor(element, options = {}) {
     this.element = element;
@@ -640,4 +640,4 @@ class SaveSlotCard {
   }
 }
 
-</script>
+export default SaveSlotCard;

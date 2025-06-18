@@ -1,3 +1,4 @@
+export const template = `
 <div class="training-results-modal modal" role="dialog" aria-labelledby="results-title" aria-modal="true">
   <div class="modal-overlay" aria-hidden="true"></div>
   
@@ -107,7 +108,6 @@
          alt="Training Results Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .training-results-modal {
   position: fixed;
@@ -644,8 +644,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TrainingResultsModal {
   constructor(element, options = {}) {
     this.element = element;
@@ -1163,4 +1163,5 @@ window.showTrainingResults = function(trainingData, resultsData) {
     modal.trainingResultsModal.show(trainingData, resultsData);
   }
 };
-</script>
+
+export default TrainingResultsModal;

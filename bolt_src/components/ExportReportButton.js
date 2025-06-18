@@ -1,3 +1,4 @@
+export const template = `
 <div class="export-report-button">
   <button class="export-btn button button-secondary" aria-label="Esporta report">
     <span class="export-icon">📊</span>
@@ -86,7 +87,6 @@
     </div>
   </div>
 </div>
-
 <style>
 .export-report-button {
   position: relative;
@@ -294,8 +294,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ExportReportButton {
   constructor(element, options = {}) {
     this.element = element;
@@ -598,4 +598,4 @@ class ExportReportButton {
   }
 }
 
-</script>
+export default ExportReportButton;

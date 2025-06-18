@@ -1,3 +1,4 @@
+export const template = `
 <div class="theme-selector">
   <div class="selector-header">
     <h4 class="selector-title">Tema</h4>
@@ -82,7 +83,6 @@
     </button>
   </div>
 </div>
-
 <style>
 .theme-selector {
   background: var(--surface);
@@ -334,8 +334,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ThemeSelector {
   constructor(element, options = {}) {
     this.element = element;
@@ -566,4 +566,4 @@ class ThemeSelector {
   }
 }
 
-</script>
+export default ThemeSelector;

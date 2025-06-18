@@ -1,3 +1,4 @@
+export const template = `
 <div class="contract-details-panel">
   <div class="panel-header">
     <h3 class="panel-title">Dettagli Contratto</h3>
@@ -102,7 +103,6 @@
          alt="Contract Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .contract-details-panel {
   background: var(--surface);
@@ -404,8 +404,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ContractDetailsPanel {
   constructor(element, contractData) {
     this.element = element;
@@ -632,4 +632,4 @@ class ContractDetailsPanel {
   }
 }
 
-</script>
+export default

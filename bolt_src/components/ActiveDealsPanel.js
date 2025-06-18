@@ -1,4 +1,4 @@
-const template = `
+export const template = `
 <div class="active-deals-panel">
   <div class="panel-header">
     <h3 class="panel-title">Trattative in Corso</h3>
@@ -43,7 +43,6 @@ const template = `
          alt="Transfers Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .active-deals-panel {
   background: var(--surface);
@@ -338,7 +337,7 @@ const template = `
   }
 }
 </style>
-;
+`;
 
 class ActiveDealsPanel {
   constructor(element, options = {}) {
@@ -685,4 +684,4 @@ class ActiveDealsPanel {
   }
 }
 
-</script>
+export default ActiveDealsPanel;

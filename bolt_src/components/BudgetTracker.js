@@ -1,3 +1,4 @@
+export const template = `
 <div class="budget-tracker">
   <div class="tracker-header">
     <h3 class="tracker-title">Budget Trasferimenti</h3>
@@ -98,7 +99,6 @@
          alt="Budget Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .budget-tracker {
   background: var(--surface);
@@ -389,8 +389,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class BudgetTracker {
   constructor(element, budgetData) {
     this.element = element;
@@ -554,4 +554,4 @@ class BudgetTracker {
   }
 }
 
-</script>
+export default BudgetTracker;

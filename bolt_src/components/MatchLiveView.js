@@ -1,3 +1,4 @@
+export const template = `
 <div class="match-live-view">
   <div class="match-header-container">
     <!-- Match header will be inserted here -->
@@ -48,7 +49,6 @@
          alt="Match Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .match-live-view {
   background: var(--surface);
@@ -168,8 +168,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MatchLiveView {
   constructor(element, options = {}) {
     this.element = element;
@@ -602,4 +602,4 @@ class MatchLiveView {
   }
 }
 
-</script>
+export default MatchLiveView;

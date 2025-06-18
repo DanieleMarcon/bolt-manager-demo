@@ -1,3 +1,4 @@
+export const template = `
 <div class="tactical-preview">
   <div class="preview-header">
     <h3 class="preview-title">Anteprima Tattica</h3>
@@ -205,7 +206,6 @@
          alt="Tactical Preview Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .tactical-preview {
   background: var(--surface);
@@ -688,8 +688,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TacticalPreview {
   constructor(element, options = {}) {
     this.element = element;
@@ -1134,4 +1134,4 @@ class TacticalPreview {
   }
 }
 
-</script>
+export default TacticalPreview;

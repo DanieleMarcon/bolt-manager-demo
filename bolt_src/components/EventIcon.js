@@ -1,10 +1,10 @@
+export const template = `
 <div class="event-icon" data-event-type="" role="img">
   <div class="icon-container">
     <div class="icon-symbol"></div>
   </div>
   <div class="event-tooltip"></div>
 </div>
-
 <style>
 .event-icon {
   display: inline-flex;
@@ -157,8 +157,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class EventIcon {
   constructor(element, options = {}) {
     this.element = element;
@@ -280,4 +280,5 @@ style.textContent = `
 }
 `;
 document.head.appendChild(style);
-</script>
+
+export

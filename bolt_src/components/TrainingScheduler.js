@@ -1,3 +1,4 @@
+export const template = `
 <div class="training-scheduler">
   <div class="scheduler-header">
     <h3 class="scheduler-title">Pianificazione Allenamenti</h3>
@@ -133,7 +134,6 @@
          alt="Training Scheduler Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .training-scheduler {
   background: var(--surface);
@@ -682,8 +682,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TrainingScheduler {
   constructor(element, options = {}) {
     this.element = element;
@@ -1305,4 +1305,4 @@ class TrainingScheduler {
   }
 }
 
-</script>
+export default TrainingScheduler;

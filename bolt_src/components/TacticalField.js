@@ -1,3 +1,4 @@
+export const template = `
 <div class="tactical-field">
   <div class="field-header">
     <h3 class="field-title">Campo Tattico</h3>
@@ -107,7 +108,6 @@
          alt="Tactical Field Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .tactical-field {
   background: var(--surface);
@@ -495,8 +495,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TacticalField {
   constructor(element, options = {}) {
     this.element = element;
@@ -1024,4 +1024,4 @@ class TacticalField {
   }
 }
 
-</script>
+export default TacticalField;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="stats-comparison-chart">
   <div class="chart-header">
     <h3 class="chart-title">Confronto Statistiche</h3>
@@ -131,7 +132,6 @@
          alt="Stats Chart Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .stats-comparison-chart {
   background: var(--surface);
@@ -380,8 +380,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class StatsComparisonChart {
   constructor(element, matchData) {
     this.element = element;
@@ -619,4 +619,4 @@ class StatsComparisonChart {
   }
 }
 
-</script>
+export default StatsComparisonChart;

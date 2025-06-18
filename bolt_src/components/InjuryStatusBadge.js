@@ -1,3 +1,4 @@
+export const template = `
 <div class="injury-status-badge" data-status="healthy" role="status" aria-live="polite">
   <div class="badge-icon"></div>
   <div class="badge-content">
@@ -11,7 +12,6 @@
     <span class="recovery-time"></span>
   </div>
 </div>
-
 <style>
 .injury-status-badge {
   display: inline-flex;
@@ -244,8 +244,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class InjuryStatusBadge {
   constructor(element, options = {}) {
     this.element = element;
@@ -597,4 +597,5 @@ if (!document.querySelector('#injury-tooltip-styles')) {
   style.textContent = tooltipStyles;
   document.head.appendChild(style);
 }
-</script>
+
+export default InjuryStatusBadge;

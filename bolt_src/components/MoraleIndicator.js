@@ -1,3 +1,4 @@
+export const template = `
 <div class="morale-indicator" data-morale="0" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
   <div class="morale-background">
     <div class="morale-fill"></div>
@@ -8,7 +9,6 @@
   </div>
   <div class="morale-description" aria-live="polite"></div>
 </div>
-
 <style>
 .morale-indicator {
   position: relative;
@@ -260,8 +260,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MoraleIndicator {
   constructor(element, options = {}) {
     this.element = element;
@@ -532,4 +532,4 @@ if (!document.querySelector('#morale-tooltip-styles')) {
   style.textContent = tooltipStyles;
   document.head.appendChild(style);
 }
-</script>
+export default MoraleIndicator;

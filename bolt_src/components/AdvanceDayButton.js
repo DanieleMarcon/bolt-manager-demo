@@ -1,3 +1,4 @@
+export const template = `
 <div class="advance-day-button">
   <button class="advance-btn" aria-label="Avanza al giorno successivo">
     <div class="btn-content">
@@ -49,7 +50,6 @@
     <div class="progress-status">Elaborazione eventi...</div>
   </div>
 </div>
-
 <style>
 .advance-day-button {
   position: relative;
@@ -245,8 +245,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class AdvanceDayButton {
   constructor(element, options = {}) {
     this.element = element;
@@ -508,4 +508,4 @@ class AdvanceDayButton {
   }
 }
 
-</script>
+export default AdvanceDayButton;

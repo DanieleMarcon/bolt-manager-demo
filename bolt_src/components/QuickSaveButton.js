@@ -1,3 +1,4 @@
+export const template = `
 <div class="quick-save-button">
   <button class="save-btn" aria-label="Salvataggio rapido">
     <div class="btn-icon">💾</div>
@@ -55,7 +56,6 @@
     </div>
   </div>
 </div>
-
 <style>
 .quick-save-button {
   position: relative;
@@ -280,8 +280,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class QuickSaveButton {
   constructor(element, options = {}) {
     this.element = element;
@@ -623,4 +623,4 @@ class QuickSaveButton {
   }
 }
 
-</script>
+export default QuickSaveButton;

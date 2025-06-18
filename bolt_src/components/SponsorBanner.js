@@ -1,3 +1,4 @@
+export const template = `
 <div class="sponsor-banner">
   <div class="banner-content">
     <div class="sponsor-logo">
@@ -18,7 +19,6 @@
     <div class="progress-fill"></div>
   </div>
 </div>
-
 <style>
 .sponsor-banner {
   background: var(--surface);
@@ -175,8 +175,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class SponsorBanner {
   constructor(element, options = {}) {
     this.element = element;
@@ -423,4 +423,4 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-</script>
+export default SponsorBanner;

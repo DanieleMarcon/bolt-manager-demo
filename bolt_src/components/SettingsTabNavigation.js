@@ -1,3 +1,4 @@
+export const template = `
 <div class="settings-tab-navigation">
   <div class="tabs-header">
     <h3 class="tabs-title">Impostazioni</h3>
@@ -53,7 +54,6 @@
     </button>
   </div>
 </div>
-
 <style>
 .settings-tab-navigation {
   background: var(--surface);
@@ -149,8 +149,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class SettingsTabNavigation {
   constructor(element, options = {}) {
     this.element = element;
@@ -275,4 +275,4 @@ class SettingsTabNavigation {
   }
 }
 
-</script>
+export default SettingsTabNavigation;

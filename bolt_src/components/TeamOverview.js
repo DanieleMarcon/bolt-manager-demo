@@ -1,3 +1,4 @@
+export const template = `
 <div class="team-overview card">
   <div class="team-overview-header">
     <div class="team-logo">
@@ -96,7 +97,6 @@
          alt="Main Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .team-overview {
   position: relative;
@@ -374,8 +374,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TeamOverview {
   constructor(element, teamData) {
     this.element = element;
@@ -463,4 +463,4 @@ class TeamOverview {
   }
 }
 
-</script>
+export default TeamOverview;

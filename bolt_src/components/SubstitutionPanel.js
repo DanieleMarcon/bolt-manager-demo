@@ -1,3 +1,4 @@
+export const template = `
 <div class="substitution-panel">
   <div class="panel-header">
     <h3 class="panel-title">Sostituzioni</h3>
@@ -125,7 +126,6 @@
          alt="Substitution Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .substitution-panel {
   background: var(--surface);
@@ -512,8 +512,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class SubstitutionPanel {
   constructor(element, options = {}) {
     this.element = element;
@@ -956,4 +956,4 @@ class SubstitutionPanel {
   }
 }
 
-</script>
+export default SubstitutionPanel;

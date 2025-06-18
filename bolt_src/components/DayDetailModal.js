@@ -1,3 +1,4 @@
+export const template = `
 <div class="day-detail-modal modal" role="dialog" aria-labelledby="day-detail-title" aria-modal="true">
   <div class="modal-overlay" aria-hidden="true"></div>
   
@@ -85,7 +86,6 @@
          alt="Day Detail Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .day-detail-modal {
   position: fixed;
@@ -386,8 +386,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class DayDetailModal {
   constructor(element, options = {}) {
     this.element = element;
@@ -818,4 +818,5 @@ window.showDayDetail = function(date, events = [], notes = '') {
     modal.dayDetailModal.show(date, events, notes);
   }
 };
-</script>
+
+export default DayDetailModal;

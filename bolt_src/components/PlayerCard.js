@@ -1,3 +1,4 @@
+export const template = `
 <div class="player-card card" data-player-id="">
   <div class="player-card-header">
     <div class="player-avatar">
@@ -45,7 +46,6 @@
          alt="Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .player-card {
   position: relative;
@@ -209,8 +209,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class PlayerCard {
   constructor(element, playerData) {
     this.element = element;
@@ -314,4 +314,4 @@ class PlayerCard {
   }
 }
 
-</script>
+export default PlayerCard;

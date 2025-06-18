@@ -1,3 +1,4 @@
+export const template = `
 <div class="player-search-bar">
   <div class="search-container">
     <div class="search-input-wrapper">
@@ -91,7 +92,6 @@
     </button>
   </div>
 </div>
-
 <style>
 .player-search-bar {
   background: var(--surface);
@@ -343,8 +343,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class PlayerSearchBar {
   constructor(element, options = {}) {
     this.element = element;
@@ -703,4 +703,4 @@ class PlayerSearchBar {
   }
 }
 
-</script>
+export default PlayerSearchBar;

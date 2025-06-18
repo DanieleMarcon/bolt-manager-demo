@@ -1,3 +1,4 @@
+export const template = `
 <div class="key-moments-timeline">
   <div class="timeline-header">
     <h3 class="timeline-title">Momenti Chiave</h3>
@@ -63,7 +64,6 @@
          alt="Key Moments Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .key-moments-timeline {
   background: var(--surface);
@@ -464,8 +464,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class KeyMomentsTimeline {
   constructor(element, options = {}) {
     this.element = element;
@@ -815,4 +815,4 @@ class KeyMomentsTimeline {
   }
 }
 
-</script>
+export default KeyMomentsTimeline;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="mentality-sliders">
   <div class="sliders-header">
     <h3 class="section-title">Impostazioni Tattiche</h3>
@@ -172,7 +173,6 @@
          alt="Tactics Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .mentality-sliders {
   background: var(--surface);
@@ -523,8 +523,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MentalitySliders {
   constructor(element, options = {}) {
     this.element = element;
@@ -918,4 +918,4 @@ class MentalitySliders {
   }
 }
 
-</script>
+export default MentalitySliders;

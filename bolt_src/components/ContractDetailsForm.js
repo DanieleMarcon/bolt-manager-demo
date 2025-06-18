@@ -1,3 +1,4 @@
+export const template = `
 <div class="contract-details-form">
   <div class="form-header">
     <h3 class="form-title">Dettagli Contratto</h3>
@@ -163,7 +164,6 @@
          alt="Contract Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .contract-details-form {
   background: var(--surface);
@@ -436,8 +436,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ContractDetailsForm {
   constructor(element, options = {}) {
     this.element = element;
@@ -801,4 +801,4 @@ class ContractDetailsForm {
   }
 }
 
-</script>
+export default ContractDetailsForm;

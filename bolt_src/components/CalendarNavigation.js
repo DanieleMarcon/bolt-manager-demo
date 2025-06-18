@@ -1,3 +1,4 @@
+export const template = `
 <div class="calendar-navigation">
   <div class="navigation-controls">
     <button class="nav-btn prev-month-btn" aria-label="Mese precedente">
@@ -36,7 +37,6 @@
     </button>
   </div>
 </div>
-
 <style>
 .calendar-navigation {
   background: var(--surface);
@@ -164,8 +164,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class CalendarNavigation {
   constructor(element, options = {}) {
     this.element = element;
@@ -338,4 +338,4 @@ class CalendarNavigation {
   }
 }
 
-</script>
+export default CalendarNavigation;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="match-summary-card card">
   <div class="summary-header">
     <div class="match-result">
@@ -74,7 +75,6 @@
          alt="Match Summary Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .match-summary-card {
   position: relative;
@@ -286,8 +286,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MatchSummaryCard {
   constructor(element, matchData) {
     this.element = element;
@@ -379,4 +379,4 @@ class MatchSummaryCard {
   }
 }
 
-</script>
+export default MatchSummaryCard;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="gameplay-settings">
   <div class="settings-header">
     <h4 class="settings-title">Impostazioni Gameplay</h4>
@@ -308,7 +309,6 @@
     </div>
   </div>
 </div>
-
 <style>
 .gameplay-settings {
   background: var(--surface);
@@ -545,8 +545,8 @@ input:checked + .toggle-slider:before {
   }
 }
 </style>
+`;
 
-<script>
 class GameplaySettings {
   constructor(element, options = {}) {
     this.element = element;
@@ -797,4 +797,4 @@ class GameplaySettings {
   }
 }
 
-</script>
+export default GameplaySettings;

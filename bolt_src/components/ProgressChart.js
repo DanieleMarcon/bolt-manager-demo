@@ -1,3 +1,4 @@
+export const template = `
 <div class="progress-chart">
   <div class="chart-header">
     <div class="chart-title-section">
@@ -110,7 +111,6 @@
          alt="Analytics Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .progress-chart {
   background: var(--surface);
@@ -466,8 +466,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ProgressChart {
   constructor(element, options = {}) {
     this.element = element;
@@ -1068,4 +1068,4 @@ class ProgressChart {
   }
 }
 
-</script>
+export default ProgressChart;

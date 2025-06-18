@@ -1,3 +1,4 @@
+export const template = `
 <div class="statistics-table">
   <div class="table-header">
     <h3 class="table-title">Statistiche Dettagliate</h3>
@@ -67,7 +68,6 @@
          alt="Statistics Table Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .statistics-table {
   background: var(--surface);
@@ -385,8 +385,8 @@ th.sorted .sort-icon {
   }
 }
 </style>
+`;
 
-<script>
 class StatisticsTable {
   constructor(element, options = {}) {
     this.element = element;
@@ -842,4 +842,4 @@ class StatisticsTable {
   }
 }
 
-</script>
+export default StatisticsTable;

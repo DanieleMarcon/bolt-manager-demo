@@ -1,3 +1,4 @@
+export const template = `
 <div class="attribute-progress-chart">
   <div class="chart-header">
     <h3 class="chart-title">Progresso Attributi</h3>
@@ -90,7 +91,6 @@
          alt="Attribute Chart Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .attribute-progress-chart {
   background: var(--surface);
@@ -387,8 +387,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class AttributeProgressChart {
   constructor(element, options = {}) {
     this.element = element;
@@ -878,4 +878,4 @@ class AttributeProgressChart {
   }
 }
 
-</script>
+export default AttributeProgressChart;

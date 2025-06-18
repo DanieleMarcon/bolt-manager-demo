@@ -1,3 +1,4 @@
+export const template = `
 <div class="language-selector">
   <div class="selector-header">
     <h4 class="selector-title">Lingua</h4>
@@ -93,7 +94,6 @@
     </button>
   </div>
 </div>
-
 <style>
 .language-selector {
   background: var(--surface);
@@ -261,8 +261,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class LanguageSelector {
   constructor(element, options = {}) {
     this.element = element;
@@ -412,4 +412,4 @@ class LanguageSelector {
   }
 }
 
-</script>
+export default LanguageSelector;

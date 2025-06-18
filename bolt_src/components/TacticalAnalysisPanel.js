@@ -1,3 +1,4 @@
+export const template = `
 <div class="tactical-analysis-panel">
   <div class="analysis-header">
     <h3 class="panel-title">Analisi Tattica</h3>
@@ -261,7 +262,6 @@
          alt="Tactical Analysis Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .tactical-analysis-panel {
   background: var(--surface);
@@ -824,8 +824,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TacticalAnalysisPanel {
   constructor(element, matchData) {
     this.element = element;
@@ -1078,4 +1078,4 @@ class TacticalAnalysisPanel {
   }
 }
 
-</script>
+export default TacticalAnalysisPanel;

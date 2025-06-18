@@ -1,3 +1,4 @@
+export const template = `
 <div class="time-range-filter">
   <div class="filter-header">
     <h4 class="filter-title">Intervallo Temporale</h4>
@@ -58,7 +59,6 @@
     </div>
   </div>
 </div>
-
 <style>
 .time-range-filter {
   background: var(--surface);
@@ -249,8 +249,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TimeRangeFilter {
   constructor(element, options = {}) {
     this.element = element;
@@ -483,4 +483,4 @@ class TimeRangeFilter {
   }
 }
 
-</script>
+export default TimeRangeFilter;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="negotiation-modal modal" role="dialog" aria-labelledby="negotiation-title" aria-modal="true">
   <div class="modal-overlay" aria-hidden="true"></div>
   
@@ -304,7 +305,6 @@
          alt="Negotiation Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .negotiation-modal {
   position: fixed;
@@ -748,8 +748,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class NegotiationModal {
   constructor(element, options = {}) {
     this.element = element;
@@ -1365,4 +1365,5 @@ window.showNegotiationModal = function(playerData, dealData = null) {
     instance.show(playerData, dealData);
   }
 };
-</script>
+
+export default NegotiationModal;

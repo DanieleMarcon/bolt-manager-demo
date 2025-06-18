@@ -1,3 +1,4 @@
+export const template = `
 <div class="match-result-card card">
   <div class="result-header">
     <div class="competition-info">
@@ -53,7 +54,6 @@
          alt="Match Result Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .match-result-card {
   position: relative;
@@ -250,8 +250,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MatchResultCard {
   constructor(element, matchData) {
     this.element = element;
@@ -358,4 +358,4 @@ class MatchResultCard {
   }
 }
 
-</script>
+export default MatchResultCard;

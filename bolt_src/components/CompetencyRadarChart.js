@@ -1,3 +1,4 @@
+export const template = `
 <div class="competency-radar-chart">
   <div class="chart-header">
     <h3 class="chart-title">Competenze Staff</h3>
@@ -128,7 +129,6 @@
          alt="Competency Chart Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .competency-radar-chart {
   background: var(--surface);
@@ -369,8 +369,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class CompetencyRadarChart {
   constructor(element, competencyData) {
     this.element = element;
@@ -574,4 +574,4 @@ class CompetencyRadarChart {
   }
 }
 
-</script>
+export default CompetencyRadarChart;

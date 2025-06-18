@@ -1,3 +1,4 @@
+export const template = `
 <div class="match-speed-control">
   <div class="speed-header">
     <h4 class="speed-title">Velocità Simulazione</h4>
@@ -75,7 +76,6 @@
          alt="Speed Control Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .match-speed-control {
   background: var(--surface);
@@ -377,8 +377,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MatchSpeedControl {
   constructor(element, options = {}) {
     this.element = element;
@@ -703,4 +703,4 @@ class MatchSpeedControl {
   }
 }
 
-</script>
+export default MatchSpeedControl;

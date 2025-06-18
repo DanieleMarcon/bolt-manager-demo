@@ -1,3 +1,4 @@
+export const template = `
 <div class="intensity-slider">
   <div class="slider-header">
     <label for="intensitySlider" class="slider-label">Intensità Allenamento</label>
@@ -63,7 +64,6 @@
     <p class="description-text">Intensità media: buon equilibrio tra miglioramento e rischio infortuni. Adatta per la maggior parte degli allenamenti.</p>
   </div>
 </div>
-
 <style>
 .intensity-slider {
   background: var(--surface);
@@ -258,8 +258,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class IntensitySlider {
   constructor(element, options = {}) {
     this.element = element;
@@ -394,4 +394,4 @@ class IntensitySlider {
   }
 }
 
-</script>
+export default IntensitySlider;

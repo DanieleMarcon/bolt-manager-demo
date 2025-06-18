@@ -1,3 +1,4 @@
+export const template = `
 <div class="load-confirm-modal modal" role="dialog" aria-labelledby="load-confirm-title" aria-modal="true">
   <div class="modal-overlay" aria-hidden="true"></div>
   
@@ -87,7 +88,6 @@
          alt="Load Confirm Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .load-confirm-modal {
   position: fixed;
@@ -247,8 +247,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class LoadConfirmModal {
   constructor(element, options = {}) {
     this.element = element;
@@ -500,4 +500,5 @@ window.showLoadConfirm = function(saveData, currentSaveData) {
     instance.show(saveData, currentSaveData);
   }
 };
-</script>
+
+export default LoadConfirmModal;

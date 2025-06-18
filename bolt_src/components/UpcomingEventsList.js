@@ -1,3 +1,4 @@
+export const template = `
 <div class="upcoming-events-list">
   <div class="events-header">
     <h3 class="events-title">Prossimi Eventi</h3>
@@ -50,7 +51,6 @@
          alt="Events Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .upcoming-events-list {
   background: var(--surface);
@@ -332,8 +332,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class UpcomingEventsList {
   constructor(element, options = {}) {
     this.element = element;
@@ -640,4 +640,4 @@ class UpcomingEventsList {
   }
 }
 
-</script>
+export default UpcomingEventsList;

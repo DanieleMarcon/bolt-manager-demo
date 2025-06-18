@@ -1,3 +1,4 @@
+export const template = `
 <div class="formation-selector">
   <div class="selector-header">
     <h4 class="selector-title">Formazione</h4>
@@ -211,7 +212,6 @@
     </button>
   </div>
 </div>
-
 <style>
 .formation-selector {
   background: var(--surface);
@@ -491,8 +491,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class FormationSelector {
   constructor(element, options = {}) {
     this.element = element;
@@ -690,4 +690,4 @@ class FormationSelector {
   }
 }
 
-</script>
+export default FormationSelector;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="match-events-timeline">
   <div class="timeline-header">
     <h3 class="timeline-title">Timeline Eventi</h3>
@@ -66,7 +67,6 @@
          alt="Timeline Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .match-events-timeline {
   background: var(--surface);
@@ -469,8 +469,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MatchEventsTimeline {
   constructor(element, options = {}) {
     this.element = element;
@@ -797,4 +797,4 @@ class MatchEventsTimeline {
   }
 }
 
-</script>
+export default MatchEventsTimeline;

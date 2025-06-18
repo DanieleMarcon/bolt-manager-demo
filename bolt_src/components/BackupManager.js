@@ -1,3 +1,4 @@
+export const template = `
 <div class="backup-manager">
   <div class="manager-header">
     <h3 class="manager-title">Gestione Backup</h3>
@@ -114,7 +115,6 @@
          alt="Backup Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .backup-manager {
   background: var(--surface);
@@ -527,8 +527,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class BackupManager {
   constructor(element, options = {}) {
     this.element = element;
@@ -1209,4 +1209,4 @@ class BackupManager {
   }
 }
 
-</script>
+export default BackupManager;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="live-scoreboard">
   <div class="scoreboard-header">
     <div class="match-time">
@@ -110,7 +111,6 @@
          alt="Live Score Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .live-scoreboard {
   background: var(--surface);
@@ -526,8 +526,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class LiveScoreBoard {
   constructor(element, options = {}) {
     this.element = element;
@@ -890,4 +890,4 @@ class LiveScoreBoard {
   }
 }
 
-</script>
+export default LiveScoreBoard;

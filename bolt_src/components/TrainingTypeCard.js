@@ -1,3 +1,4 @@
+export const template = `
 <div class="training-type-card" data-type="" role="button" tabindex="0" aria-pressed="false">
   <div class="card-header">
     <div class="type-icon"></div>
@@ -60,7 +61,6 @@
          alt="Training Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .training-type-card {
   background: var(--surface);
@@ -449,8 +449,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class TrainingTypeCard {
   constructor(element, trainingType) {
     this.element = element;
@@ -807,4 +807,5 @@ const SAMPLE_TRAINING_TYPES = {
     requirements: ['field', 'coach']
   }
 };
-</script>
+
+export default TrainingTypeCard;

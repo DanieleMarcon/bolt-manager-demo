@@ -1,4 +1,5 @@
-const template = `\n<div class="accessibility-options">
+export const template = `
+<div class="accessibility-options">
   <div class="options-header">
     <h4 class="options-title">Accessibilità</h4>
     <div class="options-actions">
@@ -182,7 +183,6 @@ const template = `\n<div class="accessibility-options">
     </button>
   </div>
 </div>
-
 <style>
 .accessibility-options {
   background: var(--surface);
@@ -355,7 +355,8 @@ input:checked + .toggle-slider:before {
     width: 100%;
   }
 }
-</style>`;
+</style>
+`;
 
 class AccessibilityOptions extends HTMLElement {
   constructor() {
@@ -595,5 +596,6 @@ class AccessibilityOptions extends HTMLElement {
     return this.hasChanges;
   }
 }
+export default AccessibilityOptions;
 
 customElements.define('accessibility-options', AccessibilityOptions);

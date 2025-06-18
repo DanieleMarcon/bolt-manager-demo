@@ -1,3 +1,4 @@
+export const template = `
 <div class="calendar-grid">
   <div class="weekdays-header">
     <div class="weekday">Lun</div>
@@ -38,7 +39,6 @@
          alt="Calendar Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .calendar-grid {
   background: var(--surface);
@@ -265,8 +265,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class CalendarGrid {
   constructor(element, options = {}) {
     this.element = element;
@@ -570,4 +570,4 @@ class CalendarGrid {
   }
 }
 
-</script>
+export default CalendarGrid;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="comparison-tool">
   <div class="tool-header">
     <h3 class="tool-title">Strumento di Confronto</h3>
@@ -128,7 +129,6 @@
          alt="Comparison Tool Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .comparison-tool {
   background: var(--surface);
@@ -555,8 +555,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ComparisonTool {
   constructor(element, options = {}) {
     this.element = element;
@@ -1165,4 +1165,4 @@ class ComparisonTool {
   }
 }
 
-</script>
+export default ComparisonTool;

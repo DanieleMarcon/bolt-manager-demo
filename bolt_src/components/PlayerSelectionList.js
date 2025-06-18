@@ -1,3 +1,4 @@
+export const template = `
 <div class="player-selection-list">
   <div class="selection-header">
     <div class="header-info">
@@ -97,7 +98,6 @@
          alt="Selection Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .player-selection-list {
   background: var(--surface);
@@ -482,8 +482,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class PlayerSelectionList {
   constructor(element, options = {}) {
     this.element = element;
@@ -1028,4 +1028,4 @@ class PlayerSelectionList {
   }
 }
 
-</script>
+export default PlayerSelectionList;

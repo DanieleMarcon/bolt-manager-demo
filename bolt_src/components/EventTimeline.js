@@ -1,3 +1,4 @@
+export const template = `
 <div class="event-timeline">
   <div class="timeline-header">
     <h3 class="timeline-title">Cronologia Eventi</h3>
@@ -58,7 +59,6 @@
          alt="Event Timeline Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .event-timeline {
   background: var(--surface);
@@ -419,8 +419,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class EventTimeline {
   constructor(element, options = {}) {
     this.element = element;
@@ -792,4 +792,4 @@ class EventTimeline {
   }
 }
 
-</script>
+export default EventTimeline;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="staff-overview-card card">
   <div class="staff-header">
     <h3 class="staff-title">Panoramica Staff</h3>
@@ -102,7 +103,6 @@
          alt="Staff Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .staff-overview-card {
   background: var(--surface);
@@ -358,8 +358,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class StaffOverviewCard {
   constructor(element, staffData) {
     this.element = element;
@@ -505,4 +505,4 @@ class StaffOverviewCard {
   }
 }
 
-</script>
+export default StaffOverviewCard;

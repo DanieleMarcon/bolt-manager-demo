@@ -1,3 +1,4 @@
+export const template = `
 <div class="live-stats-panel">
   <div class="stats-header">
     <h3 class="stats-title">Statistiche Live</h3>
@@ -240,7 +241,6 @@
          alt="Live Stats Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .live-stats-panel {
   background: var(--surface);
@@ -598,8 +598,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class LiveStatsPanel {
   constructor(element, options = {}) {
     this.element = element;
@@ -924,4 +924,4 @@ class LiveStatsPanel {
   }
 }
 
-</script>
+export default LiveStatsPanel;

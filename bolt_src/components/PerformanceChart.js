@@ -1,3 +1,4 @@
+export const template = `
 <div class="performance-chart">
   <div class="chart-header">
     <div class="chart-title-section">
@@ -113,7 +114,6 @@
          alt="Performance Chart Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .performance-chart {
   background: var(--surface);
@@ -423,8 +423,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class PerformanceChart {
   constructor(element, options = {}) {
     this.element = element;
@@ -968,4 +968,4 @@ class PerformanceChart {
   }
 }
 
-</script>
+export default PerformanceChart;

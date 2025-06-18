@@ -1,3 +1,4 @@
+export const template = `
 <div class="set-piece-manager">
   <div class="manager-header">
     <h3 class="section-title">Gestione Calci Piazzati</h3>
@@ -285,7 +286,6 @@
          alt="Set Piece Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .set-piece-manager {
   background: var(--surface);
@@ -699,8 +699,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class SetPieceManager {
   constructor(element, options = {}) {
     this.element = element;
@@ -1197,4 +1197,4 @@ class SetPieceManager {
   }
 }
 
-</script>
+export default SetPieceManager;

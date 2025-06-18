@@ -1,3 +1,4 @@
+export const template = `
 <div class="match-header">
   <div class="match-info">
     <div class="competition-info">
@@ -84,7 +85,6 @@
          alt="Match Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .match-header {
   background: linear-gradient(135deg, var(--surface) 0%, #f1f5f9 100%);
@@ -477,8 +477,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class MatchHeader {
   constructor(element, matchData) {
     this.element = element;
@@ -781,4 +781,5 @@ const SAMPLE_MATCH_DATA = {
   referee: 'Marco Rossi',
   tvChannel: 'Sky Sport 1'
 };
-</script>
+
+export default MatchHeader;

@@ -1,3 +1,4 @@
+export const template = `
 <div class="player-rating-card card">
   <div class="rating-header">
     <div class="player-info-rating">
@@ -100,7 +101,6 @@
          alt="Player Rating Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .player-rating-card {
   position: relative;
@@ -385,8 +385,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class PlayerRatingCard {
   constructor(element, playerData) {
     this.element = element;
@@ -564,4 +564,4 @@ class PlayerRatingCard {
   }
 }
 
-</script>
+export default PlayerRatingCard;

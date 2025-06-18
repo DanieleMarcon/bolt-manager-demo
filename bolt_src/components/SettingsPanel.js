@@ -1,3 +1,4 @@
+export const template = `
 <div class="settings-panel">
   <div class="panel-header">
     <h3 class="panel-title">Impostazioni</h3>
@@ -580,7 +581,6 @@
          alt="Settings Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .settings-panel {
   background: var(--surface);
@@ -914,8 +914,8 @@ input:checked + .toggle-slider:before {
   }
 }
 </style>
+`;
 
-<script>
 class SettingsPanel {
   constructor(element, options = {}) {
     this.element = element;
@@ -1266,4 +1266,4 @@ class SettingsPanel {
   }
 }
 
-</script>
+export default SettingsPanel;

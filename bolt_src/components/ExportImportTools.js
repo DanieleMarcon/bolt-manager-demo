@@ -1,3 +1,4 @@
+export const template = `
 <div class="export-import-tools">
   <div class="tools-header">
     <h3 class="tools-title">Strumenti di Esportazione e Importazione</h3>
@@ -131,7 +132,6 @@
          alt="Export Import Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .export-import-tools {
   background: var(--surface);
@@ -391,8 +391,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class ExportImportTools {
   constructor(element, options = {}) {
     this.element = element;
@@ -805,4 +805,4 @@ class ExportImportTools {
   }
 }
 
-</script>
+export default ExportImportTools;

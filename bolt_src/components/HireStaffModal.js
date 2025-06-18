@@ -1,3 +1,4 @@
+export const template = `
 <div class="hire-staff-modal modal" role="dialog" aria-labelledby="hire-staff-title" aria-modal="true">
   <div class="modal-overlay" aria-hidden="true"></div>
   
@@ -240,7 +241,6 @@
          alt="Hire Staff Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .hire-staff-modal {
   position: fixed;
@@ -864,8 +864,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class HireStaffModal {
   constructor(element, options = {}) {
     this.element = element;
@@ -1474,4 +1474,5 @@ window.showHireStaffModal = function(options = {}) {
     instance.show();
   }
 };
-</script>
+
+export default HireStaffModal;

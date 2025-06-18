@@ -1,3 +1,4 @@
+export const template = `
 <div class="session-details-panel">
   <div class="panel-header">
     <h3 class="panel-title">Dettagli Sessione</h3>
@@ -98,7 +99,6 @@
          alt="Session Details Sponsor" class="sponsor-image">
   </div>
 </div>
-
 <style>
 .session-details-panel {
   background: var(--surface);
@@ -311,8 +311,8 @@
   }
 }
 </style>
+`;
 
-<script>
 class SessionDetailsPanel {
   constructor(element, sessionData) {
     this.element = element;
@@ -508,4 +508,4 @@ class SessionDetailsPanel {
   }
 }
 
-</script>
+export default SessionDetailsPanel;
