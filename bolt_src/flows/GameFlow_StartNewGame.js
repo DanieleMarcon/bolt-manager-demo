@@ -227,41 +227,49 @@ export class GameFlowStartNewGameFlow {
 
     generateTeamPlayers(team) {
         const templatePlayers = playersData[team.short_name] || [];
+        const currentDate = this.gameManager.gameData.currentDate;
         let index = 0;
 
-        return templatePlayers.map(p => ({
-            id: `player_${team.id}_${index++}`,
-            team_id: team.id,
-            first_name: p.first_name,
-            last_name: p.last_name,
-            age: p.age,
-            position: p.position,
-            secondary_position: p.secondary_position || null,
-            overall_rating: p.overall_rating,
-            potential: p.potential ?? p.overall_rating,
-            pace: p.pace ?? p.overall_rating,
-            shooting: p.shooting ?? p.overall_rating,
-            passing: p.passing ?? p.overall_rating,
-            dribbling: p.dribbling ?? p.overall_rating,
-            defending: p.defending ?? p.overall_rating,
-            physical: p.physical ?? p.overall_rating,
-            stamina: p.stamina ?? 80,
-            fitness: p.fitness ?? 85,
-            morale: p.morale ?? 50,
-            injury_status: p.injury_status || 'healthy',
-            injury_days: p.injury_days ?? 0,
-            market_value: p.market_value ?? p.overall_rating * 100000,
-            salary: p.salary ?? p.overall_rating * 800,
-            contract_expires: p.contract_expires || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-            goals_scored: 0,
-            assists: 0,
-            yellow_cards: 0,
-            red_cards: 0,
-            matches_played: 0,
-            is_captain: p.is_captain ?? false,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        }));
+        return templatePlayers.map(p => {
+            const internalPos = ROLE_MAP[p.role] || p.role;
+            const birthdate = p.birthdate;
+            const age = calculateAge(birthdate, currentDate);
+
+            return {
+                id: `player_${team.id}_${index++}`,
+                team_id: team.id,
+                first_name: p.first_name,
+                last_name: p.last_name,
+                birthdate: birthdate,
+                age: age,
+                position: internalPos,
+                secondary_position: p.secondary_position || null,
+                overall_rating: p.overall_rating,
+                potential: p.potential ?? p.overall_rating,
+                pace: p.pace ?? p.overall_rating,
+                shooting: p.shooting ?? p.overall_rating,
+                passing: p.passing ?? p.overall_rating,
+                dribbling: p.dribbling ?? p.overall_rating,
+                defending: p.defending ?? p.overall_rating,
+                physical: p.physical ?? p.overall_rating,
+                stamina: p.stamina ?? 80,
+                fitness: p.fitness ?? 85,
+                morale: p.morale ?? 50,
+                injury_status: p.injury_status || 'healthy',
+                injury_days: p.injury_days ?? 0,
+                market_value: p.market_value ?? p.overall_rating * 100000,
+                salary: p.salary ?? p.overall_rating * 800,
+                contract_expires: p.contract_expires || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+                goals_scored: 0,
+                assists: 0,
+                yellow_cards: 0,
+                red_cards: 0,
+                matches_played: 0,
+                is_captain: p.is_captain ?? false,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+        });
     }
 
     calculatePlayerRating(teamStrength, position, age) {
