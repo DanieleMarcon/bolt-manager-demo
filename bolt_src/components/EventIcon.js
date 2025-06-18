@@ -281,4 +281,4 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-export
+export default EventIcon;

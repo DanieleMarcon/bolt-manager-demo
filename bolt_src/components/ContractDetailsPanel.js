@@ -632,4 +632,4 @@ class ContractDetailsPanel {
   }
 }
 
-export default
+export default ContractDetailsPanel;
