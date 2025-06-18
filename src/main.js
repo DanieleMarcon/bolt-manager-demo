@@ -121,7 +121,7 @@ async function startNewGame() {
   try {
     const sessionName = prompt("Nome nuova sessione:");
     const selectedTeam = "Team A";
-    const result = await GameFlow_StartNewGame({ session_name: sessionName, user_team_id: selectedTeam, difficulty: "standard" });
+    const result = await GameFlow_StartNewGame({ sessionName, userTeamName: selectedTeam, difficulty: "standard" });
     showToast("Nuova partita avviata!");
     window.location.hash = "team";
   } catch (error) {
