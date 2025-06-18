@@ -1,8 +1,3 @@
-
-Nuovo
-+33
--0
-
 export default class TeamStatsPage {
   constructor() {
     this.container = document.getElementById('pageContent');
