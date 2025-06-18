@@ -1,5 +1,23 @@
 import playersData from '../data/playersData.js';
 
+const ROLE_MAP = {
+    POR: 'GK',
+    DIF: 'DEF',
+    CEN: 'MID',
+    ATT: 'ATT'
+};
+
+function calculateAge(birthdate, currentDate) {
+    const birth = new Date(birthdate);
+    const curr = new Date(currentDate);
+    let age = curr.getFullYear() - birth.getFullYear();
+    const m = curr.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && curr.getDate() < birth.getDate())) {
+        age--;
+    }
+    return age;
+}
+
 /**
  * FLOW: GameFlow_StartNewGame
  * 

@@ -1,3 +1,14 @@
+function calculateAge(birthdate, currentDate) {
+    const birth = new Date(birthdate);
+    const curr = new Date(currentDate);
+    let age = curr.getFullYear() - birth.getFullYear();
+    const m = curr.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && curr.getDate() < birth.getDate())) {
+        age--;
+    }
+    return age;
+}
+
 /**
  * FLOW: GameFlow_AdvanceDay
  * 
@@ -162,6 +173,14 @@ export class GameFlowAdvanceDayFlow {
         };
 
         this.gameManager.gameData.players.forEach(player => {
+            // Aggiorna età in base alla data corrente del gioco
+            if (player.birthdate) {
+                const ageNow = calculateAge(player.birthdate, this.gameManager.gameData.currentDate);
+                if (ageNow !== player.age) {
+                    player.age = ageNow;
+                }
+            }
+
             // Guarigione infortuni
             if (player.injury_days > 0) {
                 player.injury_days = Math.max(0, player.injury_days - days);
