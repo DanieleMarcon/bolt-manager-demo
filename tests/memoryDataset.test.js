@@ -1,8 +1,3 @@
-
-Nuovo
-+23
--0
-
 const assert = require('assert');
 
 (async () => {

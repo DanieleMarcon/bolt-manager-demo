@@ -1,3 +1,5 @@
+import playersData from '../data/playersData.js';
+
 /**
  * FLOW: GameFlow_StartNewGame
  * 
@@ -206,73 +208,42 @@ export class GameFlowStartNewGameFlow {
     }
 
     generateTeamPlayers(team) {
-        const positions = [
-            { pos: 'GK', count: 2 },
-            { pos: 'DEF', count: 8 },
-            { pos: 'MID', count: 8 },
-            { pos: 'ATT', count: 6 }
-        ];
+        const templatePlayers = playersData[team.short_name] || [];
+        let index = 0;
 
-        const firstNames = [
-            'Marco', 'Luca', 'Andrea', 'Francesco', 'Alessandro', 'Matteo', 
-            'Lorenzo', 'Davide', 'Simone', 'Federico', 'Gabriele', 'Riccardo',
-            'Stefano', 'Antonio', 'Giuseppe', 'Roberto', 'Paolo', 'Fabio'
-        ];
-        
-        const lastNames = [
-            'Rossi', 'Bianchi', 'Ferrari', 'Russo', 'Romano', 'Gallo', 
-            'Costa', 'Fontana', 'Ricci', 'Marino', 'Greco', 'Bruno',
-            'Galli', 'Conti', 'De Luca', 'Mancini', 'Rizzo', 'Lombardi'
-        ];
-
-        const players = [];
-        let playerIndex = 0;
-
-        positions.forEach(posData => {
-            for (let i = 0; i < posData.count; i++) {
-                const age = 18 + Math.floor(Math.random() * 17); // 18-34 years
-                const baseRating = this.calculatePlayerRating(team.team_strength, posData.pos, age);
-                const potential = Math.min(99, baseRating + Math.floor(Math.random() * 15) + 5);
-
-                const player = {
-                    id: `player_${team.id}_${playerIndex++}`,
-                    team_id: team.id,
-                    first_name: firstNames[Math.floor(Math.random() * firstNames.length)],
-                    last_name: lastNames[Math.floor(Math.random() * lastNames.length)],
-                    age: age,
-                    position: posData.pos,
-                    secondary_position: Math.random() < 0.3 ? this.getSecondaryPosition(posData.pos) : null,
-                    overall_rating: baseRating,
-                    potential: potential,
-                    pace: this.generateAttributeValue(baseRating, posData.pos, 'pace'),
-                    shooting: this.generateAttributeValue(baseRating, posData.pos, 'shooting'),
-                    passing: this.generateAttributeValue(baseRating, posData.pos, 'passing'),
-                    dribbling: this.generateAttributeValue(baseRating, posData.pos, 'dribbling'),
-                    defending: this.generateAttributeValue(baseRating, posData.pos, 'defending'),
-                    physical: this.generateAttributeValue(baseRating, posData.pos, 'physical'),
-                    stamina: 80 + Math.floor(Math.random() * 20),
-                    fitness: 85 + Math.floor(Math.random() * 15),
-                    morale: 40 + Math.floor(Math.random() * 40),
-                    injury_status: 'healthy',
-                    injury_days: 0,
-                    market_value: this.calculateMarketValue(baseRating, age, potential),
-                    salary: this.calculateSalary(baseRating, age),
-                    contract_expires: new Date(Date.now() + (1 + Math.random() * 4) * 365 * 24 * 60 * 60 * 1000).toISOString(),
-                    goals_scored: 0,
-                    assists: 0,
-                    yellow_cards: 0,
-                    red_cards: 0,
-                    matches_played: 0,
-                    is_captain: i === 0 && posData.pos === 'DEF', // First defender is captain
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
-                };
-
-                players.push(player);
-            }
-        });
-
-        return players;
+        return templatePlayers.map(p => ({
+            id: `player_${team.id}_${index++}`,
+            team_id: team.id,
+            first_name: p.first_name,
+            last_name: p.last_name,
+            age: p.age,
+            position: p.position,
+            secondary_position: p.secondary_position || null,
+            overall_rating: p.overall_rating,
+            potential: p.potential ?? p.overall_rating,
+            pace: p.pace ?? p.overall_rating,
+            shooting: p.shooting ?? p.overall_rating,
+            passing: p.passing ?? p.overall_rating,
+            dribbling: p.dribbling ?? p.overall_rating,
+            defending: p.defending ?? p.overall_rating,
+            physical: p.physical ?? p.overall_rating,
+            stamina: p.stamina ?? 80,
+            fitness: p.fitness ?? 85,
+            morale: p.morale ?? 50,
+            injury_status: p.injury_status || 'healthy',
+            injury_days: p.injury_days ?? 0,
+            market_value: p.market_value ?? p.overall_rating * 100000,
+            salary: p.salary ?? p.overall_rating * 800,
+            contract_expires: p.contract_expires || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+            goals_scored: 0,
+            assists: 0,
+            yellow_cards: 0,
+            red_cards: 0,
+            matches_played: 0,
+            is_captain: p.is_captain ?? false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        }));
     }
 
     calculatePlayerRating(teamStrength, position, age) {
