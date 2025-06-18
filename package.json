@@ -8,7 +8,7 @@
   },
   "author": "Lavoro Sporco di Marcon Daniele",
   "license": "Copyright © 2025 Lavoro Sporco di Marcon Daniele. Tutti i diritti riservati.",
-  "devDependencies": {
+  "dependencies": {
     "rollup": "^4.3.0",
     "@rollup/plugin-node-resolve": "^15.2.3"
   }
