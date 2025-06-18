@@ -1,3 +1,3 @@
 import createMemoryDataset from './createMemoryDataset.js';
 
-export const staffDataset = createMemoryDataset();
+export const transfersDataset = createMemoryDataset();

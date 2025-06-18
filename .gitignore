@@ -27,6 +27,8 @@ dist/*
 *.bak
 *.test.*
 *.spec.*
+!tests/
+!tests/**
 
 # 💾 Config & Environment
 .env

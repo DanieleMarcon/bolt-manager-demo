@@ -141,26 +141,21 @@ export class GameFlowStartNewGameFlow {
 
     generateTeams(params) {
         const teamTemplates = [
-            { name: 'AC Milano', city: 'Milano', short: 'MIL', strength: 85 },
-            { name: 'Inter Milano', city: 'Milano', short: 'INT', strength: 84 },
-            { name: 'Juventus FC', city: 'Torino', short: 'JUV', strength: 83 },
-            { name: 'AS Roma', city: 'Roma', short: 'ROM', strength: 78 },
-            { name: 'SSC Napoli', city: 'Napoli', short: 'NAP', strength: 82 },
-            { name: 'ACF Fiorentina', city: 'Firenze', short: 'FIO', strength: 72 },
-            { name: 'Atalanta BC', city: 'Bergamo', short: 'ATA', strength: 76 },
-            { name: 'SS Lazio', city: 'Roma', short: 'LAZ', strength: 74 },
-            { name: 'Torino FC', city: 'Torino', short: 'TOR', strength: 68 },
-            { name: 'UC Sampdoria', city: 'Genova', short: 'SAM', strength: 65 },
-            { name: 'Genoa CFC', city: 'Genova', short: 'GEN', strength: 63 },
-            { name: 'Bologna FC', city: 'Bologna', short: 'BOL', strength: 66 },
-            { name: 'Udinese Calcio', city: 'Udine', short: 'UDI', strength: 64 },
-            { name: 'Parma Calcio', city: 'Parma', short: 'PAR', strength: 62 },
-            { name: 'Cagliari Calcio', city: 'Cagliari', short: 'CAG', strength: 60 },
-            { name: 'Hellas Verona', city: 'Verona', short: 'VER', strength: 61 },
-            { name: 'US Sassuolo', city: 'Sassuolo', short: 'SAS', strength: 67 },
-            { name: 'Spezia Calcio', city: 'La Spezia', short: 'SPE', strength: 58 },
-            { name: 'Benevento Calcio', city: 'Benevento', short: 'BEN', strength: 55 },
-            { name: 'Crotone FC', city: 'Crotone', short: 'CRO', strength: 52 }
+            { name: 'Aureliana', city: 'Sant`Agata', short: 'AUR', strength: 85 },
+            { name: 'Brioschese', city: 'Briosco', short: 'BRI', strength: 84 },
+            { name: 'Cambiaghese', city: 'Cambiago', short: 'CAM', strength: 83 },
+            { name: 'Città di Monza', city: 'Monza', short: 'CDM', strength: 78 },
+            { name: 'Fonas', city: 'Pessano con Bornago', short: 'FON', strength: 82 },
+            { name: 'Fusion Multisport', city: 'Gessate', short: 'FMS', strength: 72 },
+            { name: 'Grezzago', city: 'Grezzago', short: 'GRE', strength: 76 },
+            { name: 'Masate', city: 'Masate', short: 'MAS', strength: 74 },
+            { name: 'Monsignor Orsenigo', city: 'Melzo', short: 'MOR', strength: 68 },
+            { name: 'Novese Gunners', city: 'Nova Milanese', short: 'NOV', strength: 65 },
+            { name: 'Nuova Frontiera', city: 'Bellinzago Lombardo', short: 'NFR', strength: 63 },
+            { name: 'PanaCalcio', city: 'Bellinzago Lombardo', short: 'PNC', strength: 66 },
+            { name: 'Roncello FC', city: 'Roncello', short: 'RON', strength: 64 },
+            { name: 'Sovico Calcio', city: 'Sovico', short: 'SOV', strength: 62 },
+            { name: 'Virtus ACLI Trecella', city: 'Trecella', short: 'TRE', strength: 60 }
         ];
 
         return teamTemplates.map((template, index) => {

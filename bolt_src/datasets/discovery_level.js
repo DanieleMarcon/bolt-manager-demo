@@ -1,3 +1,3 @@
 import createMemoryDataset from './createMemoryDataset.js';
 
-export const discovery_levelDataset = createMemoryDataset();
+export const discoveryLevelDataset = createMemoryDataset();
