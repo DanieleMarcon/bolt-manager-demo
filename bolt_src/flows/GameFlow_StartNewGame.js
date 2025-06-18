@@ -164,18 +164,18 @@ export class GameFlowStartNewGameFlow {
             { name: 'Aureliana', city: 'Sant`Agata', short: 'AUR', strength: 85 },
             { name: 'Brioschese', city: 'Briosco', short: 'BRI', strength: 84 },
             { name: 'Cambiaghese', city: 'Cambiago', short: 'CAM', strength: 83 },
-            { name: 'Città di Monza', city: 'Monza', short: 'CDM', strength: 78 },
+            { name: 'Città di Monza', city: 'Monza', short: 'CIT', strength: 78 },
             { name: 'Fonas', city: 'Pessano con Bornago', short: 'FON', strength: 82 },
-            { name: 'Fusion Multisport', city: 'Gessate', short: 'FMS', strength: 72 },
+            { name: 'Fusion Multisport', city: 'Gessate', short: 'FUS', strength: 72 },
             { name: 'Grezzago', city: 'Grezzago', short: 'GRE', strength: 76 },
             { name: 'Masate', city: 'Masate', short: 'MAS', strength: 74 },
-            { name: 'Monsignor Orsenigo', city: 'Melzo', short: 'MOR', strength: 68 },
+            { name: 'Monsignor Orsenigo', city: 'Melzo', short: 'MON', strength: 68 },
             { name: 'Novese Gunners', city: 'Nova Milanese', short: 'NOV', strength: 65 },
-            { name: 'Nuova Frontiera', city: 'Bellinzago Lombardo', short: 'NFR', strength: 63 },
-            { name: 'PanaCalcio', city: 'Bellinzago Lombardo', short: 'PNC', strength: 66 },
+            { name: 'Nuova Frontiera', city: 'Bellinzago Lombardo', short: 'NUO', strength: 63 },
+            { name: 'PanaCalcio', city: 'Bellinzago Lombardo', short: 'PAN', strength: 66 },
             { name: 'Roncello FC', city: 'Roncello', short: 'RON', strength: 64 },
             { name: 'Sovico Calcio', city: 'Sovico', short: 'SOV', strength: 62 },
-            { name: 'Virtus ACLI Trecella', city: 'Trecella', short: 'TRE', strength: 60 }
+            { name: 'Virtus ACLI Trecella', city: 'Trecella', short: 'VIR', strength: 60 }
         ];
 
         return teamTemplates.map((template, index) => {
