@@ -1,7 +1,11 @@
 // Auto-load and initialize components based on DOM elements
 // Scans bolt_src/components for modules and instantiates them for matching selectors
 
-const componentModules = import.meta.glob('../bolt_src/components/*.js');
+// When served without a bundler (e.g. opening index.html directly) `import.meta.glob`
+// is undefined. Fallback to an empty map so the script doesn't throw errors.
+const componentModules = typeof import.meta.glob === 'function'
+  ? import.meta.glob('../bolt_src/components/*.js')
+  : {};
 
 function toSelector(name) {
   return '.' + name
