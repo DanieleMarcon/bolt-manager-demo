@@ -118,6 +118,23 @@ Una **demo funzionante e completa** di un manageriale calcistico moderno, proget
 
 ---
 
-*Aggiornato a: Giugno 2025*  
-*Versione: 1.1*  
+## ➡️ Avvio rapido in locale
+
+Per testare la demo senza bundler è sufficiente avviare un piccolo server HTTP
+dalla **root** del repository (ad esempio con l'estensione *Live Server* di VS
+Code oppure con `npx serve`).  L'importante è che la cartella corrente sia la
+radice del progetto, così i percorsi a `bolt_src/` risultano validi:
+
+```bash
+npx serve -s .
+```
+
+In questo modo non si incorrerà in errori 404 nel caricamento di
+`bolt_src/styles/components.css` e il loader dei componenti funzionerà anche
+aprendo `index.html` direttamente.
+
+---
+
+*Aggiornato a: Giugno 2025*
+*Versione: 1.1*
 *Compatibilità: Bolt.new latest + tutti i browser moderni*
