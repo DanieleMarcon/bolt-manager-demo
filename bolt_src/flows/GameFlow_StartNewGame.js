@@ -64,6 +64,8 @@ export class GameFlowStartNewGameFlow {
 
             // 2. Inizializza struttura dati di gioco
             const gameData = this.initializeGameData(params);
+            // Set early so helper methods can access current date
+            this.gameManager.gameData = gameData;
 
             // 3. Genera squadre del campionato
             const teams = this.generateTeams(params);
