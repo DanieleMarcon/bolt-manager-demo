@@ -4,22 +4,27 @@ export default class TeamMoralePage {
     this.render();
   }
 
-  render() {
+  async render() {
+    const { teamsDataset } = await import('../datasets/teams.js');
+
+    const userTeamId = window.currentSession?.user_team_id;
+    let morale = 0;
+    if (userTeamId) {
+      const team = await teamsDataset.get(userTeamId);
+      morale = Math.round(team?.team_morale || 0);
+    }
+
     this.container.innerHTML = `
       <div class="team-morale-page">
         <h2>Morale Squadra</h2>
 
-        <div class="morale-overview" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-          <div class="gauge">70%</div>
+        <div class="morale-overview" role="progressbar" aria-valuenow="${morale}" aria-valuemin="0" aria-valuemax="100">
+          <div class="gauge">${morale}%</div>
         </div>
 
         <section aria-labelledby="timelineTitle" class="morale-timeline">
           <h3 id="timelineTitle">Andamento Morale</h3>
-          <ol class="timeline" role="list">
-            <li role="listitem">Giornata 1 - Vittoria</li>
-            <li role="listitem">Giornata 2 - Pareggio</li>
-            <li role="listitem">Giornata 3 - Sconfitta</li>
-          </ol>
+          <p class="placeholder">Storico morale non disponibile</p>
         </section>
       </div>
     `;

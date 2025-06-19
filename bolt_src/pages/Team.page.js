@@ -4,7 +4,35 @@ export default class TeamPage {
     this.render();
   }
 
-  render() {
+   async render() {
+    const { teamsDataset } = await import('../datasets/teams.js');
+    const { default: playersData } = await import('../data/playersData.js');
+
+    const userTeamId = window.currentSession?.user_team_id;
+    let rows = '<tr><td colspan="5">Nessuna squadra selezionata</td></tr>';
+
+    if (userTeamId) {
+      const team = await teamsDataset.get(userTeamId);
+      const short = team?.short_name;
+      const players = playersData[short] || [];
+
+      const calcAge = (b) => {
+        const diff = Date.now() - new Date(b).getTime();
+        return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+      };
+
+      rows = players.map((p, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${p.first_name} ${p.last_name}</td>
+          <td>${p.role}</td>
+          <td>${calcAge(p.birthdate)}</td>
+          <td>${p.overall_rating}</td>
+        </tr>
+      `).join('');
+      if (!rows) rows = '<tr><td colspan="5">Nessun giocatore disponibile</td></tr>';
+    }
+
     this.container.innerHTML = `
       <div class="team-page">
         <h2>Rosa Giocatori</h2>
@@ -19,15 +47,7 @@ export default class TeamPage {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td><td>Nome 1</td><td>POR</td><td>28</td><td>75</td>
-            </tr>
-            <tr>
-              <td>2</td><td>Nome 2</td><td>DC</td><td>24</td><td>78</td>
-            </tr>
-            <tr>
-              <td>3</td><td>Nome 3</td><td>CC</td><td>30</td><td>80</td>
-            </tr>
+            ${rows}
           </tbody>
         </table>
       </div>

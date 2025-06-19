@@ -4,30 +4,37 @@ export default class TeamStatsPage {
     this.render();
   }
 
-  render() {
+  async render() {
+    const { teamsDataset } = await import('../datasets/teams.js');
+
+    const userTeamId = window.currentSession?.user_team_id;
+    let statsHtml = '<p>Dati squadra non disponibili</p>';
+
+    if (userTeamId) {
+      const team = await teamsDataset.get(userTeamId);
+      if (team) {
+        statsHtml = `
+          <ul class="team-stats" role="list">
+            <li role="listitem">Partite: ${team.matches_played}</li>
+            <li role="listitem">Vittorie: ${team.wins}</li>
+            <li role="listitem">Pareggi: ${team.draws}</li>
+            <li role="listitem">Sconfitte: ${team.losses}</li>
+            <li role="listitem">Gol Fatti: ${team.goals_for}</li>
+            <li role="listitem">Gol Subiti: ${team.goals_against}</li>
+            <li role="listitem">Punti: ${team.points}</li>
+          </ul>`;
+      }
+    }
+
     this.container.innerHTML = `
       <div class="team-stats-page">
         <header class="stats-toolbar">
           <h2>Statistiche Squadra</h2>
-          <div class="toolbar-controls">
-            <label>
-              Competizione
-              <select aria-label="Competizione">
-                <option>Serie A</option>
-                <option>Coppa</option>
-              </select>
-            </label>
-            <button class="button button-secondary">Esporta CSV</button>
-          </div>
         </header>
 
         <div class="stats-charts" role="region" aria-labelledby="chartsTitle">
-          <h3 id="chartsTitle" class="sr-only">Grafici</h3>
-          <div class="chart" aria-label="Possesso Palla">Chart 1</div>
-          <div class="chart" aria-label="Tiri in Porta">Chart 2</div>
-          <div class="chart" aria-label="Passaggi Riusciti">Chart 3</div>
-          <!-- Radar delle competenze -->
-          <div class="competency-radar-chart" data-competency-data='{}'></div>
+          <h3 id="chartsTitle" class="sr-only">Statistiche</h3>
+          ${statsHtml}
         </div>
       </div>
     `;
