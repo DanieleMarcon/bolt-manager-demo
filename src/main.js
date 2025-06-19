@@ -30,6 +30,7 @@ import NextMatchPage from "../bolt_src/pages/NextMatch.page.js";
 import CalendarViewPage from "../bolt_src/pages/CalendarView.page.js";
 import ResultsPage from "../bolt_src/pages/Results.page.js";
 import MatchSimulationPage from "../bolt_src/pages/MatchSimulation.page.js";
+import MatchAnalysisPage from "../bolt_src/pages/MatchAnalysis.page.js";
 import TrainingManagementPage from "../bolt_src/pages/TrainingManagement.page.js";
 import TrainingProgramsPage from "../bolt_src/pages/TrainingPrograms.page.js";
 import TrainingProgressPage from "../bolt_src/pages/TrainingProgress.page.js";
@@ -78,6 +79,7 @@ const routes = {
   scouting: ScoutingPage,
   shortlist: ShortlistPage,
   'match-simulation': MatchSimulationPage,
+  'match-analysis': MatchAnalysisPage,
   reports: ScoutingReportsPage,
 };
 
