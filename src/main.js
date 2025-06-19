@@ -229,13 +229,19 @@ function startNewGame() {
               await financesDataset.create(rec);
             }
           }
-          if (result.gameData.matches) {
-            const { matchesDataset } = await import('../bolt_src/datasets/matches.js');
-            for (const match of result.gameData.matches) {
-              await matchesDataset.create(match);
+            if (result.gameData.matches) {
+              const { matchesDataset } = await import('../bolt_src/datasets/matches.js');
+              for (const match of result.gameData.matches) {
+                await matchesDataset.create(match);
+              }
+            }
+            if (result.gameData.players) {
+              const { playersDataset } = await import('../bolt_src/datasets/players.js');
+              for (const player of result.gameData.players) {
+                await playersDataset.create(player);
+              }
             }
           }
-        }
 
         modalContainer.style.display = 'none';
         modalContainer.innerHTML = '';

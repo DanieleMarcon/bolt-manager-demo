@@ -6,6 +6,7 @@ export default class MatchSimulationPage {
     this.matchData = null;
     this.lineup = null;
     this.isSimulating = false;
+    this.userTeamId = window.currentSession?.user_team_id || null;
     this.render();
   }
 
@@ -83,7 +84,7 @@ export default class MatchSimulationPage {
       return;
     }
     this.renderMatchInfo();
-    this.renderLineupSelector();
+    await this.renderLineupSelector();
     this.renderPreMatchAnalysis();
     this.renderSponsorBanner();
     this.bindEvents();
@@ -178,12 +179,18 @@ export default class MatchSimulationPage {
     `;
   }
 
-  renderLineupSelector() {
+  async renderLineupSelector() {
     const container = document.getElementById('lineupSelector');
-    
-    new LineupSelector(container, {
-      formation: this.matchData.homeTeam.formation,
-      availablePlayers: this.getMockPlayers(),
+
+    const players = await this.getTeamPlayers();
+    const formation =
+      this.matchData.homeTeam.id === this.userTeamId
+        ? this.matchData.homeTeam.formation
+        : this.matchData.awayTeam.formation;
+
+        new LineupSelector(container, {
+      formation,
+      availablePlayers: players,
       onLineupChange: (lineupData) => this.handleLineupChange(lineupData)
     });
   }
@@ -486,37 +493,26 @@ export default class MatchSimulationPage {
     }, 3000);
   }
 
-  getMockPlayers() {
-    return [
-      {
-        id: 1,
-        name: 'Mario Rossi',
-        position: 'FW',
-        rating: 85,
-        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
-      },
-      {
-        id: 2,
-        name: 'Luigi Bianchi',
-        position: 'MF',
-        rating: 82,
-        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
-      },
-      {
-        id: 3,
-        name: 'Giuseppe Verdi',
-        position: 'DF',
-        rating: 78,
-        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
-      },
-      {
-        id: 4,
-        name: 'Antonio Neri',
-        position: 'GK',
-        rating: 80,
-        photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
-      }
-    ];
+  async getTeamPlayers() {
+    const { teamsDataset } = await import('../datasets/teams.js');
+    const { default: playersData } = await import('../data/playersData.js');
+
+    if (!this.userTeamId) return [];
+
+    const team = await teamsDataset.get(this.userTeamId);
+    const short = team?.short_name;
+    const rawPlayers = playersData[short] || [];
+
+    const ROLE_MAP = { POR: 'GK', DIF: 'DF', CEN: 'MF', ATT: 'FW' };
+
+    return rawPlayers.map((p, idx) => ({
+      id: idx + 1,
+      name: `${p.first_name} ${p.last_name}`,
+      position: ROLE_MAP[p.role] || p.role,
+      overall_rating: p.overall_rating,
+      photo:
+        'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
+    }));
   }
 
   formatDate(dateString) {
