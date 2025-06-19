@@ -364,6 +364,20 @@ button {
   transform: scale(1.02);
 }
 
+/* Initial welcome overlay */
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.welcome-screen.hidden {
+  display: none;
+}
+
 /* ← Inserisci qui, subito dopo `.request-board-btn:hover`: */
 
 /* Budget Tracker */
@@ -428,4 +442,9 @@ button {
 .tv-focus:focus {
   outline: 3px solid yellow;
   transform: scale(1.05);
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
 }

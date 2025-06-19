@@ -132,10 +132,26 @@ function setupEventListeners() {
 async function startNewGame() {
   try {
     const sessionName = prompt("Nome nuova sessione:");
-    const selectedTeam = "Team A";
-    const result = await GameFlow_StartNewGame({ sessionName, userTeamName: selectedTeam, difficulty: "standard" });
+    const selectedTeam = prompt("Scegli la squadra con cui giocare:");
+    const userName = prompt("Inserisci il tuo nome (allenatore):");
+    const result = await GameFlow_StartNewGame({
+      sessionName,
+      userTeamName: selectedTeam,
+      difficulty: "standard",
+    });
+
+    // Aggiorna nome allenatore della squadra scelta
+    const userTeam = result?.gameData?.teams.find(t => t.name === selectedTeam);
+    if (userTeam) {
+      const coach = result.gameData.staff.find(
+        s => s.team_id === userTeam.id && s.role === "head_coach"
+      );
+      if (coach) coach.first_name = userName;
+    }
+
+    showWelcome(false);
     showToast("Nuova partita avviata!");
-    window.location.hash = "team";
+    window.location.hash = "dashboard";
   } catch (error) {
     console.error("Errore avvio:", error);
     showToast("Errore avvio partita", true);
@@ -146,7 +162,8 @@ async function startNewGame() {
 async function loadGame() {
   try {
     const sessionId = prompt("ID sessione da caricare:");
-    const result = await Session_Load({ session_id: sessionId });
+    await Session_Load({ session_id: sessionId });
+    showWelcome(false);
     showToast("Partita caricata con successo!");
     window.location.hash = "dashboard";
   } catch (error) {
@@ -175,9 +192,25 @@ function showToast(message, isError = false) {
   setTimeout(() => toast.remove(), 4000);
 }
 
+function showWelcome(show) {
+  const welcome = document.getElementById("welcomeScreen");
+  const sidebar = document.getElementById("sidebar");
+  const topBar = document.getElementById("topBar");
+  if (!welcome || !sidebar || !topBar) return;
+  if (show) {
+    welcome.classList.remove("hidden");
+    sidebar.classList.add("hidden");
+    topBar.classList.add("hidden");
+  } else {
+    welcome.classList.add("hidden");
+    sidebar.classList.remove("hidden");
+    topBar.classList.remove("hidden");
+  }
+}
+
 // Init
-window.addEventListener("DOMContentLoaded", () => {
-  initializeComponents();
-  setupEventListeners();
-  loadPageFromHash();
-});
+// Initialize immediately since script is loaded at the end of <body>
+initializeComponents();
+setupEventListeners();
+showWelcome(true);
+loadPageFromHash();
