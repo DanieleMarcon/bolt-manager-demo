@@ -82,7 +82,12 @@ export default class MatchAnalysisPage {
   }
 
   loadMatchData() {
-    // Mock match data - in a real app this would come from the previous simulation
+    if (window.lastMatchReport) {
+      this.matchData = window.lastMatchReport;
+      return;
+    }
+
+    // Mock match data - used when no simulation data is available
     this.matchData = {
       match: {
         id: 1,

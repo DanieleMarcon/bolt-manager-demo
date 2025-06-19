@@ -6,6 +6,7 @@ export default class MatchSimulationPage {
     this.matchData = null;
     this.lineup = null;
     this.isSimulating = false;
+    this.matchEvents = [];
     this.userTeamId = window.currentSession?.user_team_id || null;
     this.render();
   }
@@ -348,8 +349,8 @@ export default class MatchSimulationPage {
 
   simulateMatch() {
     let currentMinute = 0;
-    const matchEvents = [];
-    
+    this.matchEvents = [];
+
     this.matchInterval = setInterval(() => {
       currentMinute++;
       
@@ -471,7 +472,7 @@ export default class MatchSimulationPage {
 
   endMatch() {
     this.isSimulating = false;
-    
+
     if (this.matchInterval) {
       clearInterval(this.matchInterval);
       this.matchInterval = null;
@@ -482,15 +483,75 @@ export default class MatchSimulationPage {
     if (statusDisplay) statusDisplay.textContent = 'Finita';
     
     // Show final result
-    const homeScore = this.container.querySelector('.home-score').textContent;
-    const awayScore = this.container.querySelector('.away-score').textContent;
-    
+    const homeScore = parseInt(this.container.querySelector('.home-score').textContent) || 0;
+    const awayScore = parseInt(this.container.querySelector('.away-score').textContent) || 0;
+
     this.showToast(`Partita terminata! Risultato finale: ${homeScore}-${awayScore}`, 'success');
-    
+
+    // Save result for analysis page
+    window.lastMatchReport = this.generateMatchReport(homeScore, awayScore);
+
     // Redirect to analysis after 3 seconds
     setTimeout(() => {
       window.location.hash = 'match-analysis';
     }, 3000);
+  }
+
+  generateMatchReport(homeScore, awayScore) {
+    const stats = {
+      possession: { home: 50, away: 50 },
+      shots: { home: 0, away: 0 },
+      shotsOnTarget: { home: 0, away: 0 },
+      corners: { home: 0, away: 0 },
+      fouls: { home: 0, away: 0 },
+      yellowCards: { home: 0, away: 0 },
+      redCards: { home: 0, away: 0 },
+      offsides: { home: Math.floor(Math.random() * 3), away: Math.floor(Math.random() * 3) },
+      passes: { home: 250 + Math.floor(Math.random() * 100), away: 250 + Math.floor(Math.random() * 100) },
+      passAccuracy: { home: 80 + Math.floor(Math.random() * 10), away: 80 + Math.floor(Math.random() * 10) }
+    };
+
+    this.matchEvents.forEach(ev => {
+      const t = ev.team;
+      switch (ev.type) {
+        case 'goal':
+          stats.shots[t]++;
+          stats.shotsOnTarget[t]++;
+          break;
+        case 'shot':
+          stats.shots[t]++;
+          if (Math.random() < 0.4) stats.shotsOnTarget[t]++;
+          break;
+        case 'corner':
+          stats.corners[t]++;
+          break;
+        case 'card':
+          stats.fouls[t]++;
+          stats.yellowCards[t]++;
+          break;
+      }
+    });
+
+    const possHome = 45 + Math.floor(Math.random() * 11);
+    stats.possession.home = possHome;
+    stats.possession.away = 100 - possHome;
+
+    const highlights = this.matchEvents.map((ev, idx) => ({
+      id: idx + 1,
+      time: ev.minute,
+      type: ev.type,
+      team: ev.team,
+      player: ev.player,
+      description: ev.description,
+      importance: ev.type === 'goal' ? 9 : 5
+    }));
+
+    return {
+      match: this.matchData,
+      result: { homeScore, awayScore },
+      statistics: stats,
+      highlights
+    };
   }
 
   async getTeamPlayers() {
