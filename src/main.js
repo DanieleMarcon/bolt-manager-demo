@@ -148,43 +148,80 @@ function setupEventListeners() {
 }
 
 // Nuova partita
-async function startNewGame() {
-  try {
-    const userName = prompt("Inserisci il tuo nome (allenatore):");
-    if (!userName) return;
+function startNewGame() {
+  const modalContainer = document.getElementById("modalContainer");
+  if (!modalContainer) return;
 
-    const teamPrompt = `Scegli la squadra con cui giocare:\n${TEAM_CHOICES.join("\n")}`;
-    const selectedTeam = prompt(teamPrompt);
-    if (!selectedTeam || !TEAM_CHOICES.includes(selectedTeam)) {
-      showToast("Squadra non valida", true);
-      return;
-    }
+  const teamItems = TEAM_CHOICES.map(
+    t => `<li class="team-item" data-team="${t}">${t}</li>`
+  ).join("");
 
-    const date = new Date().toISOString().slice(0, 10);
-    const sessionName = `${date}_${selectedTeam}_${userName}`;
+  modalContainer.innerHTML = `
+    <div class="modal">
+      <h3>Nuova Partita</h3>
+      <label>Nome allenatore:<br>
+        <input id="coachNameInput" type="text" />
+      </label>
+      <ul class="team-list">${teamItems}</ul>
+      <div style="text-align:right; margin-top:16px;">
+        <button id="cancelNewGameBtn" class="button button-secondary">Annulla</button>
+        <button id="confirmNewGameBtn" class="button button-primary">Avvia</button>
+      </div>
+    </div>`;
+  modalContainer.style.display = "flex";
 
-    const result = await GameFlow_StartNewGame({
-      sessionName,
-      userTeamName: selectedTeam,
-      difficulty: "standard",
+  let selectedTeam = null;
+  const listItems = modalContainer.querySelectorAll('.team-item');
+  listItems.forEach(li => {
+    li.addEventListener('click', () => {
+      listItems.forEach(i => i.classList.remove('selected'));
+      li.classList.add('selected');
+      selectedTeam = li.dataset.team;
+    });
+  });
+
+  modalContainer.querySelector('#cancelNewGameBtn')
+    .addEventListener('click', () => {
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = '';
     });
 
-    // Aggiorna nome allenatore della squadra scelta
-    const userTeam = result?.gameData?.teams.find(t => t.name === selectedTeam);
-    if (userTeam) {
-      const coach = result.gameData.staff.find(
-        s => s.team_id === userTeam.id && s.role === "head_coach"
-      );
-      if (coach) coach.first_name = userName;
-    }
+  modalContainer.querySelector('#confirmNewGameBtn')
+    .addEventListener('click', async () => {
+      const userName = modalContainer.querySelector('#coachNameInput').value.trim();
+      if (!userName || !selectedTeam) {
+        showToast('Inserisci nome e scegli una squadra', true);
+        return;
+      }
 
-    showWelcome(false);
-    showToast("Nuova partita avviata!");
-    window.location.hash = "dashboard";
-  } catch (error) {
-    console.error("Errore avvio:", error);
-    showToast("Errore avvio partita", true);
-  }
+      const date = new Date().toISOString().slice(0,10);
+      const sessionName = `${date}_${selectedTeam}_${userName}`;
+
+      try {
+        const result = await GameFlow_StartNewGame({
+          sessionName,
+          userTeamName: selectedTeam,
+          difficulty: 'standard'
+        });
+
+        const userTeam = result?.gameData?.teams.find(t => t.name === selectedTeam);
+        if (userTeam) {
+          const coach = result.gameData.staff.find(
+            s => s.team_id === userTeam.id && s.role === 'head_coach'
+          );
+          if (coach) coach.first_name = userName;
+        }
+
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+        showWelcome(false);
+        showToast('Nuova partita avviata!');
+        window.location.hash = 'dashboard';
+      } catch (error) {
+        console.error('Errore avvio:', error);
+        showToast('Errore avvio partita', true);
+      }
+    });
 }
 
 // Carica partita
