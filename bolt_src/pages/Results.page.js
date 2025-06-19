@@ -4,7 +4,27 @@ export default class ResultsPage {
     this.render();
   }
 
-  render() {
+  async render() {
+    const { matchesDataset } = await import('../datasets/matches.js');
+    const { teamsDataset } = await import('../datasets/teams.js');
+    const userTeamId = window.currentSession?.user_team_id;
+
+    let rows = '';
+    if (userTeamId) {
+      const all = await matchesDataset.all();
+      const played = all
+        .filter(m => (m.home_team_id === userTeamId || m.away_team_id === userTeamId) && m.status === 'finished')
+        .sort((a,b) => new Date(b.match_date) - new Date(a.match_date));
+
+      for (const match of played) {
+        const home = await teamsDataset.get(match.home_team_id);
+        const away = await teamsDataset.get(match.away_team_id);
+        const date = new Date(match.match_date).toLocaleDateString('it-IT');
+        rows += `<tr><td>${date}</td><td>${home?.name} vs ${away?.name}</td><td>${match.home_goals}-${match.away_goals}</td><td>Campionato</td></tr>`;
+      }
+    }
+    if (!rows) rows = '<tr><td colspan="4">Nessun risultato disponibile</td></tr>';
+
     this.container.innerHTML = `
       <div class="results-page">
         <header class="results-header">
@@ -29,8 +49,7 @@ export default class ResultsPage {
             </tr>
           </thead>
           <tbody>
-            <tr><td>01/06</td><td>Juventus</td><td>2-1</td><td>Serie A</td></tr>
-            <tr><td>08/06</td><td>Roma</td><td>1-1</td><td>Coppa</td></tr>
+            ${rows}
           </tbody>
         </table>
       </div>

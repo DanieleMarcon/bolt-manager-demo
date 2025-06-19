@@ -80,8 +80,8 @@ export default class CalendarViewPage {
     this.initComponents();
   }
 
-  initComponents() {
-    this.loadEvents();
+  async initComponents() {
+    await this.loadEvents();
     this.renderCalendarGrid();
     this.renderDayAdvancer();
     this.renderUpcomingEvents();
@@ -89,9 +89,25 @@ export default class CalendarViewPage {
     this.bindEvents();
   }
 
-  loadEvents() {
-    // Mock events data - in a real app this would come from game state
-    this.events = this.generateMockEvents();
+  async loadEvents() {
+    const { matchesDataset } = await import('../datasets/matches.js');
+    const { teamsDataset } = await import('../datasets/teams.js');
+
+    const all = await matchesDataset.all();
+    const upcoming = all.filter(m => new Date(m.match_date) >= new Date());
+
+    this.events = await Promise.all(upcoming.map(async m => {
+      const home = await teamsDataset.get(m.home_team_id);
+      const away = await teamsDataset.get(m.away_team_id);
+      return {
+        id: m.id,
+        type: 'match',
+        date: m.match_date,
+        title: `${home?.short_name || ''} vs ${away?.short_name || ''}`,
+        description: `Giornata ${m.matchday}`,
+        importance: m.is_user_match ? 8 : 5
+      };
+    }));
   }
 
   generateMockEvents() {

@@ -9,6 +9,7 @@ export default class NextMatchPage {
     const { teamsDataset } = await import('../datasets/teams.js');
     const userTeamId = window.currentSession?.user_team_id;
     let headerInfo = '<p>Nessuna partita programmata</p>';
+        this.nextMatch = null;
 
     if (userTeamId) {
       const all = await matchesDataset.all();
@@ -16,10 +17,10 @@ export default class NextMatchPage {
         .filter(m => (m.home_team_id === userTeamId || m.away_team_id === userTeamId) && new Date(m.match_date) >= new Date())
         .sort((a,b) => new Date(a.match_date) - new Date(b.match_date));
       if (upcoming.length) {
-        const match = upcoming[0];
-        const home = await teamsDataset.get(match.home_team_id);
-        const away = await teamsDataset.get(match.away_team_id);
-        const date = new Date(match.match_date).toLocaleDateString('it-IT');
+        this.nextMatch = upcoming[0];
+        const home = await teamsDataset.get(this.nextMatch.home_team_id);
+        const away = await teamsDataset.get(this.nextMatch.away_team_id);
+        const date = new Date(this.nextMatch.match_date).toLocaleDateString('it-IT');
         headerInfo = `<p>${home?.name || ''} vs ${away?.name || ''} - ${date}</p>`;
       }
     }
@@ -47,13 +48,23 @@ export default class NextMatchPage {
             <p class="placeholder">TacticalFormationDisplay</p>
           </section>
 
-          <section class="match-actions" aria-labelledby="actionsTitle">
-            <h3 id="actionsTitle" class="sr-only">Azioni</h3>
-            <button class="button button-primary">Simula Partita</button>
-            <button class="button button-secondary">Modifica Formazione</button>
-          </section>
+      <section class="match-actions" aria-labelledby="actionsTitle">
+        <h3 id="actionsTitle" class="sr-only">Azioni</h3>
+        <button class="button button-primary">Simula Partita</button>
+        <button class="button button-secondary">Modifica Formazione</button>
+      </section>
         </div>
       </div>
     `;
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    const simBtn = this.container.querySelector('.button.button-primary');
+    simBtn?.addEventListener('click', () => {
+      if (this.nextMatch) {
+        window.location.hash = 'match-simulation';
+      }
+    });
   }
 }

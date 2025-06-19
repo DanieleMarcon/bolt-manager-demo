@@ -29,6 +29,7 @@ import TeamMoralePage from "../bolt_src/pages/TeamMorale.page.js";
 import NextMatchPage from "../bolt_src/pages/NextMatch.page.js";
 import CalendarViewPage from "../bolt_src/pages/CalendarView.page.js";
 import ResultsPage from "../bolt_src/pages/Results.page.js";
+import MatchSimulationPage from "../bolt_src/pages/MatchSimulation.page.js";
 import TrainingManagementPage from "../bolt_src/pages/TrainingManagement.page.js";
 import TrainingProgramsPage from "../bolt_src/pages/TrainingPrograms.page.js";
 import TrainingProgressPage from "../bolt_src/pages/TrainingProgress.page.js";
@@ -76,6 +77,7 @@ const routes = {
   press: PressCenterPage,
   scouting: ScoutingPage,
   shortlist: ShortlistPage,
+  'match-simulation': MatchSimulationPage,
   reports: ScoutingReportsPage,
 };
 
@@ -226,7 +228,13 @@ function startNewGame() {
             for (const rec of result.gameData.finances) {
               await financesDataset.create(rec);
             }
-          } 
+          }
+          if (result.gameData.matches) {
+            const { matchesDataset } = await import('../bolt_src/datasets/matches.js');
+            for (const match of result.gameData.matches) {
+              await matchesDataset.create(match);
+            }
+          }
         }
 
         modalContainer.style.display = 'none';
