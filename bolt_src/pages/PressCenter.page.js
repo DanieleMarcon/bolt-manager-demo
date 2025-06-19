@@ -4,7 +4,15 @@ export default class PressCenterPage {
     this.render();
   }
 
-  render() {
+  async render() {
+    const { pressReleasesDataset } = await import('../datasets/press_releases.js');
+    let releases = await pressReleasesDataset.all();
+    releases = releases.sort((a,b) => new Date(b.date_generated) - new Date(a.date_generated));
+    const items = releases.map(r => {
+      const date = new Date(r.date_generated).toLocaleDateString('it-IT');
+      return `<li role="listitem" class="news-card">${date} - ${r.content}</li>`;
+    }).join('');
+
     this.container.innerHTML = `
       <div class="press-center-page">
         <h2>Sala Stampa</h2>
@@ -19,9 +27,7 @@ export default class PressCenterPage {
         </div>
 
         <ul class="news-list" role="list">
-          <li role="listitem" class="news-card">Comunicato 1</li>
-          <li role="listitem" class="news-card">Comunicato 2</li>
-          <li role="listitem" class="news-card">Comunicato 3</li>
+          ${items || '<li role="listitem" class="news-card">Nessuna notizia disponibile</li>'}
         </ul>
       </div>
     `;

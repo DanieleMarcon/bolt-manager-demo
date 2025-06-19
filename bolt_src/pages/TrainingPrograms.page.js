@@ -4,7 +4,18 @@ export default class TrainingProgramsPage {
     this.render();
   }
 
-  render() {
+  async render() {
+    const { trainingsDataset } = await import('../datasets/trainings.js');
+    const userTeamId = window.currentSession?.user_team_id;
+    let programs = [];
+    if (userTeamId) {
+      programs = (await trainingsDataset.getAll()).filter(t => t.team_id === userTeamId && t.training_type);
+    }
+    const listItems = programs.map(p => {
+      const duration = p.duration_minutes ? Math.round(p.duration_minutes/60/24) + ' giorni' : '';
+      return `<li role="listitem" class="program-card"><h3>${p.training_type}</h3><p>Durata: ${duration}</p><button class="button button-primary">Avvia</button></li>`;
+    }).join('');
+
     this.container.innerHTML = `
       <div class="training-programs-page">
         <h2>Programmi di Allenamento</h2>
@@ -20,16 +31,7 @@ export default class TrainingProgramsPage {
         </div>
 
         <ul class="program-list" role="list">
-          <li role="listitem" class="program-card">
-            <h3>Rafforza Difesa</h3>
-            <p>Durata: 2 settimane</p>
-            <button class="button button-primary">Avvia</button>
-          </li>
-          <li role="listitem" class="program-card">
-            <h3>Intensivo Attacco</h3>
-            <p>Durata: 1 settimana</p>
-            <button class="button button-primary">Avvia</button>
-          </li>
+          ${listItems || '<li role="listitem" class="program-card">Nessun programma disponibile</li>'}
         </ul>
       </div>
     `;
