@@ -212,6 +212,21 @@ function startNewGame() {
             s => s.team_id === userTeam.id && s.role === 'head_coach'
           );
           if (coach) coach.first_name = userName;
+
+          // Persist selected team info for dashboard widgets
+          window.currentSession = { user_team_id: userTeam.id };
+
+          // Populate in-memory datasets with generated data
+          const { teamsDataset } = await import('../bolt_src/datasets/teams.js');
+          for (const team of result.gameData.teams) {
+            await teamsDataset.create(team);
+          }
+          if (result.gameData.finances) {
+            const { financesDataset } = await import('../bolt_src/datasets/finances.js');
+            for (const rec of result.gameData.finances) {
+              await financesDataset.create(rec);
+            }
+          } 
         }
 
         modalContainer.style.display = 'none';
@@ -230,7 +245,17 @@ function startNewGame() {
 async function loadGame() {
   try {
     const sessionId = prompt("ID sessione da caricare:");
-    await Session_Load({ session_id: sessionId });
+    const result = await Session_Load({ session_id: sessionId });
+    if (result?.success && result.userTeam) {
+      window.currentSession = { user_team_id: result.userTeam.id };
+      const { teamsDataset } = await import('../bolt_src/datasets/teams.js');
+      const existing = await teamsDataset.get(result.userTeam.id);
+      if (!existing && result.datasetsRestored?.length) {
+        for (const team of result.userTeam ? [result.userTeam] : []) {
+          await teamsDataset.create(team);
+        }
+      }
+    }
     showWelcome(false);
     showToast("Partita caricata con successo!");
     window.location.hash = "dashboard";
