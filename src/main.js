@@ -2,6 +2,25 @@ import initializeComponents from './componentLoader.js';
 import { GameFlow_StartNewGame } from "../bolt_src/flows/GameFlow_StartNewGame.js";
 import { Session_Load } from "../bolt_src/flows/Session_Load.js";
 import { Session_Save } from "../bolt_src/flows/Session_Save.js";
+
+// Elenco squadre disponibili per l'utente
+const TEAM_CHOICES = [
+  'Aureliana',
+  'Brioschese',
+  'Cambiaghese',
+  'Città di Monza',
+  'Fonas',
+  'Fusion Multisport',
+  'Grezzago',
+  'Masate',
+  'Monsignor Orsenigo',
+  'Novese Gunners',
+  'Nuova Frontiera',
+  'PanaCalcio',
+  'Roncello FC',
+  'Sovico Calcio',
+  'Virtus ACLI Trecella'
+];
 // Import statici delle pagine
 import DashboardPage from "../bolt_src/pages/Dashboard.page.js";
 import TeamPage from "../bolt_src/pages/Team.page.js";
@@ -131,9 +150,19 @@ function setupEventListeners() {
 // Nuova partita
 async function startNewGame() {
   try {
-    const sessionName = prompt("Nome nuova sessione:");
-    const selectedTeam = prompt("Scegli la squadra con cui giocare:");
     const userName = prompt("Inserisci il tuo nome (allenatore):");
+    if (!userName) return;
+
+    const teamPrompt = `Scegli la squadra con cui giocare:\n${TEAM_CHOICES.join("\n")}`;
+    const selectedTeam = prompt(teamPrompt);
+    if (!selectedTeam || !TEAM_CHOICES.includes(selectedTeam)) {
+      showToast("Squadra non valida", true);
+      return;
+    }
+
+    const date = new Date().toISOString().slice(0, 10);
+    const sessionName = `${date}_${selectedTeam}_${userName}`;
+
     const result = await GameFlow_StartNewGame({
       sessionName,
       userTeamName: selectedTeam,
@@ -209,8 +238,15 @@ function showWelcome(show) {
 }
 
 // Init
-// Initialize immediately since script is loaded at the end of <body>
+// Execute once the script is loaded (module at end of <body>)
 initializeComponents();
 setupEventListeners();
-showWelcome(true);
-loadPageFromHash();
+
+if (window.location.hash) {
+  // Open page directly when a hash is present
+  showWelcome(false);
+  loadPageFromHash();
+  } else {
+  // Otherwise keep the welcome screen visible
+  showWelcome(true);
+}
