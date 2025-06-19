@@ -104,15 +104,27 @@ function loadPageFromHash() {
 
 // Eventi
 function setupEventListeners() {
-  document.getElementById("startNewGameBtn")?.addEventListener("click", startNewGame);
-  document.getElementById("loadGameBtn")?.addEventListener("click", loadGame);
-  document.getElementById("notificationsBtn")?.addEventListener("click", () => {
+  const startBtn = document.getElementById("startNewGameBtn");
+  if (startBtn) startBtn.addEventListener("click", startNewGame);
+
+  const loadBtn = document.getElementById("loadGameBtn");
+  if (loadBtn) loadBtn.addEventListener("click", loadGame);
+
+  const notifBtn = document.getElementById("notificationsBtn");
+  if (notifBtn) notifBtn.addEventListener("click", () => {
     window.location.hash = "press";
   });
-  document.getElementById("quickSaveBtn")?.addEventListener("click", () => {
-   window.location.hash = "quickSave";
+
+  const quickSaveBtn = document.getElementById("quickSaveBtn");
+  if (quickSaveBtn) quickSaveBtn.addEventListener("click", () => {
+    window.location.hash = "quickSave";
   });
-  document.getElementById("settingsBtn")?.addEventListener("click", () => window.location.hash = "settings");
+
+  const settingsBtn = document.getElementById("settingsBtn");
+  if (settingsBtn) settingsBtn.addEventListener("click", () => {
+    window.location.hash = "settings";
+  });
+
   window.addEventListener("hashchange", loadPageFromHash);
 }
 
