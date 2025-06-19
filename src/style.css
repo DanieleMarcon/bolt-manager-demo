@@ -500,3 +500,36 @@ button {
 .hidden {
   display: none !important;
 }
+
+/* Match simulation events */
+.match-events {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.match-event {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.match-event:last-child {
+  border-bottom: none;
+}
+
+.match-event .event-time {
+  font-weight: 600;
+  color: var(--primary);
+  width: 32px;
+}
+
+.match-event .event-icon {
+  width: 20px;
+  text-align: center;
+}

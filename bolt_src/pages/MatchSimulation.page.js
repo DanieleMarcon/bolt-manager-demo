@@ -7,6 +7,9 @@ export default class MatchSimulationPage {
     this.lineup = null;
     this.isSimulating = false;
     this.matchEvents = [];
+    this.currentMinute = 0;
+    this.simulationSpeed = 'normal';
+    this.isPaused = false;
     this.userTeamId = window.currentSession?.user_team_id || null;
     this.render();
   }
@@ -325,9 +328,12 @@ export default class MatchSimulationPage {
       this.showToast('Completa la formazione prima di iniziare', 'error');
       return;
     }
-    
+
     this.isSimulating = true;
-    
+    this.isPaused = false;
+    this.currentMinute = 0;
+    this.simulationSpeed = 'normal';
+
     // Show simulation controls
     const simulationControls = this.container.querySelector('#simulationControls');
     simulationControls.style.display = 'block';
@@ -348,32 +354,36 @@ export default class MatchSimulationPage {
   }
 
   simulateMatch() {
-    let currentMinute = 0;
     this.matchEvents = [];
+    this.startSimulationInterval();
+  }
 
-    this.matchInterval = setInterval(() => {
-      currentMinute++;
-      
-      // Update time display
-      const timeDisplay = this.container.querySelector('.time-display');
-      const statusDisplay = this.container.querySelector('.match-status');
-      
-      if (timeDisplay) timeDisplay.textContent = `${currentMinute}'`;
-      if (statusDisplay) statusDisplay.textContent = 'In corso';
-      
-      // Generate random events
-      if (Math.random() < 0.05) { // 5% chance per minute
-        const event = this.generateRandomEvent(currentMinute);
-        matchEvents.push(event);
-        this.addMatchEvent(event);
-      }
-      
-      // End match at 90 minutes
-      if (currentMinute >= 90) {
-        this.endMatch();
-      }
-      
-    }, 1000); // 1 second = 1 minute of match time
+  startSimulationInterval() {
+    if (this.matchInterval) {
+      clearInterval(this.matchInterval);
+    }
+    const speedMap = { slow: 1500, normal: 1000, fast: 500 };
+    const interval = speedMap[this.simulationSpeed] || 1000;
+    this.matchInterval = setInterval(() => this.simulationTick(), interval);
+  }
+
+  simulationTick() {
+    this.currentMinute++;
+
+    const timeDisplay = this.container.querySelector('.time-display');
+    const statusDisplay = this.container.querySelector('.match-status');
+    if (timeDisplay) timeDisplay.textContent = `${this.currentMinute}'`;
+    if (statusDisplay) statusDisplay.textContent = 'In corso';
+
+    if (Math.random() < 0.05) {
+      const event = this.generateRandomEvent(this.currentMinute);
+      this.matchEvents.push(event);
+      this.addMatchEvent(event);
+    }
+
+    if (this.currentMinute >= 90) {
+      this.endMatch();
+    }
   }
 
   generateRandomEvent(minute) {
@@ -453,25 +463,32 @@ export default class MatchSimulationPage {
   }
 
   setSimulationSpeed(speed) {
-    // Adjust simulation speed
-    console.log('Simulation speed set to:', speed);
+    this.simulationSpeed = speed;
+    if (this.isSimulating && !this.isPaused) {
+      this.startSimulationInterval();
+    }
   }
 
   togglePause() {
-    if (this.matchInterval) {
-      clearInterval(this.matchInterval);
-      this.matchInterval = null;
-      this.container.querySelector('.pause-btn').textContent = '▶️ Riprendi';
-      this.container.querySelector('.match-status').textContent = 'In pausa';
-    } else {
-      this.simulateMatch();
+    if (this.isPaused) {
+      this.isPaused = false;
+      this.startSimulationInterval();
       this.container.querySelector('.pause-btn').textContent = '⏸️ Pausa';
       this.container.querySelector('.match-status').textContent = 'In corso';
+    } else {
+      this.isPaused = true;
+      if (this.matchInterval) {
+        clearInterval(this.matchInterval);
+        this.matchInterval = null;
+      }
+      this.container.querySelector('.pause-btn').textContent = '▶️ Riprendi';
+      this.container.querySelector('.match-status').textContent = 'In pausa';
     }
   }
 
   endMatch() {
     this.isSimulating = false;
+    this.isPaused = false;
 
     if (this.matchInterval) {
       clearInterval(this.matchInterval);
