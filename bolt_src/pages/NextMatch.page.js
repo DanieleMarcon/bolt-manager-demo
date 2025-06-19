@@ -63,6 +63,7 @@ export default class NextMatchPage {
     const simBtn = this.container.querySelector('.button.button-primary');
     simBtn?.addEventListener('click', () => {
       if (this.nextMatch) {
+        window.currentMatchId = this.nextMatch.id;
         window.location.hash = 'match-simulation';
       }
     });

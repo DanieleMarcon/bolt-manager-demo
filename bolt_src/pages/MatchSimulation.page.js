@@ -76,8 +76,12 @@ export default class MatchSimulationPage {
     this.initComponents();
   }
 
-  initComponents() {
-    this.loadMatchData();
+  async initComponents() {
+    await this.loadMatchData();
+    if (!this.matchData) {
+      this.container.innerHTML = '<p>Nessuna partita da simulare</p>';
+      return;
+    }
     this.renderMatchInfo();
     this.renderLineupSelector();
     this.renderPreMatchAnalysis();
@@ -85,33 +89,49 @@ export default class MatchSimulationPage {
     this.bindEvents();
   }
 
-  loadMatchData() {
-    // Mock match data - in a real app this would come from game state
+  async loadMatchData() {
+    const matchId = window.currentMatchId;
+    if (!matchId) {
+      this.matchData = null;
+      return;
+    }
+
+    const { matchesDataset } = await import('../datasets/matches.js');
+    const { teamsDataset } = await import('../datasets/teams.js');
+    const match = await matchesDataset.get(matchId);
+    if (!match) {
+      this.matchData = null;
+      return;
+    }
+
+    const homeTeam = await teamsDataset.get(match.home_team_id);
+    const awayTeam = await teamsDataset.get(match.away_team_id);
+
     this.matchData = {
-      id: 1,
-      competition: 'Serie A',
-      matchday: 15,
-      date: new Date().toISOString(),
-      stadium: 'Stadio San Siro',
+      id: match.id,
+      competition: 'Campionato',
+      matchday: match.matchday,
+      date: match.match_date,
+      stadium: homeTeam?.city ? `Stadio di ${homeTeam.city}` : 'Stadio Comunale',
       homeTeam: {
-        id: 1,
-        name: 'AC Milan',
+        id: homeTeam?.id,
+        name: homeTeam?.name || 'Sconosciuta',
         logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
-        formation: '4-4-2',
-        rating: 82
+        formation: homeTeam?.formation || '4-4-2',
+        rating: homeTeam?.team_strength || 0
       },
       awayTeam: {
-        id: 2,
-        name: 'Inter',
+        id: awayTeam?.id,
+        name: awayTeam?.name || 'Sconosciuta',
         logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
-        formation: '4-3-3',
-        rating: 85
+        formation: awayTeam?.formation || '4-4-2',
+        rating: awayTeam?.team_strength || 0
       },
       weather: {
-        condition: 'sunny',
+        condition: match.weather,
         temperature: 18
       },
-      referee: 'Marco Rossi'
+      referee: match.referee
     };
   }
 
