@@ -3,144 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allenatore Nato</title>
+    <title>⚽ Allenatore Nato - Football Manager</title>
     <link rel="stylesheet" href="./style.css">
-    <!-- Path fixed for local development without bundler -->
     <link rel="stylesheet" href="../bolt_src/styles/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="Il gioco manageriale calcistico più realistico e coinvolgente">
+    <meta name="theme-color" content="#1e40af">
 </head>
 <body>
     <div id="app">
-        <!-- App container -->
+        <!-- Stadium Atmosphere -->
+        <div class="stadium-atmosphere"></div>
+        
+        <!-- App Layout -->
         <div class="app-layout">
-            <!-- Top Bar -->
+            <!-- Top Bar - Stadium Control Room -->
             <header class="top-bar hidden" id="topBar">
                 <div class="top-bar-content">
-                    <a href="#dashboard" class="app-title">⚽ Allenatore Nato</a>
+                    <a href="#dashboard" class="app-title">
+                        <span class="title-icon">⚽</span>
+                        <span class="title-text">Allenatore Nato</span>
+                        <span class="title-subtitle">Football Manager</span>
+                    </a>
                     <div class="top-bar-actions">
-                        <button
-                           id="quickSaveBtn"
-                           class="button button-secondary"
-                           aria-label="Salva rapido">💾 Salva</button>
-                        <button
-                           id="notificationsBtn"
-                           class="button button-ghost"
-                           aria-label="Comunicati Stampa">🔔</button>
-                        <button id="settingsBtn" class="button button-ghost">⚙️</button>
+                        <button id="quickSaveBtn" class="button button-secondary" aria-label="Salvataggio rapido">
+                            <span>💾</span>
+                            <span>Salva</span>
+                        </button>
+                        <button id="notificationsBtn" class="button button-ghost" aria-label="Notifiche e comunicati">
+                            <span>🔔</span>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <button id="settingsBtn" class="button button-ghost" aria-label="Impostazioni">
+                            <span>⚙️</span>
+                        </button>
                     </div>
                 </div>
             </header>
 
-            <!-- Sidebar Navigation -->
+            <!-- Sidebar Navigation - Team Dugout -->
             <nav class="sidebar hidden" id="sidebar">
                 <div class="sidebar-content">
+                    <!-- Dashboard Section -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">🏠 Principale</h3>
-                        <a href="#dashboard" class="nav-link">Dashboard</a>
+                        <h3 class="nav-section-title">
+                            <span>🏠</span>
+                            <span>Centro di Controllo</span>
+                        </h3>
+                        <a href="#dashboard" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span>Dashboard</span>
+                        </a>
                     </div>
 
+                    <!-- Team Management -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">📊 Squadra</h3>
-                        <a href="#team" class="nav-link active">Rosa Giocatori</a>
-                        <a href="#team-stats" class="nav-link">Statistiche</a>
-                        <a href="#team-morale" class="nav-link">Morale</a>
+                        <h3 class="nav-section-title">
+                            <span>👥</span>
+                            <span>Gestione Squadra</span>
+                        </h3>
+                        <a href="#team" class="nav-link active">
+                            <span class="nav-icon">⚽</span>
+                            <span>Rosa Giocatori</span>
+                        </a>
+                        <a href="#team-stats" class="nav-link">
+                            <span class="nav-icon">📈</span>
+                            <span>Statistiche</span>
+                        </a>
+                        <a href="#team-morale" class="nav-link">
+                            <span class="nav-icon">💪</span>
+                            <span>Morale</span>
+                        </a>
                     </div>
 
+                    <!-- Match Management -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">⚽ Partite</h3>
-                        <a href="#next-match" class="nav-link">Prossima Partita</a>
-                        <a href="#calendar" class="nav-link">Calendario</a>
-                        <a href="#results" class="nav-link">Risultati</a>
+                        <h3 class="nav-section-title">
+                            <span>🏟️</span>
+                            <span>Partite</span>
+                        </h3>
+                        <a href="#next-match" class="nav-link">
+                            <span class="nav-icon">🎯</span>
+                            <span>Prossima Partita</span>
+                        </a>
+                        <a href="#calendar" class="nav-link">
+                            <span class="nav-icon">📅</span>
+                            <span>Calendario</span>
+                        </a>
+                        <a href="#results" class="nav-link">
+                            <span class="nav-icon">🏆</span>
+                            <span>Risultati</span>
+                        </a>
                     </div>
 
+                    <!-- Training -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">🏃 Allenamento</h3>
-                        <a href="#training" class="nav-link">Pianificazione</a>
-                        <a href="#training-programs" class="nav-link">Programmi</a>
-                        <a href="#training-progress" class="nav-link">Progressi</a>
+                        <h3 class="nav-section-title">
+                            <span>🏃</span>
+                            <span>Allenamento</span>
+                        </h3>
+                        <a href="#training" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span>Pianificazione</span>
+                        </a>
+                        <a href="#training-programs" class="nav-link">
+                            <span class="nav-icon">📚</span>
+                            <span>Programmi</span>
+                        </a>
+                        <a href="#training-progress" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span>Progressi</span>
+                        </a>
                     </div>
 
+                    <!-- Tactics -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">⚙️ Tattiche</h3>
-                        <a href="#tactics" class="nav-link">Formazione</a>
-                        <a href="#tactics-schemes" class="nav-link">Schemi</a>
-                        <a href="#tactics-roles" class="nav-link">Ruoli</a>
+                        <h3 class="nav-section-title">
+                            <span>🧠</span>
+                            <span>Tattiche</span>
+                        </h3>
+                        <a href="#tactics" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Formazione</span>
+                        </a>
+                        <a href="#tactics-schemes" class="nav-link">
+                            <span class="nav-icon">📐</span>
+                            <span>Schemi</span>
+                        </a>
+                        <a href="#tactics-roles" class="nav-link">
+                            <span class="nav-icon">🎭</span>
+                            <span>Ruoli</span>
+                        </a>
                     </div>
 
+                    <!-- Transfer Market -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">💰 Trasferimenti</h3>
-                        <a href="#transfers" class="nav-link">Mercato</a>
-                        <a href="#negotiations" class="nav-link">Trattative</a>
-                        <a href="#contracts" class="nav-link">Contratti</a>
+                        <h3 class="nav-section-title">
+                            <span>💰</span>
+                            <span>Mercato</span>
+                        </h3>
+                        <a href="#transfers" class="nav-link">
+                            <span class="nav-icon">🛒</span>
+                            <span>Trasferimenti</span>
+                        </a>
+                        <a href="#negotiations" class="nav-link">
+                            <span class="nav-icon">🤝</span>
+                            <span>Trattative</span>
+                        </a>
+                        <a href="#contracts" class="nav-link">
+                            <span class="nav-icon">📄</span>
+                            <span>Contratti</span>
+                        </a>
                     </div>
 
+                    <!-- Staff -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">👥 Staff</h3>
-                        <a href="#staff" class="nav-link">Gestione Staff</a>
+                        <h3 class="nav-section-title">
+                            <span>👔</span>
+                            <span>Staff Tecnico</span>
+                        </h3>
+                        <a href="#staff" class="nav-link">
+                            <span class="nav-icon">👥</span>
+                            <span>Gestione Staff</span>
+                        </a>
                     </div>
 
+                    <!-- Scouting -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">🧠 Scouting</h3>
-                        <a href="#scouting" class="nav-link">Osservazione</a>
-                        <a href="#shortlist" class="nav-link">Shortlist</a>
-                        <a href="#reports" class="nav-link">Report Scout</a>
+                        <h3 class="nav-section-title">
+                            <span>🔍</span>
+                            <span>Osservazione</span>
+                        </h3>
+                        <a href="#scouting" class="nav-link">
+                            <span class="nav-icon">🎯</span>
+                            <span>Scouting</span>
+                        </a>
+                        <a href="#shortlist" class="nav-link">
+                            <span class="nav-icon">⭐</span>
+                            <span>Lista Osservati</span>
+                        </a>
+                        <a href="#reports" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span>Report Scout</span>
+                        </a>
                     </div>
 
+                    <!-- Management -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">🏛️ Direzione</h3>
-                        <a href="#board" class="nav-link">Direzione</a>
-                        <a href="#finances" class="nav-link">Finanze Club</a>
+                        <h3 class="nav-section-title">
+                            <span>🏛️</span>
+                            <span>Dirigenza</span>
+                        </h3>
+                        <a href="#board" class="nav-link">
+                            <span class="nav-icon">👔</span>
+                            <span>Consiglio</span>
+                        </a>
+                        <a href="#finances" class="nav-link">
+                            <span class="nav-icon">💳</span>
+                            <span>Finanze</span>
+                        </a>
                     </div>
 
+                    <!-- Media -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">📣 Notizie</h3>
-                        <a href="#press" class="nav-link">Comunicati Stampa</a>
+                        <h3 class="nav-section-title">
+                            <span>📺</span>
+                            <span>Media</span>
+                        </h3>
+                        <a href="#press" class="nav-link">
+                            <span class="nav-icon">📰</span>
+                            <span>Sala Stampa</span>
+                        </a>
                     </div>
 
+                    <!-- History -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">📈 Storico</h3>
-                        <a href="#history" class="nav-link">Progressi Giocatori</a>
+                        <h3 class="nav-section-title">
+                            <span>📈</span>
+                            <span>Storico</span>
+                        </h3>
+                        <a href="#history" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span>Progressi</span>
+                        </a>
                     </div>
 
+                    <!-- System -->
                     <div class="nav-section">
-                        <h3 class="nav-section-title">⚙️ Sistema</h3>
-                        <a href="#settings" class="nav-link">Impostazioni</a>
-                        <a href="#sessions" class="nav-link">Salvataggi</a>
+                        <h3 class="nav-section-title">
+                            <span>⚙️</span>
+                            <span>Sistema</span>
+                        </h3>
+                        <a href="#settings" class="nav-link">
+                            <span class="nav-icon">🔧</span>
+                            <span>Impostazioni</span>
+                        </a>
+                        <a href="#sessions" class="nav-link">
+                            <span class="nav-icon">💾</span>
+                            <span>Salvataggi</span>
+                        </a>
                     </div>
                 </div>
             </nav>
 
-            <!-- Main Content -->
+            <!-- Main Content - Playing Field -->
             <main class="main-content" id="mainContent">
-                <!-- Content will be dynamically loaded here -->
                 <div id="pageContent">
-                    <!-- Initial welcome screen -->
+                    <!-- Stadium Welcome Screen -->
                     <div class="welcome-screen" id="welcomeScreen">
                         <div class="welcome-content">
-                            <h2>Benvenuto in Allenatore Nato</h2>
-                            <p>Il gioco manageriale calcistico moderno, costruito interamente con Bolt.new</p>
-                            <button id="startNewGameBtn" class="button button-primary button-large">
-                                🎮 Inizia Nuova Partita
-                            </button>
-                            <button id="loadGameBtn" class="button button-secondary button-large">
-                                📁 Carica Partita
-                            </button>
+                            <h2>⚽ Allenatore Nato</h2>
+                            <p>Vivi l'emozione di guidare la tua squadra verso la gloria. Il football manager più realistico e coinvolgente ti aspetta.</p>
+                            
+                            <div class="welcome-actions">
+                                <button id="startNewGameBtn" class="button button-primary button-large">
+                                    <span>🎮</span>
+                                    <span>Inizia Nuova Carriera</span>
+                                </button>
+                                <button id="loadGameBtn" class="button button-secondary button-large">
+                                    <span>📁</span>
+                                    <span>Carica Carriera</span>
+                                </button>
+                            </div>
+                            
+                            <div class="welcome-features">
+                                <div class="feature-item">
+                                    <span class="feature-icon">🏆</span>
+                                    <span class="feature-text">Gestione Completa</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">⚽</span>
+                                    <span class="feature-text">Simulazione Realistica</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">📊</span>
+                                    <span class="feature-text">Statistiche Avanzate</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </main>
-
-            <!-- Sponsor Banner (Global Component) -->
-            <footer class="footer">
-                <div id="sponsorBanner" class="sponsor-banner"></div>
-            </footer>
         </div>
 
-        <!-- Modal Container -->
+        <!-- Modal Container - Stadium Big Screen -->
         <div id="modalContainer" class="modal-container"></div>
 
-        <!-- Toast Container -->
+        <!-- Toast Container - Match Events -->
         <div id="toastContainer" class="toast-container"></div>
+        
+        <!-- Mobile Menu Toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle hidden">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
+    
     <script type="module" src="./main.js"></script>
 </body>
 </html>
