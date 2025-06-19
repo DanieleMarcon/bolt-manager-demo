@@ -149,6 +149,8 @@ function setupEventListeners() {
 
 // Nuova partita
 function startNewGame() {
+  // Hide the welcome overlay so the modal is visible
+  showWelcome(false);
   const modalContainer = document.getElementById("modalContainer");
   if (!modalContainer) return;
 
