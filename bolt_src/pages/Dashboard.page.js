@@ -1,3 +1,6 @@
+import TeamSummaryCard from '../components/TeamSummaryCard.js';
+import FinancialOverviewCard from '../components/FinancialOverviewCard.js';
+
 export default class DashboardPage {
   constructor() {
     this.container = document.getElementById('pageContent');
@@ -10,12 +13,12 @@ export default class DashboardPage {
         <main class="left-column" role="main">
           <section aria-labelledby="teamSummaryTitle" class="card team-summary">
             <h3 id="teamSummaryTitle">Riepilogo Squadra</h3>
-            <p class="placeholder">TeamSummaryCard</p>
+            <div id="teamSummaryContainer"></div>
           </section>
 
           <section aria-labelledby="financialOverviewTitle" class="card financial-overview">
             <h3 id="financialOverviewTitle">Situazione Finanziaria</h3>
-            <p class="placeholder">FinancialOverviewCard</p>
+            <div id="financialOverviewContainer"></div>
           </section>
 
           <section aria-labelledby="upcomingMatchesTitle" class="card upcoming-matches">
@@ -29,15 +32,6 @@ export default class DashboardPage {
         </main>
 
         <aside class="right-column" aria-labelledby="newsTickerTitle">
-          <section class="card quick-actions">
-            <h3 id="quickActionsTitle">Azioni Rapide</h3>
-            <div class="actions">
-              <button class="button button-primary">Nuova Partita</button>
-              <button class="button button-secondary">Carica</button>
-              <button class="button button-secondary">Salva</button>
-            </div>
-          </section>
-
           <section class="card news-ticker">
             <h3 id="newsTickerTitle">News Recenti</h3>
             <ul role="list" class="placeholder">
@@ -48,5 +42,22 @@ export default class DashboardPage {
         </aside>
       </div>
     `;
+    this.initComponents();
+  }
+
+  initComponents() {
+    new TeamSummaryCard({
+      container: document.getElementById('teamSummaryContainer'),
+      teamId: this.getUserTeamId()
+    });
+
+    new FinancialOverviewCard({
+      container: document.getElementById('financialOverviewContainer'),
+      teamId: this.getUserTeamId()
+    });
+  }
+
+  getUserTeamId() {
+    return window.currentSession?.user_team_id || null;
   }
 }
