@@ -649,6 +649,501 @@ h6 { font-size: 1rem; }
 }
 
 /* ===========================
+   ⚽ MATCH SIMULATION STYLES
+=========================== */
+
+/* Match Header */
+.match-header {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-elevated) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.match-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex: 1;
+}
+
+.team.away-team {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.team-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.team-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.team-formation {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.match-center {
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+.match-score {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.score {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text);
+  min-width: 60px;
+}
+
+.score-separator {
+  font-size: 2rem;
+  color: var(--text-muted);
+}
+
+.match-time {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.time-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.match-status {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Football Field */
+.football-field-container {
+  margin: var(--space-xl) 0;
+  display: flex;
+  justify-content: center;
+}
+
+.football-field {
+  width: 100%;
+  max-width: 800px;
+  height: 500px;
+  background: linear-gradient(135deg, var(--pitch-green) 0%, var(--grass-light) 100%);
+  border: 3px solid var(--field-lines);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.field-markings {
+  position: absolute;
+  inset: 0;
+}
+
+.center-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--field-lines);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: var(--field-lines);
+  transform: translateX(-50%);
+}
+
+.penalty-area {
+  position: absolute;
+  width: 120px;
+  height: 200px;
+  border: 2px solid var(--field-lines);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.home-penalty {
+  bottom: 0;
+  border-bottom: none;
+}
+
+.away-penalty {
+  top: 0;
+  border-top: none;
+}
+
+.goal-area {
+  position: absolute;
+  width: 60px;
+  height: 100px;
+  border: 2px solid var(--field-lines);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.home-goal-area {
+  bottom: 0;
+  border-bottom: none;
+}
+
+.away-goal-area {
+  top: 0;
+  border-top: none;
+}
+
+.corner-arc {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--field-lines);
+  border-radius: 50%;
+}
+
+.corner-1 { top: 0; left: 0; border-right: none; border-bottom: none; }
+.corner-2 { top: 0; right: 0; border-left: none; border-bottom: none; }
+.corner-3 { bottom: 0; left: 0; border-right: none; border-top: none; }
+.corner-4 { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+/* Ball */
+.ball {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e5e5e5);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease;
+  z-index: 10;
+}
+
+/* Event Animation */
+.event-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--field-lines);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  display: none;
+  animation: eventPulse 2s ease;
+}
+
+.goal-animation {
+  color: var(--jersey-gold);
+  animation: goalCelebration 2s ease;
+}
+
+/* Live Commentary */
+.live-commentary {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin: var(--space-xl) 0;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.commentary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-elevated);
+}
+
+.commentary-header h4 {
+  margin: 0;
+  color: var(--text);
+}
+
+.commentary-toggle {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.commentary-toggle:hover {
+  background: var(--border);
+}
+
+.commentary-feed {
+  height: 200px;
+  overflow-y: auto;
+  padding: var(--space-lg);
+}
+
+.commentary-item {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.commentary-item:hover {
+  background: var(--surface-elevated);
+}
+
+.commentary-time {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 40px;
+  flex-shrink: 0;
+}
+
+.commentary-text {
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.commentary-item.match-start .commentary-text,
+.commentary-item.match-end .commentary-text {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.commentary-item.goal .commentary-text {
+  color: var(--jersey-gold);
+  font-weight: 600;
+}
+
+.commentary-item.system .commentary-text {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Match Controls */
+.match-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  margin: var(--space-xl) 0;
+}
+
+.control-section,
+.speed-section {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+}
+
+.control-section h5,
+.speed-section h5 {
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.control-buttons {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.control-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control-btn.pause-btn {
+  background: var(--warning);
+}
+
+.control-btn.stop-btn {
+  background: var(--error);
+}
+
+.speed-controls {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.speed-btn {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.speed-btn:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.speed-btn.active {
+  background: var(--primary-solid);
+  color: white;
+  border-color: var(--primary-solid);
+}
+
+/* Live Stats */
+.live-stats {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-xl) 0;
+  box-shadow: var(--shadow);
+}
+
+.live-stats h5 {
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-align: center;
+}
+
+.stat-bar {
+  display: flex;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.stat-fill.home {
+  background: linear-gradient(90deg, var(--stadium-blue), var(--stadium-blue-dark));
+}
+
+.stat-fill.away {
+  background: linear-gradient(90deg, var(--jersey-red), #b91c1c);
+}
+
+.stat-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.home-value {
+  color: var(--stadium-blue);
+}
+
+.away-value {
+  color: var(--jersey-red);
+}
+
+.stat-numbers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.home-stat {
+  color: var(--stadium-blue);
+}
+
+.away-stat {
+  color: var(--jersey-red);
+}
+
+.stat-separator {
+  color: var(--text-muted);
+}
+
+/* ===========================
    📱 RESPONSIVE - MOBILE STADIUM
 =========================== */
 @media (max-width: 768px) {
@@ -685,25 +1180,75 @@ h6 { font-size: 1rem; }
   .team-list {
     grid-template-columns: 1fr;
   }
+
+  .match-info {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .team {
+    justify-content: center;
+  }
+
+  .team.away-team {
+    flex-direction: row;
+    text-align: center;
+  }
+
+  .football-field {
+    height: 300px;
+  }
+
+  .match-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .control-buttons {
+    justify-content: center;
+  }
+
+  .speed-controls {
+    justify-content: center;
+  }
 }
 
 /* ===========================
    ⚡ ANIMATIONS - MATCH FLOW
 =========================== */
 @keyframes goalCelebration {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  25% { transform: translate(-50%, -50%) scale(1.2) rotate(5deg); }
+  50% { transform: translate(-50%, -50%) scale(1.1) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) scale(1.2) rotate(3deg); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes eventPulse {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+}
+
+@keyframes scoreUpdate {
   0% { transform: scale(1); }
-  50% { transform: scale(1.1) rotate(2deg); }
+  50% { transform: scale(1.2); color: var(--jersey-gold); }
   100% { transform: scale(1); }
 }
 
-@keyframes cardFlash {
-  0%, 100% { background: var(--surface); }
-  50% { background: var(--warning); }
+@keyframes slideInCommentary {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes pitchGlow {
-  0%, 100% { box-shadow: var(--shadow); }
-  50% { box-shadow: var(--shadow-glow); }
+  0%, 100% { box-shadow: var(--shadow-xl); }
+  50% { box-shadow: var(--shadow-xl), 0 0 30px rgba(26, 127, 55, 0.3); }
 }
 
 .goal-animation {

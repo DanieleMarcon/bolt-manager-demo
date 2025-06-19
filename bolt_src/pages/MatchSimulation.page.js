@@ -11,71 +11,160 @@ export default class MatchSimulationPage {
     this.simulationSpeed = 'normal';
     this.isPaused = false;
     this.userTeamId = window.currentSession?.user_team_id || null;
+    this.homeScore = 0;
+    this.awayScore = 0;
     this.render();
   }
 
   render() {
     this.container.innerHTML = `
       <div class="match-simulation-page">
-        <div class="page-header">
-          <h2 class="page-title">Simulazione Partita</h2>
-          <div class="page-actions">
-            <button class="button button-secondary tactics-btn">⚙️ Tattiche</button>
-            <button class="button button-primary start-match-btn" ${this.isSimulating ? 'disabled' : ''}>
-              ▶️ Inizia Partita
-            </button>
+        <!-- Match Header -->
+        <div class="match-header">
+          <div class="match-info">
+            <div class="team home-team">
+              <img src="https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80" alt="Home Team" class="team-logo">
+              <div class="team-details">
+                <h3 class="team-name" id="homeTeamName">Home Team</h3>
+                <span class="team-formation" id="homeFormation">4-4-2</span>
+              </div>
+            </div>
+            
+            <div class="match-center">
+              <div class="match-score">
+                <span class="score home-score" id="homeScore">0</span>
+                <span class="score-separator">-</span>
+                <span class="score away-score" id="awayScore">0</span>
+              </div>
+              <div class="match-time">
+                <span class="time-display" id="timeDisplay">0'</span>
+                <span class="match-status" id="matchStatus">In attesa</span>
+              </div>
+            </div>
+            
+            <div class="team away-team">
+              <div class="team-details">
+                <h3 class="team-name" id="awayTeamName">Away Team</h3>
+                <span class="team-formation" id="awayFormation">4-4-2</span>
+              </div>
+              <img src="https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80" alt="Away Team" class="team-logo">
+            </div>
           </div>
         </div>
 
-        <!-- Match Info Section -->
-        <div class="match-info-section">
-          <div id="matchInfo" class="match-info-card"></div>
+        <!-- Football Field Visualization -->
+        <div class="football-field-container">
+          <div class="football-field" id="footballField">
+            <!-- Field markings -->
+            <div class="field-markings">
+              <div class="center-circle"></div>
+              <div class="center-line"></div>
+              <div class="penalty-area home-penalty"></div>
+              <div class="penalty-area away-penalty"></div>
+              <div class="goal-area home-goal-area"></div>
+              <div class="goal-area away-goal-area"></div>
+              <div class="corner-arc corner-1"></div>
+              <div class="corner-arc corner-2"></div>
+              <div class="corner-arc corner-3"></div>
+              <div class="corner-arc corner-4"></div>
+            </div>
+            
+            <!-- Ball -->
+            <div class="ball" id="ball"></div>
+            
+            <!-- Event Animations -->
+            <div class="event-animation" id="eventAnimation"></div>
+          </div>
         </div>
 
-        <!-- Lineup Selection Section -->
-        <div class="lineup-section">
+        <!-- Live Commentary -->
+        <div class="live-commentary">
+          <div class="commentary-header">
+            <h4>📺 Telecronaca Live</h4>
+            <div class="commentary-controls">
+              <button class="commentary-toggle active" id="commentaryToggle">🔊</button>
+            </div>
+          </div>
+          <div class="commentary-feed" id="commentaryFeed">
+            <div class="commentary-item welcome">
+              <span class="commentary-time">--'</span>
+              <span class="commentary-text">Benvenuti alla diretta di questa emozionante partita!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match Controls -->
+        <div class="match-controls">
+          <div class="control-section">
+            <h5>Controlli Partita</h5>
+            <div class="control-buttons">
+              <button class="control-btn start-btn" id="startMatchBtn">
+                <span class="btn-icon">▶️</span>
+                <span class="btn-text">Inizia Partita</span>
+              </button>
+              <button class="control-btn pause-btn" id="pauseBtn" disabled>
+                <span class="btn-icon">⏸️</span>
+                <span class="btn-text">Pausa</span>
+              </button>
+              <button class="control-btn stop-btn" id="stopBtn" disabled>
+                <span class="btn-icon">⏹️</span>
+                <span class="btn-text">Termina</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="speed-section">
+            <h5>Velocità Simulazione</h5>
+            <div class="speed-controls">
+              <button class="speed-btn" data-speed="slow">🐌 Lento</button>
+              <button class="speed-btn active" data-speed="normal">⚡ Normale</button>
+              <button class="speed-btn" data-speed="fast">🚀 Veloce</button>
+              <button class="speed-btn" data-speed="instant">⚡⚡ Istantaneo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match Statistics -->
+        <div class="live-stats">
+          <h5>Statistiche Live</h5>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Possesso Palla</span>
+              <div class="stat-bar">
+                <div class="stat-fill home" id="possessionHome" style="width: 50%"></div>
+                <div class="stat-fill away" id="possessionAway" style="width: 50%"></div>
+              </div>
+              <div class="stat-values">
+                <span class="home-value" id="possessionHomeValue">50%</span>
+                <span class="away-value" id="possessionAwayValue">50%</span>
+              </div>
+            </div>
+            
+            <div class="stat-item">
+              <span class="stat-label">Tiri</span>
+              <div class="stat-numbers">
+                <span class="home-stat" id="shotsHome">0</span>
+                <span class="stat-separator">-</span>
+                <span class="away-stat" id="shotsAway">0</span>
+              </div>
+            </div>
+            
+            <div class="stat-item">
+              <span class="stat-label">Tiri in Porta</span>
+              <div class="stat-numbers">
+                <span class="home-stat" id="shotsOnTargetHome">0</span>
+                <span class="stat-separator">-</span>
+                <span class="away-stat" id="shotsOnTargetAway">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lineup Section (Initially visible) -->
+        <div class="lineup-section" id="lineupSection">
           <h3 class="section-title">Selezione Formazione</h3>
           <div id="lineupSelector" class="lineup-selector-container"></div>
         </div>
-
-        <!-- Pre-Match Analysis Section -->
-        <div class="pre-match-analysis">
-          <h3 class="section-title">Analisi Pre-Partita</h3>
-          <div id="preMatchAnalysis" class="analysis-container"></div>
-        </div>
-
-        <!-- Simulation Controls (hidden initially) -->
-        <div class="simulation-controls" id="simulationControls" style="display: none;">
-          <div class="controls-header">
-            <h3>Controlli Simulazione</h3>
-            <div class="match-time">
-              <span class="time-display">0'</span>
-              <span class="match-status">In attesa</span>
-            </div>
-          </div>
-          
-          <div class="speed-controls">
-            <button class="speed-btn" data-speed="slow">🐌 Lento</button>
-            <button class="speed-btn active" data-speed="normal">⚡ Normale</button>
-            <button class="speed-btn" data-speed="fast">🚀 Veloce</button>
-            <button class="pause-btn">⏸️ Pausa</button>
-          </div>
-          
-          <div class="live-score">
-            <div class="score-display">
-              <span class="home-score">0</span>
-              <span class="score-separator">-</span>
-              <span class="away-score">0</span>
-            </div>
-          </div>
-          
-          <div class="match-events" id="matchEvents">
-            <!-- Live events will appear here -->
-          </div>
-        </div>
-
-        <!-- Sponsor Banner -->
-        <div id="sponsorBanner" class="sponsor-banner"></div>
       </div>
     `;
     this.initComponents();
@@ -89,9 +178,8 @@ export default class MatchSimulationPage {
     }
     this.renderMatchInfo();
     await this.renderLineupSelector();
-    this.renderPreMatchAnalysis();
-    this.renderSponsorBanner();
     this.bindEvents();
+    this.initializeField();
   }
 
   async loadMatchData() {
@@ -114,188 +202,65 @@ export default class MatchSimulationPage {
 
     this.matchData = {
       id: match.id,
-      competition: 'Campionato',
-      matchday: match.matchday,
-      date: match.match_date,
-      stadium: homeTeam?.city ? `Stadio di ${homeTeam.city}` : 'Stadio Comunale',
       homeTeam: {
         id: homeTeam?.id,
-        name: homeTeam?.name || 'Sconosciuta',
-        logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
-        formation: homeTeam?.formation || '4-4-2',
-        rating: homeTeam?.team_strength || 0
+        name: homeTeam?.name || 'Home Team',
+        formation: homeTeam?.formation || '4-4-2'
       },
       awayTeam: {
         id: awayTeam?.id,
-        name: awayTeam?.name || 'Sconosciuta',
-        logo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80',
-        formation: awayTeam?.formation || '4-4-2',
-        rating: awayTeam?.team_strength || 0
+        name: awayTeam?.name || 'Away Team',
+        formation: awayTeam?.formation || '4-4-2'
       },
-      weather: {
-        condition: match.weather,
-        temperature: 18
-      },
-      referee: match.referee
+      weather: match.weather || 'sunny',
+      referee: match.referee || 'Arbitro'
     };
   }
 
   renderMatchInfo() {
-    const container = document.getElementById('matchInfo');
-    
-    container.innerHTML = `
-      <div class="match-header">
-        <div class="competition-info">
-          <span class="competition">${this.matchData.competition}</span>
-          <span class="matchday">Giornata ${this.matchData.matchday}</span>
-        </div>
-        <div class="match-date">${this.formatDate(this.matchData.date)}</div>
-      </div>
-      
-      <div class="teams-display">
-        <div class="team home-team">
-          <img src="${this.matchData.homeTeam.logo}" alt="${this.matchData.homeTeam.name}" class="team-logo">
-          <div class="team-info">
-            <h3 class="team-name">${this.matchData.homeTeam.name}</h3>
-            <span class="team-rating">Rating: ${this.matchData.homeTeam.rating}</span>
-            <span class="team-formation">${this.matchData.homeTeam.formation}</span>
-          </div>
-        </div>
-        
-        <div class="vs-section">
-          <span class="vs-text">VS</span>
-          <div class="match-details">
-            <span class="stadium">📍 ${this.matchData.stadium}</span>
-            <span class="weather">🌤️ ${this.matchData.weather.condition} ${this.matchData.weather.temperature}°C</span>
-            <span class="referee">👨‍⚖️ ${this.matchData.referee}</span>
-          </div>
-        </div>
-        
-        <div class="team away-team">
-          <div class="team-info">
-            <h3 class="team-name">${this.matchData.awayTeam.name}</h3>
-            <span class="team-rating">Rating: ${this.matchData.awayTeam.rating}</span>
-            <span class="team-formation">${this.matchData.awayTeam.formation}</span>
-          </div>
-          <img src="${this.matchData.awayTeam.logo}" alt="${this.matchData.awayTeam.name}" class="team-logo">
-        </div>
-      </div>
-    `;
+    document.getElementById('homeTeamName').textContent = this.matchData.homeTeam.name;
+    document.getElementById('awayTeamName').textContent = this.matchData.awayTeam.name;
+    document.getElementById('homeFormation').textContent = this.matchData.homeTeam.formation;
+    document.getElementById('awayFormation').textContent = this.matchData.awayTeam.formation;
   }
 
   async renderLineupSelector() {
     const container = document.getElementById('lineupSelector');
-
     const players = await this.getTeamPlayers();
-    const formation =
-      this.matchData.homeTeam.id === this.userTeamId
-        ? this.matchData.homeTeam.formation
-        : this.matchData.awayTeam.formation;
+    const formation = this.matchData.homeTeam.id === this.userTeamId
+      ? this.matchData.homeTeam.formation
+      : this.matchData.awayTeam.formation;
 
-        new LineupSelector(container, {
+    new LineupSelector(container, {
       formation,
       availablePlayers: players,
       onLineupChange: (lineupData) => this.handleLineupChange(lineupData)
     });
   }
 
-  renderPreMatchAnalysis() {
-    const container = document.getElementById('preMatchAnalysis');
-    
-    container.innerHTML = `
-      <div class="analysis-grid">
-        <div class="analysis-item">
-          <h5>Probabilità Vittoria</h5>
-          <div class="probability-bars">
-            <div class="prob-bar home">
-              <span class="prob-label">${this.matchData.homeTeam.name}</span>
-              <div class="prob-fill" style="width: 45%"></div>
-              <span class="prob-value">45%</span>
-            </div>
-            <div class="prob-bar draw">
-              <span class="prob-label">Pareggio</span>
-              <div class="prob-fill" style="width: 25%"></div>
-              <span class="prob-value">25%</span>
-            </div>
-            <div class="prob-bar away">
-              <span class="prob-label">${this.matchData.awayTeam.name}</span>
-              <div class="prob-fill" style="width: 30%"></div>
-              <span class="prob-value">30%</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="analysis-item">
-          <h5>Confronto Squadre</h5>
-          <div class="team-comparison">
-            <div class="comparison-stat">
-              <span class="stat-label">Attacco</span>
-              <div class="stat-bars">
-                <div class="stat-bar home" style="width: 80%">80</div>
-                <div class="stat-bar away" style="width: 85%">85</div>
-              </div>
-            </div>
-            <div class="comparison-stat">
-              <span class="stat-label">Difesa</span>
-              <div class="stat-bars">
-                <div class="stat-bar home" style="width: 75%">75</div>
-                <div class="stat-bar away" style="width: 78%">78</div>
-              </div>
-            </div>
-            <div class="comparison-stat">
-              <span class="stat-label">Centrocampo</span>
-              <div class="stat-bars">
-                <div class="stat-bar home" style="width: 82%">82</div>
-                <div class="stat-bar away" style="width: 80%">80</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="analysis-item">
-          <h5>Fattori Chiave</h5>
-          <div class="key-factors">
-            <div class="factor">
-              <span class="factor-icon">🏠</span>
-              <span class="factor-text">Vantaggio casa</span>
-            </div>
-            <div class="factor">
-              <span class="factor-icon">📈</span>
-              <span class="factor-text">Forma recente positiva</span>
-            </div>
-            <div class="factor">
-              <span class="factor-icon">⚡</span>
-              <span class="factor-text">Morale alto</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+  initializeField() {
+    const ball = document.getElementById('ball');
+    this.moveBallToCenter();
   }
 
-  renderSponsorBanner() {
-    const container = document.getElementById('sponsorBanner');
-    
-    container.innerHTML = `
-      <div class="sponsor-content">
-        <img src="https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=200&h=60" alt="Sponsor" class="sponsor-logo">
-        <span class="sponsor-text">SportTech Pro - La tecnologia al servizio del calcio</span>
-      </div>
-    `;
+  moveBallToCenter() {
+    const ball = document.getElementById('ball');
+    ball.style.left = '50%';
+    ball.style.top = '50%';
   }
 
   bindEvents() {
-    // Action buttons
-    const tacticsBtn = this.container.querySelector('.tactics-btn');
-    const startMatchBtn = this.container.querySelector('.start-match-btn');
+    // Control buttons
+    const startBtn = document.getElementById('startMatchBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
     
-    tacticsBtn?.addEventListener('click', () => this.showTacticsPanel());
-    startMatchBtn?.addEventListener('click', () => this.startMatch());
+    startBtn?.addEventListener('click', () => this.startMatch());
+    pauseBtn?.addEventListener('click', () => this.togglePause());
+    stopBtn?.addEventListener('click', () => this.stopMatch());
 
-    // Speed controls (initially hidden)
+    // Speed controls
     const speedBtns = this.container.querySelectorAll('.speed-btn');
-    const pauseBtn = this.container.querySelector('.pause-btn');
-    
     speedBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
         speedBtns.forEach(b => b.classList.remove('active'));
@@ -303,24 +268,23 @@ export default class MatchSimulationPage {
         this.setSimulationSpeed(btn.dataset.speed);
       });
     });
-    
-    pauseBtn?.addEventListener('click', () => this.togglePause());
+
+    // Commentary toggle
+    const commentaryToggle = document.getElementById('commentaryToggle');
+    commentaryToggle?.addEventListener('click', () => this.toggleCommentary());
   }
 
   handleLineupChange(lineupData) {
     this.lineup = lineupData;
-    console.log('Lineup updated:', lineupData);
-    
-    // Update start button state
-    const startBtn = this.container.querySelector('.start-match-btn');
+    const startBtn = document.getElementById('startMatchBtn');
     if (startBtn) {
       startBtn.disabled = !lineupData.isComplete;
-      startBtn.textContent = lineupData.isComplete ? '▶️ Inizia Partita' : '⚠️ Completa Formazione';
+      if (lineupData.isComplete) {
+        startBtn.innerHTML = '<span class="btn-icon">▶️</span><span class="btn-text">Inizia Partita</span>';
+      } else {
+        startBtn.innerHTML = '<span class="btn-icon">⚠️</span><span class="btn-text">Completa Formazione</span>';
+      }
     }
-  }
-
-  showTacticsPanel() {
-    this.showToast('Apertura pannello tattiche', 'info');
   }
 
   startMatch() {
@@ -332,157 +296,285 @@ export default class MatchSimulationPage {
     this.isSimulating = true;
     this.isPaused = false;
     this.currentMinute = 0;
-    this.simulationSpeed = 'normal';
+    this.homeScore = 0;
+    this.awayScore = 0;
 
-    // Show simulation controls
-    const simulationControls = this.container.querySelector('#simulationControls');
-    simulationControls.style.display = 'block';
-    
     // Hide lineup section
-    const lineupSection = this.container.querySelector('.lineup-section');
-    lineupSection.style.display = 'none';
-    
-    // Update page header
-    const startBtn = this.container.querySelector('.start-match-btn');
-    startBtn.textContent = '⏹️ Termina Partita';
-    startBtn.onclick = () => this.endMatch();
-    
-    // Start simulation
-    this.simulateMatch();
-    
-    this.showToast('Partita iniziata!', 'success');
-  }
+    document.getElementById('lineupSection').style.display = 'none';
 
-  simulateMatch() {
-    this.matchEvents = [];
+    // Update controls
+    document.getElementById('startMatchBtn').disabled = true;
+    document.getElementById('pauseBtn').disabled = false;
+    document.getElementById('stopBtn').disabled = false;
+
+    // Add match start commentary
+    this.addCommentary(0, `🏁 Fischio d'inizio! Inizia ${this.matchData.homeTeam.name} vs ${this.matchData.awayTeam.name}!`, 'match-start');
+
+    // Start simulation
     this.startSimulationInterval();
+    this.showToast('Partita iniziata!', 'success');
   }
 
   startSimulationInterval() {
     if (this.matchInterval) {
       clearInterval(this.matchInterval);
     }
-    const speedMap = { slow: 1500, normal: 1000, fast: 500 };
+    
+    const speedMap = { 
+      slow: 2000, 
+      normal: 1000, 
+      fast: 500, 
+      instant: 100 
+    };
     const interval = speedMap[this.simulationSpeed] || 1000;
+    
     this.matchInterval = setInterval(() => this.simulationTick(), interval);
   }
 
   simulationTick() {
+    if (this.isPaused) return;
+
     this.currentMinute++;
+    this.updateMatchTime();
 
-    const timeDisplay = this.container.querySelector('.time-display');
-    const statusDisplay = this.container.querySelector('.match-status');
-    if (timeDisplay) timeDisplay.textContent = `${this.currentMinute}'`;
-    if (statusDisplay) statusDisplay.textContent = 'In corso';
-
-    if (Math.random() < 0.05) {
-      const event = this.generateRandomEvent(this.currentMinute);
-      this.matchEvents.push(event);
-      this.addMatchEvent(event);
+    // Generate random events
+    if (Math.random() < 0.08) { // 8% chance per minute
+      const event = this.generateRandomEvent();
+      this.processMatchEvent(event);
     }
 
+    // Update possession randomly
+    this.updatePossession();
+
+    // Check for match end
     if (this.currentMinute >= 90) {
       this.endMatch();
     }
   }
 
-  generateRandomEvent(minute) {
-    const eventTypes = ['goal', 'card', 'substitution', 'shot', 'corner'];
-    const type = eventTypes[Math.floor(Math.random() * eventTypes.length)];
-    const team = Math.random() < 0.5 ? 'home' : 'away';
-    const players = ['Mario Rossi', 'Luigi Bianchi', 'Giuseppe Verdi', 'Antonio Neri'];
-    const player = players[Math.floor(Math.random() * players.length)];
+  generateRandomEvent() {
+    const eventTypes = [
+      { type: 'goal', weight: 0.05, commentary: 'GOOOOOL!' },
+      { type: 'shot', weight: 0.25, commentary: 'Tiro!' },
+      { type: 'shot_on_target', weight: 0.15, commentary: 'Tiro in porta!' },
+      { type: 'corner', weight: 0.20, commentary: 'Corner!' },
+      { type: 'foul', weight: 0.20, commentary: 'Fallo!' },
+      { type: 'yellow_card', weight: 0.08, commentary: 'Cartellino giallo!' },
+      { type: 'substitution', weight: 0.05, commentary: 'Sostituzione!' },
+      { type: 'offside', weight: 0.12, commentary: 'Fuorigioco!' }
+    ];
+
+    const totalWeight = eventTypes.reduce((sum, event) => sum + event.weight, 0);
+    let random = Math.random() * totalWeight;
     
-    let description = '';
-    switch (type) {
-      case 'goal':
-        description = `Gol di ${player}!`;
-        this.updateScore(team);
-        break;
-      case 'card':
-        description = `Cartellino giallo per ${player}`;
-        break;
-      case 'substitution':
-        description = `Sostituzione: entra ${player}`;
-        break;
-      case 'shot':
-        description = `Tiro di ${player}`;
-        break;
-      case 'corner':
-        description = `Corner per ${team === 'home' ? this.matchData.homeTeam.name : this.matchData.awayTeam.name}`;
-        break;
+    for (const event of eventTypes) {
+      random -= event.weight;
+      if (random <= 0) {
+        return {
+          type: event.type,
+          minute: this.currentMinute,
+          team: Math.random() < 0.5 ? 'home' : 'away',
+          player: this.getRandomPlayer(),
+          commentary: event.commentary
+        };
+      }
     }
-    
-    return {
-      id: Date.now(),
-      minute,
-      type,
-      team,
-      player,
-      description
-    };
+
+    return eventTypes[0];
   }
 
-  addMatchEvent(event) {
-    const eventsContainer = this.container.querySelector('#matchEvents');
+  processMatchEvent(event) {
+    this.matchEvents.push(event);
     
-    const eventElement = document.createElement('div');
-    eventElement.className = `match-event ${event.type}`;
-    eventElement.innerHTML = `
-      <span class="event-time">${event.minute}'</span>
-      <span class="event-icon">${this.getEventIcon(event.type)}</span>
-      <span class="event-description">${event.description}</span>
+    // Update statistics
+    this.updateStatistics(event);
+    
+    // Add commentary
+    this.addCommentary(event.minute, this.generateCommentaryText(event), event.type);
+    
+    // Animate on field
+    this.animateEvent(event);
+    
+    // Update score if goal
+    if (event.type === 'goal') {
+      if (event.team === 'home') {
+        this.homeScore++;
+      } else {
+        this.awayScore++;
+      }
+      this.updateScore();
+    }
+  }
+
+  updateStatistics(event) {
+    const homeStats = {
+      shots: document.getElementById('shotsHome'),
+      shotsOnTarget: document.getElementById('shotsOnTargetHome')
+    };
+    
+    const awayStats = {
+      shots: document.getElementById('shotsAway'),
+      shotsOnTarget: document.getElementById('shotsOnTargetAway')
+    };
+
+    const stats = event.team === 'home' ? homeStats : awayStats;
+
+    switch (event.type) {
+      case 'shot':
+      case 'goal':
+        const currentShots = parseInt(stats.shots.textContent) || 0;
+        stats.shots.textContent = currentShots + 1;
+        break;
+      case 'shot_on_target':
+        const currentShotsOnTarget = parseInt(stats.shotsOnTarget.textContent) || 0;
+        stats.shotsOnTarget.textContent = currentShotsOnTarget + 1;
+        break;
+    }
+  }
+
+  updatePossession() {
+    const homePossession = 40 + Math.random() * 20; // 40-60%
+    const awayPossession = 100 - homePossession;
+
+    document.getElementById('possessionHome').style.width = `${homePossession}%`;
+    document.getElementById('possessionAway').style.width = `${awayPossession}%`;
+    document.getElementById('possessionHomeValue').textContent = `${Math.round(homePossession)}%`;
+    document.getElementById('possessionAwayValue').textContent = `${Math.round(awayPossession)}%`;
+  }
+
+  generateCommentaryText(event) {
+    const teamName = event.team === 'home' ? this.matchData.homeTeam.name : this.matchData.awayTeam.name;
+    
+    const commentaries = {
+      goal: [
+        `🥅 GOOOOOOL! ${event.player} segna per ${teamName}!`,
+        `⚽ Rete fantastica di ${event.player}! ${teamName} in vantaggio!`,
+        `🎯 ${event.player} non sbaglia! Gol per ${teamName}!`
+      ],
+      shot: [
+        `🎯 ${event.player} ci prova per ${teamName}!`,
+        `⚽ Tentativo di ${event.player}, palla fuori!`,
+        `🏹 ${event.player} calcia, ma non inquadra la porta!`
+      ],
+      shot_on_target: [
+        `🥅 ${event.player} impegna il portiere!`,
+        `⚽ Bella parata su tiro di ${event.player}!`,
+        `🧤 Il portiere respinge il tiro di ${event.player}!`
+      ],
+      corner: [
+        `📐 Corner per ${teamName}, batte ${event.player}`,
+        `🏃 Calcio d'angolo, occasione per ${teamName}`,
+        `📐 ${event.player} si prepara per il corner`
+      ],
+      foul: [
+        `🟨 Fallo di ${event.player}, punizione per l'avversario`,
+        `⚠️ Intervento irregolare di ${event.player}`,
+        `🚫 L'arbitro fischia fallo contro ${event.player}`
+      ],
+      yellow_card: [
+        `🟨 Cartellino giallo per ${event.player}!`,
+        `⚠️ Ammonizione per ${event.player} di ${teamName}`,
+        `🟨 L'arbitro estrae il giallo per ${event.player}`
+      ],
+      substitution: [
+        `🔄 Cambio per ${teamName}: entra ${event.player}`,
+        `👥 Sostituzione: ${event.player} in campo per ${teamName}`,
+        `🔄 Mossa tattica: ${event.player} sostituisce un compagno`
+      ],
+      offside: [
+        `🚩 Fuorigioco di ${event.player}`,
+        `⚠️ ${event.player} in posizione irregolare`,
+        `🚩 L'assistente alza la bandierina: offside`
+      ]
+    };
+
+    const options = commentaries[event.type] || [`Azione di ${event.player} per ${teamName}`];
+    return options[Math.floor(Math.random() * options.length)];
+  }
+
+  addCommentary(minute, text, type = 'normal') {
+    const feed = document.getElementById('commentaryFeed');
+    const commentaryItem = document.createElement('div');
+    commentaryItem.className = `commentary-item ${type}`;
+    
+    commentaryItem.innerHTML = `
+      <span class="commentary-time">${minute}'</span>
+      <span class="commentary-text">${text}</span>
     `;
     
-    eventsContainer.insertBefore(eventElement, eventsContainer.firstChild);
-    
-    // Keep only last 10 events visible
-    const events = eventsContainer.querySelectorAll('.match-event');
-    if (events.length > 10) {
-      events[events.length - 1].remove();
-    }
+    feed.appendChild(commentaryItem);
+    feed.scrollTop = feed.scrollHeight;
+
+    // Add animation
+    commentaryItem.style.animation = 'slideInCommentary 0.3s ease';
   }
 
-  updateScore(team) {
-    const scoreElement = this.container.querySelector(team === 'home' ? '.home-score' : '.away-score');
-    if (scoreElement) {
-      const currentScore = parseInt(scoreElement.textContent) || 0;
-      scoreElement.textContent = currentScore + 1;
-    }
-  }
+  animateEvent(event) {
+    const field = document.getElementById('footballField');
+    const ball = document.getElementById('ball');
+    const eventAnimation = document.getElementById('eventAnimation');
 
-  getEventIcon(type) {
-    const icons = {
-      'goal': '⚽',
-      'card': '🟨',
-      'substitution': '🔄',
-      'shot': '🎯',
-      'corner': '📐'
+    // Move ball based on event
+    const positions = {
+      goal: { left: event.team === 'home' ? '95%' : '5%', top: '50%' },
+      shot: { left: event.team === 'home' ? '85%' : '15%', top: `${40 + Math.random() * 20}%` },
+      corner: { 
+        left: Math.random() < 0.5 ? '5%' : '95%', 
+        top: Math.random() < 0.5 ? '5%' : '95%' 
+      },
+      default: { left: `${30 + Math.random() * 40}%`, top: `${30 + Math.random() * 40}%` }
     };
-    return icons[type] || '📝';
+
+    const position = positions[event.type] || positions.default;
+    ball.style.left = position.left;
+    ball.style.top = position.top;
+
+    // Add event animation
+    if (event.type === 'goal') {
+      eventAnimation.innerHTML = '🥅 GOAL!';
+      eventAnimation.className = 'event-animation goal-animation';
+      eventAnimation.style.display = 'block';
+      
+      setTimeout(() => {
+        eventAnimation.style.display = 'none';
+        this.moveBallToCenter();
+      }, 2000);
+    }
   }
 
-  setSimulationSpeed(speed) {
-    this.simulationSpeed = speed;
-    if (this.isSimulating && !this.isPaused) {
-      this.startSimulationInterval();
-    }
+  updateMatchTime() {
+    document.getElementById('timeDisplay').textContent = `${this.currentMinute}'`;
+    document.getElementById('matchStatus').textContent = this.isPaused ? 'In pausa' : 'In corso';
+  }
+
+  updateScore() {
+    document.getElementById('homeScore').textContent = this.homeScore;
+    document.getElementById('awayScore').textContent = this.awayScore;
+    
+    // Add score animation
+    const scoreElements = [document.getElementById('homeScore'), document.getElementById('awayScore')];
+    scoreElements.forEach(el => {
+      el.style.animation = 'scoreUpdate 0.5s ease';
+      setTimeout(() => el.style.animation = '', 500);
+    });
   }
 
   togglePause() {
+    this.isPaused = !this.isPaused;
+    const pauseBtn = document.getElementById('pauseBtn');
+    
     if (this.isPaused) {
-      this.isPaused = false;
-      this.startSimulationInterval();
-      this.container.querySelector('.pause-btn').textContent = '⏸️ Pausa';
-      this.container.querySelector('.match-status').textContent = 'In corso';
+      pauseBtn.innerHTML = '<span class="btn-icon">▶️</span><span class="btn-text">Riprendi</span>';
+      this.addCommentary(this.currentMinute, '⏸️ Partita in pausa', 'system');
     } else {
-      this.isPaused = true;
-      if (this.matchInterval) {
-        clearInterval(this.matchInterval);
-        this.matchInterval = null;
-      }
-      this.container.querySelector('.pause-btn').textContent = '▶️ Riprendi';
-      this.container.querySelector('.match-status').textContent = 'In pausa';
+      pauseBtn.innerHTML = '<span class="btn-icon">⏸️</span><span class="btn-text">Pausa</span>';
+      this.addCommentary(this.currentMinute, '▶️ Partita ripresa', 'system');
+    }
+  }
+
+  stopMatch() {
+    if (confirm('Sei sicuro di voler terminare la partita?')) {
+      this.endMatch();
     }
   }
 
@@ -494,81 +586,89 @@ export default class MatchSimulationPage {
       clearInterval(this.matchInterval);
       this.matchInterval = null;
     }
-    
-    // Update status
-    const statusDisplay = this.container.querySelector('.match-status');
-    if (statusDisplay) statusDisplay.textContent = 'Finita';
-    
-    // Show final result
-    const homeScore = parseInt(this.container.querySelector('.home-score').textContent) || 0;
-    const awayScore = parseInt(this.container.querySelector('.away-score').textContent) || 0;
 
-    this.showToast(`Partita terminata! Risultato finale: ${homeScore}-${awayScore}`, 'success');
+    // Update controls
+    document.getElementById('startMatchBtn').disabled = false;
+    document.getElementById('pauseBtn').disabled = true;
+    document.getElementById('stopBtn').disabled = true;
+    document.getElementById('matchStatus').textContent = 'Finita';
 
-    // Save result for analysis page
-    window.lastMatchReport = this.generateMatchReport(homeScore, awayScore);
+    // Add final commentary
+    this.addCommentary(90, `🏁 Fischio finale! ${this.matchData.homeTeam.name} ${this.homeScore}-${this.awayScore} ${this.matchData.awayTeam.name}`, 'match-end');
 
-    // Redirect to analysis after 3 seconds
+    this.showToast(`Partita terminata! Risultato: ${this.homeScore}-${this.awayScore}`, 'success');
+
+    // Save match report
+    this.saveMatchReport();
+
+    // Redirect to analysis after delay
     setTimeout(() => {
       window.location.hash = 'match-analysis';
     }, 3000);
   }
 
-  generateMatchReport(homeScore, awayScore) {
-    const stats = {
-      possession: { home: 50, away: 50 },
-      shots: { home: 0, away: 0 },
-      shotsOnTarget: { home: 0, away: 0 },
-      corners: { home: 0, away: 0 },
-      fouls: { home: 0, away: 0 },
-      yellowCards: { home: 0, away: 0 },
-      redCards: { home: 0, away: 0 },
-      offsides: { home: Math.floor(Math.random() * 3), away: Math.floor(Math.random() * 3) },
-      passes: { home: 250 + Math.floor(Math.random() * 100), away: 250 + Math.floor(Math.random() * 100) },
-      passAccuracy: { home: 80 + Math.floor(Math.random() * 10), away: 80 + Math.floor(Math.random() * 10) }
-    };
-
-    this.matchEvents.forEach(ev => {
-      const t = ev.team;
-      switch (ev.type) {
-        case 'goal':
-          stats.shots[t]++;
-          stats.shotsOnTarget[t]++;
-          break;
-        case 'shot':
-          stats.shots[t]++;
-          if (Math.random() < 0.4) stats.shotsOnTarget[t]++;
-          break;
-        case 'corner':
-          stats.corners[t]++;
-          break;
-        case 'card':
-          stats.fouls[t]++;
-          stats.yellowCards[t]++;
-          break;
-      }
-    });
-
-    const possHome = 45 + Math.floor(Math.random() * 11);
-    stats.possession.home = possHome;
-    stats.possession.away = 100 - possHome;
-
-    const highlights = this.matchEvents.map((ev, idx) => ({
-      id: idx + 1,
-      time: ev.minute,
-      type: ev.type,
-      team: ev.team,
-      player: ev.player,
-      description: ev.description,
-      importance: ev.type === 'goal' ? 9 : 5
-    }));
-
-    return {
+  saveMatchReport() {
+    const report = {
       match: this.matchData,
-      result: { homeScore, awayScore },
-      statistics: stats,
-      highlights
+      result: { homeScore: this.homeScore, awayScore: this.awayScore },
+      events: this.matchEvents,
+      statistics: this.generateFinalStatistics(),
+      commentary: this.getCommentaryHistory()
     };
+
+    window.lastMatchReport = report;
+  }
+
+  generateFinalStatistics() {
+    return {
+      possession: {
+        home: parseInt(document.getElementById('possessionHomeValue').textContent) || 50,
+        away: parseInt(document.getElementById('possessionAwayValue').textContent) || 50
+      },
+      shots: {
+        home: parseInt(document.getElementById('shotsHome').textContent) || 0,
+        away: parseInt(document.getElementById('shotsAway').textContent) || 0
+      },
+      shotsOnTarget: {
+        home: parseInt(document.getElementById('shotsOnTargetHome').textContent) || 0,
+        away: parseInt(document.getElementById('shotsOnTargetAway').textContent) || 0
+      }
+    };
+  }
+
+  getCommentaryHistory() {
+    const items = document.querySelectorAll('.commentary-item');
+    return Array.from(items).map(item => ({
+      time: item.querySelector('.commentary-time').textContent,
+      text: item.querySelector('.commentary-text').textContent
+    }));
+  }
+
+  setSimulationSpeed(speed) {
+    this.simulationSpeed = speed;
+    if (this.isSimulating && !this.isPaused) {
+      this.startSimulationInterval();
+    }
+  }
+
+  toggleCommentary() {
+    const toggle = document.getElementById('commentaryToggle');
+    const feed = document.getElementById('commentaryFeed');
+    
+    if (toggle.classList.contains('active')) {
+      toggle.classList.remove('active');
+      toggle.textContent = '🔇';
+      feed.style.opacity = '0.5';
+    } else {
+      toggle.classList.add('active');
+      toggle.textContent = '🔊';
+      feed.style.opacity = '1';
+    }
+  }
+
+  getRandomPlayer() {
+    const players = ['Rossi', 'Bianchi', 'Verdi', 'Neri', 'Gialli', 'Blu', 'Viola', 'Rosa'];
+    return players[Math.floor(Math.random() * players.length)];
   }
 
   async getTeamPlayers() {
@@ -588,20 +688,8 @@ export default class MatchSimulationPage {
       name: `${p.first_name} ${p.last_name}`,
       position: ROLE_MAP[p.role] || p.role,
       overall_rating: p.overall_rating,
-      photo:
-        'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
+      photo: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=80&h=80'
     }));
-  }
-
-  formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('it-IT', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
   }
 
   showToast(message, type = 'info') {
