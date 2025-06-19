@@ -209,6 +209,30 @@ button {
   border-color: var(--primary);
 }
 
+/* Player selection list */
+.player-select-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.player-select-item {
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.player-select-item:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
 /* TOAST */
 .toast-container {
   position: fixed;

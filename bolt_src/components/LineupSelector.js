@@ -99,17 +99,17 @@ export default class LineupSelector {
   }
 
   renderBenchPlayers() {
-    const benchPlayers = this.availablePlayers.filter(player => 
+    const benchPlayers = this.availablePlayers.filter(player =>
       !Object.values(this.selectedPlayers).find(p => p.id === player.id)
     );
-    
+
     return benchPlayers.map(player => `
       <div class="bench-player" data-player-id="${player.id}" draggable="true">
         <img src="${player.photo}" alt="${player.name}" class="player-photo-small">
         <div class="player-info">
           <span class="player-name">${player.name}</span>
           <span class="player-position">${player.position}</span>
-          <span class="player-rating">${player.rating}</span>
+          <span class="player-rating">${player.overall_rating}</span>
         </div>
       </div>
     `).join('');
@@ -212,26 +212,44 @@ export default class LineupSelector {
 
   showPlayerSelector(positionId) {
     const availablePlayers = this.getAvailablePlayersForPosition(positionId);
-    
+
     if (availablePlayers.length === 0) {
       alert('Nessun giocatore disponibile per questa posizione');
       return;
     }
-    
-    const playerName = prompt(
-      `Seleziona giocatore per ${positionId}:\n` +
-      availablePlayers.map((p, i) => `${i + 1}. ${p.name} (${p.position})`).join('\n')
-    );
-    
-    if (playerName) {
-      const selectedPlayer = availablePlayers.find(p => 
-        p.name.toLowerCase().includes(playerName.toLowerCase())
-      );
-      
-      if (selectedPlayer) {
-        this.assignPlayerToPosition(selectedPlayer, positionId);
-      }
-    }
+
+    const modalContainer = document.getElementById('modalContainer');
+    if (!modalContainer) return;
+
+    modalContainer.innerHTML = `
+      <div class="modal">
+        <h3>Seleziona giocatore</h3>
+        <ul class="player-select-list">
+          ${availablePlayers.map(p => `<li class="player-select-item" data-id="${p.id}">${p.name} (${p.position})</li>`).join('')}
+        </ul>
+        <div style="text-align:right; margin-top:16px;">
+          <button id="cancelPlayerSelectBtn" class="button button-secondary">Annulla</button>
+        </div>
+      </div>`;
+    modalContainer.style.display = 'flex';
+
+    const closeModal = () => {
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = '';
+    };
+
+    modalContainer.querySelectorAll('.player-select-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const playerId = parseInt(item.dataset.id);
+        const player = availablePlayers.find(p => p.id === playerId);
+        if (player) {
+          this.assignPlayerToPosition(player, positionId);
+        }
+        closeModal();
+      });
+    });
+
+    modalContainer.querySelector('#cancelPlayerSelectBtn')?.addEventListener('click', closeModal);
   }
 
   assignPlayerToPosition(player, positionId) {
@@ -247,24 +265,7 @@ export default class LineupSelector {
   }
 
   getAvailablePlayersForPosition(positionId) {
-    const positionRoles = {
-      'gk': ['GK'],
-      'lb': ['LB', 'LWB', 'DF'],
-      'cb1': ['CB', 'DF'],
-      'cb2': ['CB', 'DF'],
-      'rb': ['RB', 'RWB', 'DF'],
-      'lm': ['LM', 'LW', 'MF'],
-      'cm1': ['CM', 'CDM', 'CAM', 'MF'],
-      'cm2': ['CM', 'CDM', 'CAM', 'MF'],
-      'rm': ['RM', 'RW', 'MF'],
-      'st1': ['ST', 'CF', 'FW'],
-      'st2': ['ST', 'CF', 'FW']
-    };
-    
-    const allowedRoles = positionRoles[positionId] || ['MF'];
-    
-    return this.availablePlayers.filter(player => 
-      allowedRoles.includes(player.position) &&
+    return this.availablePlayers.filter(player =>
       !Object.values(this.selectedPlayers).find(p => p.id === player.id)
     );
   }
@@ -277,8 +278,8 @@ export default class LineupSelector {
       const availablePlayers = this.getAvailablePlayersForPosition(position.id);
       if (availablePlayers.length > 0) {
         // Select best rated available player
-        const bestPlayer = availablePlayers.reduce((best, current) => 
-          current.rating > best.rating ? current : best
+        const bestPlayer = availablePlayers.reduce((best, current) =>
+          current.overall_rating > best.overall_rating ? current : best
         );
         this.selectedPlayers[position.id] = bestPlayer;
       }
