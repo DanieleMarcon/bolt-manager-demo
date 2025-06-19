@@ -1,4 +1,4 @@
-# 🗺️ Roadmap di Sviluppo – Bolt Manager 01/02
+# 🗺️ Roadmap di Sviluppo – Allenatore Nato
 
 Questa roadmap descrive in dettaglio le fasi operative per costruire una demo funzionante del gioco manageriale, seguendo le best practice di modularità, accessibilità e sviluppo su Bolt.new.
 
@@ -314,7 +314,7 @@ La **Fase 8A** è completamente implementata! Il progetto è ora ottimizzato, ac
 
 ## 📋 TODO Roadmap – Audit e Prossimi Passi
 
-Documento di coordinamento per l'aggiornamento completo del progetto Bolt Manager 01/02.
+Documento di coordinamento per l'aggiornamento completo del progetto Allenatore Nato.
 Contiene tutte le modifiche, integrazioni e refactor da eseguire su file `.md`, componenti JS, dataset e UI.
 
 Aggiornato dinamicamente durante la fase di audit dei file.

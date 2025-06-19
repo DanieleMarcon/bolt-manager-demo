@@ -1,7 +1,7 @@
 {
-  "name": "bolt-manager-01-02",
+  "name": "allenatore-nato",
   "version": "1.0.0",
-  "description": "Demo manageriale calcistica realizzata con Bolt.new",
+  "description": "Demo manageriale calcistica",
   "main": "src/index.html",
   "scripts": {
     "build": "rollup -c && mkdir -p dist && cp src/index.html dist/index.html && cp src/style.css dist/style.css && mkdir -p dist/assets && cp -r assets/* dist/assets/ && cp -r bolt_src/datasets dist/datasets",

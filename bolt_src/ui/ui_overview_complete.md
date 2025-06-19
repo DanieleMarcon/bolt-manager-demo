@@ -1,6 +1,6 @@
-# 🎨 UI Overview - Bolt Manager 01/02
+# 🎨 UI Overview - Allenatore Nato
 
-Questa documentazione descrive l'organizzazione del layout, i componenti principali e le linee guida di accessibilità per ciascuna pagina dell’app Bolt Manager.
+Questa documentazione descrive l'organizzazione del layout, i componenti principali e le linee guida di accessibilità per ciascuna pagina dell’app Allenatore Nato.
 
 ---
 

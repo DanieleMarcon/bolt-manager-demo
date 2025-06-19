@@ -1,4 +1,4 @@
-# 🎮 Moduli Funzionali - Bolt Manager 01/02
+# 🎮 Moduli Funzionali - Allenatore Nato
 
 Questa documentazione descrive i moduli funzionali principali della web app manageriale, la loro implementazione e le interconnessioni.
 

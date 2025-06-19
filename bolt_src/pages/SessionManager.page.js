@@ -587,7 +587,7 @@ export default class SessionManagerPage {
     
     const link = document.createElement('a');
     link.href = URL.createObjectURL(dataBlob);
-    link.download = `bolt-manager-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `allenatore-nato-backup-${new Date().toISOString().split('T')[0]}.json`;
     link.click();
     
     this.showToast('Tutti i dati esportati con successo', 'success');

@@ -1,6 +1,6 @@
-# 📊 Dataset Bolt Manager - Documentazione Tecnica
+# 📊 Dataset Allenatore Nato - Documentazione Tecnica
 
-Questa documentazione descrive tutti i dataset utilizzati nel progetto **Bolt Manager 01/02**, un gioco manageriale calcistico sviluppato interamente con Bolt.new.
+Questa documentazione descrive tutti i dataset utilizzati nel progetto **Allenatore Nato**, un gioco manageriale calcistico sviluppato interamente con Bolt.new.
 
 ## 🏗️ Architettura Dataset
 

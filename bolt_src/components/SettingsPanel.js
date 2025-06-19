@@ -540,7 +540,7 @@ export const template = `
       
       <div class="settings-group">
         <div class="about-info">
-          <div class="game-logo">⚽ Bolt Manager 01/02</div>
+          <div class="game-logo">⚽ Allenatore Nato</div>
           <div class="game-version">Versione 1.0.0</div>
           <div class="game-copyright">© 2025 Bolt.new</div>
           
@@ -1163,7 +1163,7 @@ class SettingsPanel {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `bolt-manager-settings-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `allenatore-nato-settings-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
     

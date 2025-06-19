@@ -1,4 +1,4 @@
-# 🔄 Flow Logici - Bolt Manager 01/02
+# 🔄 Flow Logici - Allenatore Nato
 
 Questa documentazione descrive tutti i Flow logici necessari per il funzionamento completo della web app manageriale, organizzati per modulo e funzionalità.
 

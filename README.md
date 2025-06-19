@@ -1,4 +1,4 @@
-# ⚽ Bolt Manager 01/02 – Demo
+# ⚽ Allenatore Nato – Demo
 
 Web app manageriale calcistica realizzata interamente con **Bolt.new**, pensata per offrire un'esperienza moderna, scalabile e totalmente no-code.
 

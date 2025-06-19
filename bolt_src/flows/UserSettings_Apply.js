@@ -217,7 +217,7 @@ export class UserSettingsApplyFlow {
         const exportData = {
             version: '1.0',
             exportDate: new Date().toISOString(),
-            source: 'Bolt Manager 01/02',
+            source: 'Allenatore Nato',
             userId: userId,
             settings: currentSettings,
             metadata: {

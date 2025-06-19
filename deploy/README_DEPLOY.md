@@ -1,6 +1,6 @@
 # 🚀 Deploy su SiteGround (o hosting equivalente)
 
-Questa guida spiega come pubblicare il progetto Bolt Manager su un server tradizionale come SiteGround.
+Questa guida spiega come pubblicare il progetto Allenatore Nato su un server tradizionale come SiteGround.
 
 ## 1. Esportazione da Bolt.new
 1. Apri il progetto in Bolt.new
