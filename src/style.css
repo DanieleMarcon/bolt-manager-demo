@@ -758,6 +758,12 @@ h6 { font-size: 1rem; }
   margin-bottom: var(--space-xs);
 }
 
+.player-position-small {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-xs);
+}
+
 .player-rating-small {
   font-size: 0.625rem;
   color: var(--accent);
@@ -965,6 +971,33 @@ h6 { font-size: 1rem; }
 .remove-player-btn:hover {
   background: #b91c1c;
   transform: scale(1.1);
+}
+
+/* Modal player/position selection */
+.player-select-list,
+.position-select-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+
+.player-select-card,
+.position-select-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.player-select-card:hover,
+.position-select-card:hover {
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 /* No Players State */

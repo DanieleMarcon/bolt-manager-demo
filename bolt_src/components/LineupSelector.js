@@ -300,12 +300,26 @@ export default class LineupSelector {
     this.container.addEventListener('click', (e) => {
       if (e.target.classList.contains('add-player-btn')) {
         const card = e.target.closest('.player-card');
-        const playerId = card.dataset.playerId;
-        this.addPlayerToFormation(playerId);
+        const playerId = parseInt(card.dataset.playerId, 10);
+        this.showPositionSelector(playerId);
       } else if (e.target.classList.contains('remove-player-btn')) {
         const card = e.target.closest('.player-card');
-        const playerId = card.dataset.playerId;
+        const playerId = parseInt(card.dataset.playerId, 10);
         this.removePlayerFromFormation(playerId);
+      }
+    });
+
+    // Click on field positions to select player or remove existing
+    this.container.addEventListener('click', (e) => {
+      const slot = e.target.closest('.position-slot');
+      if (!slot) return;
+
+      const positionId = slot.closest('.player-position').dataset.position;
+
+      if (e.target.classList.contains('remove-from-position-btn')) {
+        this.removePlayerFromPosition(positionId);
+      } else if (!slot.classList.contains('occupied')) {
+        this.showPlayerSelector(positionId);
       }
     });
   }
@@ -344,7 +358,7 @@ export default class LineupSelector {
       const slot = e.target.closest('.position-slot');
       if (slot) {
         slot.classList.remove('drag-over');
-        const playerId = e.dataTransfer.getData('text/plain');
+        const playerId = parseInt(e.dataTransfer.getData('text/plain'), 10);
         const positionId = slot.closest('.player-position').dataset.position;
         this.assignPlayerToPosition(playerId, positionId);
       }
@@ -367,20 +381,15 @@ export default class LineupSelector {
   }
 
   assignPlayerToPosition(playerId, positionId) {
-    const player = this.options.availablePlayers.find(p => p.id === playerId);
+    const idNum = Number(playerId);
+    const player = this.options.availablePlayers.find(p => p.id === idNum);
     const formation = this.formations[this.currentFormation];
     const position = formation.positions.find(p => p.id === positionId);
 
     if (!player || !position) return;
 
-    // Check if position is compatible
-    if (!this.isPositionCompatible(player.position, position.required)) {
-      this.showToast(`${player.name} non può giocare in posizione ${position.name}`, 'warning');
-      return;
-    }
-
     // Remove player from any existing position
-    this.removePlayerFromFormation(playerId);
+    this.removePlayerFromFormation(idNum);
 
     // Assign to new position
     this.selectedPlayers.set(positionId, player);
@@ -399,6 +408,12 @@ export default class LineupSelector {
     };
 
     return compatibility[playerPosition]?.includes(requiredPosition) || false;
+  }
+
+    getPlayerAffinity(playerPosition, requiredPosition) {
+    if (playerPosition === requiredPosition) return 2;
+    if (this.isPositionCompatible(playerPosition, requiredPosition)) return 1;
+    return 0;
   }
 
   updatePositionSlot(positionId, player) {
@@ -442,24 +457,7 @@ export default class LineupSelector {
   }
 
   addPlayerToFormation(playerId) {
-    const player = this.options.availablePlayers.find(p => p.id === playerId);
-    if (!player) return;
-
-    // Find best available position for this player
-    const formation = this.formations[this.currentFormation];
-    const availablePositions = formation.positions.filter(pos => 
-      !this.selectedPlayers.has(pos.id) && 
-      this.isPositionCompatible(player.position, pos.required)
-    );
-
-    if (availablePositions.length === 0) {
-      this.showToast(`Nessuna posizione disponibile per ${player.name}`, 'warning');
-      return;
-    }
-
-    // Assign to first available compatible position
-    const position = availablePositions[0];
-    this.assignPlayerToPosition(playerId, position.id);
+    this.showPositionSelector(Number(playerId));
   }
 
   removePlayerFromFormation(playerId) {
@@ -521,6 +519,123 @@ export default class LineupSelector {
     });
 
     return groups;
+  }
+
+  getPlayersSortedForPosition(positionId) {
+    const formation = this.formations[this.currentFormation];
+    const position = formation.positions.find(p => p.id === positionId);
+    if (!position) return [];
+
+    const players = [...this.options.availablePlayers];
+
+    players.sort((a, b) => {
+      const affB = this.getPlayerAffinity(b.position, position.required);
+      const affA = this.getPlayerAffinity(a.position, position.required);
+      if (affB !== affA) return affB - affA;
+      return (b.overall_rating || 0) - (a.overall_rating || 0);
+    });
+
+    return players;
+  }
+
+  showPlayerSelector(positionId) {
+    const players = this.getPlayersSortedForPosition(positionId);
+
+    const modalContainer = document.getElementById('modalContainer');
+    if (!modalContainer) return;
+
+    modalContainer.innerHTML = `
+      <div class="modal">
+        <h3>Seleziona giocatore</h3>
+        <div class="modal-body">
+          <div class="player-select-list">
+            ${players.map(p => `
+              <div class="player-select-card" data-id="${p.id}">
+                <div class="player-photo-small">
+                  <img src="${p.photo || 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=40&h=40'}" alt="${p.name}">
+                </div>
+                <div class="player-info-small">
+                  <div class="player-name-small">${p.name}</div>
+                  <div class="player-position-small">${p.position}</div>
+                  <div class="player-rating-small">${p.overall_rating || 'N/A'}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="text-align:right; margin-top:16px;">
+            <button id="cancelPlayerSelectBtn" class="button button-secondary">Annulla</button>
+          </div>
+        </div>
+      </div>`;
+
+    modalContainer.style.display = 'flex';
+
+    const closeModal = () => {
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = '';
+    };
+
+    modalContainer.querySelectorAll('.player-select-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const playerId = parseInt(card.dataset.id, 10);
+        this.assignPlayerToPosition(playerId, positionId);
+        closeModal();
+      });
+    });
+
+    modalContainer.querySelector('#cancelPlayerSelectBtn')?.addEventListener('click', closeModal);
+  }
+
+  showPositionSelector(playerId) {
+    const player = this.options.availablePlayers.find(p => p.id === playerId);
+    if (!player) return;
+
+    const formation = this.formations[this.currentFormation];
+    const positions = [...formation.positions];
+
+    positions.sort((a, b) => {
+      const affB = this.getPlayerAffinity(player.position, b.required);
+      const affA = this.getPlayerAffinity(player.position, a.required);
+      return affB - affA;
+    });
+
+    const modalContainer = document.getElementById('modalContainer');
+    if (!modalContainer) return;
+
+    modalContainer.innerHTML = `
+      <div class="modal">
+        <h3>Assegna ruolo a ${player.name}</h3>
+        <div class="modal-body">
+          <div class="position-select-list">
+            ${positions.map(pos => `
+              <div class="position-select-card" data-id="${pos.id}">
+                <div class="position-label">${pos.id}</div>
+                <div class="position-name">${pos.name}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="text-align:right; margin-top:16px;">
+            <button id="cancelPositionSelectBtn" class="button button-secondary">Annulla</button>
+          </div>
+        </div>
+      </div>`;
+
+    modalContainer.style.display = 'flex';
+
+    const closeModal = () => {
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = '';
+    };
+
+    modalContainer.querySelectorAll('.position-select-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const positionId = card.dataset.id;
+        this.assignPlayerToPosition(playerId, positionId);
+        closeModal();
+      });
+    });
+
+    modalContainer.querySelector('#cancelPositionSelectBtn')?.addEventListener('click', closeModal);
   }
 
   clearAllPlayers() {
